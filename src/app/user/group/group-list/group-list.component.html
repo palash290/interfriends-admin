@@ -1,0 +1,193 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Groups
+        </h1>
+        <span class="breadcrumb">
+          <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#emailLeadsModal">
+            Send mail to All leads
+          </button>
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+            Add
+          </button>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Group List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists">
+                          <td>{{list.sno}}</td>
+                          <td>{{list.group_cycle_name}}</td>
+                          <td>{{list.group_cycle_descp}}</td>
+                          <td>
+                            <button  class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" (click)="onUpdate(list.id)" ngbTooltip="Edit" >
+                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+
+                            <a  class="btn btn-dark margin" [routerLink]="['/user/groupCycleList',list.id]" ngbTooltip="Cycle" *ngIf="list.existUserGroup_status">
+                              <i class="fa fa-repeat" aria-hidden="true"></i>
+                            </a>
+                            <a  class="btn btn-warning margin" (click)="saveGroupname(list.group_cycle_name)" [routerLink]="['/user/userGroupList',list.id]" ngbTooltip="Users">
+                              <i class="fa fa-user-circle " aria-hidden="true"></i>
+                            </a>
+                            <button type="button margin" class="btn btn-success margin" data-toggle="modal" ngbTooltip="Block" data-target="#blockModal" (click)="onSetId(list.id)" *ngIf="list.status === '1' && adminType === '2'">
+                              <i class="fa fa-ban" aria-hidden="true"></i>
+                          </button>
+                          <button type="button margin" class="btn btn-danger margin" data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetUnBlockId(list.id)" *ngIf="list.status === '2' && adminType === '2'">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                          </button>
+                          <button type="button" style="background-color: rgb(0 123 255 / 58%);" class="btn margin" data-toggle="modal" ngbTooltip="Group circle" [routerLink]="['/user/circleList',list.id]" >
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                          </button>
+
+
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"  (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->
+
+
+
+  <!-- block model popup start -->
+  <div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true" [ngStyle]="{'display':display1}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Do You Realy Want To Block This Group</div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock" (click)="onClose()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- block model popup end -->
+    <!-- unblock model popup start -->
+    <div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true" [ngStyle]="{'display':display2}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Do You Realy Want To Unblock This Group</div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock" (click)="onClose()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- block model popup end -->
+
+
+    <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display3}">
+      <div class="modal-dialog">
+        <app-group-add [uniqueId]= "updateId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-group-add>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+
+
+    
+<div class="modal fade" id="emailLeadsModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+[ngStyle]="{'display':display4}">
+<form #mailForm="ngForm" (ngSubmit)="sendLeadsEmail(mailForm)">
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2" >Send Mail to Circle`s Users</h1>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12">
+          <div class="form-group"
+            [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
+            <label>Subject</label>
+            <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
+           
+            <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+              <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
+            </span>
+          </div>
+          <div class="form-group"
+            [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+            <label>Body</label>
+            <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+            <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+              Please enter a Description.
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" >Send email</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2" #closeBlock2 >Close</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>

@@ -1,0 +1,149 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>Investment Proposal</h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Investment Proposal List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Message</th>
+                      <th>Created on</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; let i = index">
+                      <td>{{ list.sno }}</td>
+                      <td>{{ list.first_name+' '+list.last_name }}</td>
+                      <td>{{ list.email }}</td>
+                      <td>{{ list.message }}</td>
+                      <td>{{ list.created_at | date: 'dd MMM yyyy'}}</td>
+                      <td>
+                        <button
+                          type="button"
+                          class="btn btn-dark margin"
+                          data-toggle="modal"
+                          data-target="#viewModal"
+                          ngbTooltip="View"
+                          (click)="onview(list.id, i)"
+                        >
+                          <i class="fa fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator
+                [length]="totalLists"
+                [pageSize]="listsPerPage"
+                (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"
+              ></mat-paginator>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any investment request yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+
+
+<div class="modal fade show" id="viewModal" [ngStyle]="{'display':display}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Investment Request</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          id="closePopup" (click)="onClose()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-body box-profile" *ngIf="listDetail !== undefined">
+          <h3 class="profile-username text-center">{{ listDetail.first_name +' '+listDetail.last_name }}</h3>
+          <p class="text-muted text-center">{{ listDetail.email }}</p>
+          <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>Mobile Number</b>
+              <a class="pull-right">{{ listDetail.phone_number }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Message</b>
+              <a class="pull-right">{{ listDetail.message }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Property Title</b>
+              <a class="pull-right">{{ listDetail.property_title }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Property Short Description</b>
+              <a class="pull-right">{{ listDetail.property_short_description }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Created On</b>
+              <a class="pull-right">{{
+                listDetail.created_at | date: "dd/MM/yyyy"
+              }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary pull-left"
+          data-dismiss="modal" (click)="onClose()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+

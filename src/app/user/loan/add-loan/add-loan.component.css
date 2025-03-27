@@ -1,0 +1,5 @@
+
+.ct_overflow_hidden {
+  height: 480px !important;
+  overflow-y: auto;
+}

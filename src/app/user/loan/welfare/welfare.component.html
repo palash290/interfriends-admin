@@ -1,0 +1,489 @@
+<div class="hold-transition sidebar-mini" class="skin-blue">
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          <span>Welfare</span>
+        </h1>
+        <span class="breadcrumb"></span>
+
+        <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#exampleModal"
+          (click)="showModalAdd()">
+          Add
+        </button>
+        <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </a>
+        <button type="button" class="btn bg-success float-right text-white ml-auto mr-3 px-5"
+          *ngIf="showPayoutButton && lists.length > 0" data-toggle="modal" data-target="#payoutModal"
+          (click)="showModal()">
+          <div class="fa fa-credit-card text-white mr-1"></div>
+          Payout
+        </button>
+
+        <button type="button" class="btn bg-primary float-right text-white ml-auto mr-3 px-5"
+          *ngIf="showPayoutButton && lists.length > 0" data-toggle="modal" data-target="#safekeepingModal"
+          (click)="showModalsafe()">
+          <div class="fa fa-shield text-white mr-1"></div>
+          Safe Keeping
+        </button>
+      </section>
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">
+                  <span>Welfare Statistics</span>
+                </h3>
+                <h3 class="profile-username text-left mb-1 mt-2">
+                  {{ firstname }} {{ lastname }}
+                </h3>
+                <p class="text-muted text-left">{{ useremail }}</p>
+                <button type="button" class="btn bg-success float-right text-white ml-auto mr-3 px-5" *ngIf=""
+                  lists.length> 0"
+                  data-toggle="modal"
+                  data-target="#payoutModal"
+                  >
+                  <div class="fa fa-credit-card text-white mr-1"></div>
+                  Payout
+                </button>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Loan Amount</th>
+                      <th>Month</th>
+                      <th>Date</th>
+                      <th>Total Payment</th>
+                      <th>Loan EMI</th>
+                      <th>Provident</th>
+                      <th>Admin Risk</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; let i = index">
+                      <td>{{ list.amount | number : "1.0-0" }}</td>
+                      <td>{{ list.month }}</td>
+                      <td>{{ list.date | date: 'dd MMM yyyy' }}</td>
+                      <td>{{ list.total_payment | number : "1.0-0" }}</td>
+                      <td>{{ list.loan_emi | number : "1.0-0" }}</td>
+                      <td>{{ list.provident | number : "1.0-0" }}</td>
+                      <td>{{ list.admin_risk | number : "1.0-0" }}</td>
+                      <td>
+                        <span class="badge badge-secondary" *ngIf="list.status === '1'">Pending</span>
+                        <span class="badge badge-success" *ngIf="list.status === '2'">Paid On Time</span>
+                        <span class="badge badge-warning" *ngIf="list.status === '3'">Missed Payment Deadline</span>
+                        <span class="badge badge-danger" *ngIf="list.status === '4'">Paid Late</span>
+                      </td>
+                      <!--  <td>
+                        <span
+                          class="badge badge-secondary"
+                          *ngIf="list.payment_method === '1'"
+                          >Direct Transfer</span
+                        >
+                        <span
+                          class="badge badge-success"
+                          *ngIf="list.payment_method === '2'"
+                          >From Provident</span
+                        >
+                        <span
+                          class="badge badge-warning"
+                          *ngIdatef="list.payment_method === '3'"
+                          >From Safe Keeping</span
+                        >
+                      </td> -->
+                      <td>
+                        <button [disabled]="list.total_payment != 0" class="btn btn-primary margin" data-toggle="modal"
+                          data-target="#updateModal" (click)="onUpdate(list)">
+                          Update Status
+                        </button>
+                        <a class="btn btn-dark margin" [routerLink]="[
+                            '/user/notesHistoryComponent',
+                            list.id
+                          ]" ngbTooltip="Status Notes">
+                          <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group cycle yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal"
+  aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog modal-lg modal-apply" role="document">
+    <div class="modal-content">
+      <div>
+        <h5 class="modal-title" id="exampleModal">
+          <span class="WelfareSpan">Welfare</span>
+        </h5>
+        <!-- <p class="para-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit Pellentesque dapibus interdum auctor. Donec gravida dolor at mollis fringilla elit quota lesmon.</p> -->
+      </div>
+      <div class="modal-header border-0 justify-content-center">
+        <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close" id="closePopupLoanRequest"
+          (click)="onClose()">
+          <img src="assets/img/close.png" />
+        </button>
+      </div>
+      <div class="ct_inner_scroll">
+        <form class="theme-form" [formGroup]="form" (submit)="onSave()">
+          <div class="modal-body border-0 pb-0">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <div class="position-relative ct_language_euro">
+                      <label class="label-walfare">Payout Amount</label>
+                      <!--<input type="text" formControlName="loan_amount" placeholder="Enter Loan Amount" class="form-control"   *ngIf="mainId === '1'" (input)="onInputAmount1($event.target.value) ">-->
+                      <select class="form-control" formControlName="loan_amount"
+                        (input)="onInputAmount($event.target.value)">
+                        <option value="">Payout Amount</option>
+                        <option *ngFor="let item of payOutElem | keyvalue" value="{{ item.value }}">
+                          {{ item.value }}
+                        </option>
+                      </select>
+                      <div class="ct_euro_sign_payout">
+                        <p class="mb-0_1">£</p>
+                      </div>
+                    </div>
+                    <!-- <div class="icon1"  *ngIf="
+                  form.get('loan_amount').valid &&
+                  form.get('loan_amount').touched
+                ">
+                    <img src="assets/img/amt.png" align="" alt="" title="" />
+                  </div> -->
+                    <span class="error-form" *ngIf="
+                      form.get('loan_amount').invalid &&
+                      form.get('loan_amount').touched
+                    ">
+                      Please enter a loan amount.
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <label class="label-walfare">Tenure</label>
+                  <div class="form-group">
+                    <div class=" ct_language_euro">
+
+
+                      <input type="text" formControlName="tenure" placeholder="40" class="form-control" readonly="" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12" disable>
+
+
+                  <div class="form-group">
+                    <label class="hidden-label">&nbsp;</label>
+                    <label class="label-walfare">Total Over 40 months</label>
+
+                    <div class=" ct_language_euro">
+
+                      <div class="ct_euro_sign">
+                        <p class="mb-0">£</p>
+                      </div>
+                      <input type="text" formControlName="total40Months" placeholder="Total Over 40 months"
+                        class="form-control" [(ngModel)]="total40month" readonly="" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <label class="hidden-label">&nbsp;</label>
+                  <label class="label-walfare">Provident</label>
+                  <div class="form-group">
+                    <div class=" ct_language_euro">
+
+                      <div class="ct_euro_sign">
+                        <div class="euro">
+                          <p class="mb-0">£</p>
+                        </div>
+                      </div>
+                      <input type="text" formControlName="provident" placeholder="Provident" class="form-control"
+                        [(ngModel)]="provident" readonly="" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <label class="hidden-label">&nbsp;</label>
+                  <label class="label-walfare">Admin/Risk</label>
+                  <div class="form-group">
+                    <div class=" ct_language_euro">
+                      <div class="ct_euro_sign">
+                        <p class="mb-0_2">£</p>
+                      </div>
+                      <input type="text" formControlName="admin_risk" placeholder="Admin/Risk" class="form-control"
+                        [(ngModel)]="adminrisk" readonly="" />
+                    </div>
+                  </div>
+                </div>
+                <!--Changes Interfriends Phase 2 Ends-->
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <label>When do you require payment select date</label>
+                  <div class="form-group">
+                    <div class=" ct_language_euro">
+                      <input type="date" formControlName="pay_date" placeholder="Enter Loan Amount"
+                        class="form-control" />
+                      <span class="error-form" *ngIf="
+                      form.get('pay_date').invalid && form.get('pay_date').touched
+                    ">
+                        Please enter a pay date.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <label>Estimated monthly payment</label>
+                  <div class="form-group">
+                    <div class=" ct_language_euro">
+                      <div class="ct_euro_sign">
+                        <p class="mb-0_2">£</p>
+                      </div>
+                      <input type="text" formControlName="emi" class="form-control" [(ngModel)]="monthlypayment"
+                        readonly="" />
+                      <div class="icon">
+                        <img src="assets/img/amt.png" align="" alt="" title="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--Changes Interfriends Phase 2 Starts-->
+
+            </div>
+
+            <div class="modal-footer justify-content-center border-0">
+              <button class="btn-cstm btn-blue mt-3 min-width-230" type="submit" [disabled]="isLoading">
+                <span>Apply</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade show" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display1}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Update Cycle Payments</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form role="form" [formGroup]="formUpdate" (submit)="onSaveUpdate()">
+        <div class="box-body" *ngIf="isLoadingUpdate">
+          <mat-spinner class="mx-auto"></mat-spinner>
+        </div>
+        <div class="modal-body" *ngIf="!isLoadingUpdate">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('start_date')?.invalid  && formUpdate.get('start_date')?.touched}">
+              <label>Date of Payment</label>
+              <input type="date" data-date-format="Y-m-d" class="form-control" placeholder="Start Date"
+                formControlName="start_date" />
+              <span class="help-block"
+                *ngIf="formUpdate.get('start_date')?.invalid  && formUpdate.get('start_date')?.touched">
+                Please enter a start date.
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('status')?.invalid  && formUpdate.get('status')?.touched}">
+              <div>
+                <div class="d-inline mr-3">
+                  <input type="radio" id="javascript" formControlName="status" value="2" class="radio-it"
+                    (input)="selectStatus($event.target.value)">
+                  &nbsp;<label for="css">Paid On Time</label>
+                </div>
+                <div class="d-inline mr-3">
+                  <input type="radio" id="html" formControlName="status" value="4" class="radio-it"
+                    (input)="selectStatus($event.target.value)">
+                    <label for="html">Paid Late</label>
+                </div>
+                <div class="d-inline">
+                   <input type="radio" id="css" formControlName="status" value="3" class="radio-it"
+                    (input)="selectStatus($event.target.value)">
+                   <label for="css">Missed Payment Deadline</label>
+                </div>
+
+                <span class="help-block"
+                  *ngIf="formUpdate.get('status')?.invalid  && formUpdate.get('status')?.touched">
+                  Please select a Status.
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('month')?.invalid  && form.get('month')?.touched}">
+              <label>Payment Month</label>
+              <input type="text" class="form-control" placeholder="Month" formControlName="month" readonly />
+              <span class="help-block" *ngIf="formUpdate.get('month')?.invalid  && formUpdate.get('month')?.touched">
+                Please enter a month.
+              </span>
+            </div>
+
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('amount')?.invalid  && formUpdate.get('amount')?.touched}">
+              <label>Monthly Payment/Savings</label>
+              <input type="text" class="form-control" placeholder="Amount" formControlName="amount" readonly />
+              <span class="help-block" *ngIf="formUpdate.get('amount')?.invalid  && formUpdate.get('amount')?.touched">
+                Please enter a monthly Payment/Savings.
+              </span>
+            </div>
+
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('note')?.invalid  && formUpdate.get('note').touched}">
+              <label>Note</label>
+              <input type="text" class="form-control" placeholder="Note" formControlName="note" />
+              <span class="help-block" *ngIf="formUpdate.get('note')?.invalid  && formUpdate.get('note').touched">
+                Please enter a note.
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('note_description')?.invalid  && formUpdate.get('note_description').touched}">
+              <label> Note Description</label>
+              <input type="text" class="form-control" placeholder="Enter Description"
+                formControlName="note_description" />
+              <span class="help-block"
+                *ngIf="formUpdate.get('note_description')?.invalid  && formUpdate.get('note_description').touched">
+                Please enter a Description.
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': formUpdate.get('payment_method')?.invalid  && formUpdate.get('payment_method')?.touched}">
+              <label>Payment Method</label><br />
+              <div class="d-inline mr-3">
+                <input type="radio" id="javascript" formControlName="payment_method" value="1" class="radio-it">
+                &nbsp;<label for="css">Direct Transfer</label>
+              </div>
+              <div class="d-inline mr-3">
+                <input type="radio" id="html" formControlName="payment_method" value="2" class="radio-it">
+                  <label for="html">From Provident</label>
+              </div>
+              <div class="d-inline">
+                 <input type="radio" id="css" formControlName="payment_method" value="3" class="radio-it">
+                 <label for="css">From Safe Keeping</label>
+              </div>
+
+              <span class="help-block"
+                *ngIf="formUpdate.get('payment_method')?.invalid  && formUpdate.get('payment_method').touched">
+                Please select a Payment Method.
+              </span>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal"
+              (click)="onClose()">Close</button>
+            <button type="submit" class="btn btn-primary">
+              <span *ngIf="!isLoading">
+                <span>Update</span>
+              </span>
+              <span *ngIf="isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </span>
+
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- payout model popup start -->
+<div class="modal fade show" id="payoutModal" tabindex="-1" role="dialog" aria-labelledby="payoutModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display2}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content xx">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Payout</h1>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Confirm to make bulk payment to Member</p>
+        <p *ngIf="!isLoadingTotal">transfer amount: {{totalInfo.amount}}</p>
+        <p *ngIf="!isLoadingTotal">pf percent: {{totalInfo.pf_percent}} , pf amount: {{totalInfo.pf_amount}}</p>
+        <div class="form-group">
+          <label><b>Note</b></label>
+          <input type="text" [(ngModel)]="pfNote" placeholder="Enter Note" class="form-control">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onPayout()">Confirm</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closepayout"
+            (click)=" onClose()">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- payout model popup end -->
+
+<!-- safekeeping model popup start -->
+<div class="modal fade show" id="safekeepingModal" tabindex="-1" role="dialog" aria-labelledby="safekeepingModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display3}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content xx">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Safekeeping</h1>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Transfer Payout to Member’s Safekeeping Account</p>
+        <p *ngIf="!isLoadingTotal">transfer amount: {{totalInfo.amount}}</p>
+        <p *ngIf="!isLoadingTotal">pf percent: {{totalInfo.pf_percent}} , pf amount: {{totalInfo.pf_amount}}</p>
+        <div class="form-group">
+          <label><b>Note</b></label>
+          <input type="text" [(ngModel)]="sfNote" placeholder="Enter Note" class="form-control">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onSafekeeping()">Yes</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closesafekeeping"
+            (click)="onClose()">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- payout model popup end -->

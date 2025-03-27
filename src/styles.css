@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('../node_modules/ngx-toastr/toastr.css');
+
+
+.ct_overflow_hidden {
+  height: 480px;
+  overflow-y: auto;
+}
+
+.error-message {
+  color: red;
+}
+
+.ct_fw_500{
+  font-weight: 500;
+}
+
+.et_table_verticle_middle td ,.et_table_verticle_middle th{
+  vertical-align: middle;
+}

@@ -1,0 +1,212 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+     <app-header></app-header>
+     <!-- Left side column. contains the logo and sidebar -->
+     <app-sidebar></app-sidebar>
+     <!-- Content Wrapper. Contains page content -->
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+           <h1>
+              Property
+           </h1>
+           <span class="breadcrumb">
+           <button type="button" class="btn bg-maroon" [routerLink]="['/user/propertyAdd']">
+           Add
+           </button>
+           </span>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="box">
+                    <div class="box-header">
+                       <h3 class="box-title">Property List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                       <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <div class="box-body"  *ngIf="isLoading">
+                       <mat-spinner  class="mx-auto"></mat-spinner>
+                    </div>
+                    <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                       <table id="example2" class="table table-bordered table-hover">
+                          <thead>
+                             <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Short Description</th>
+                                <th>Long Description</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                             <tr *ngFor="let list of lists; let i = index">
+                                <td>{{list.sno}}</td>
+                                <td>{{list.title}}</td>
+                                <td>{{list.short_description}}</td>
+                                <td>{{list.long_description}}</td>
+                                <td>{{list.main_amount| number:'1.0-0'}}</td>
+                                <td>
+                                   <button  class="btn btn-primary margin" [routerLink]="['/user/propertyEdit', list.id]" ngbTooltip="Edit">
+                                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                   </button>
+                                   <button type="button" class="btn btn-success margin" data-toggle="modal" ngbTooltip="Block" data-target="#blockModal" (click)="onSetId(list.id)" *ngIf="list.status === '1'">
+                                   <i class="fa fa-ban" aria-hidden="true"></i>
+                                   </button>
+                                   <button type="button" class="btn btn-danger margin" data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetId(list.id)" *ngIf="list.status === '2'">
+                                   <i class="fa fa-ban" aria-hidden="true"></i>
+                                   </button>
+                                   <button
+                                   type="button"
+                                   class="btn btn-dark margin"
+                                   data-toggle="modal"
+                                   data-target="#viewModal"
+                                   ngbTooltip="View"
+                                   (click)="onview(list.id, i)"
+                                 >
+                                   <i class="fa fa-eye"></i>
+                                 </button>
+                                </td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                    <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"  (page)="onChangedPage($event)"
+                    *ngIf="lists.length > 0"></mat-paginator>
+                    <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                       You have'nt had any property yet!
+                    </div>
+                    <!-- /.box-body -->
+                 </div>
+                 <!-- /.box -->
+              </div>
+              <!-- /.col -->
+           </div>
+           <!-- /.row -->
+        </section>
+        <!-- /.content -->
+     </div>
+     <!-- /.content-wrapper -->
+     <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+<!-- block model popup start -->
+<div class="modal fade show" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">×</span>
+           </button>
+        </div>
+        <div class="modal-body">Do You Realy Want To Block This Group</div>
+        <div class="modal-footer">
+           <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
+           <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- block model popup end -->
+<!-- unblock model popup start -->
+<div class="modal fade show" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click) = "onClose()">
+           <span aria-hidden="true">×</span>
+           </button>
+        </div>
+        <div class="modal-body">Do You Realy Want To Unblock This Group</div>
+        <div class="modal-footer">
+           <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+           <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock"  (click) = "onClose()">Close</button>
+        </div>
+     </div>
+  </div>
+</div>
+<div class="modal fade show" id="viewModal" [ngStyle]="{'display':display1}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">User Detail</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          id="closePopup"
+          (click) = "onClose()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-body box-profile" *ngIf="listDetail !== undefined">
+          <div class="text-center">
+            <img class="profile-user-img img-responsive img-circle" [src]="listDetail.property_image_thumb" alt="User profile picture">
+            </div>
+          <h3 class="profile-username text-center">{{ listDetail.title }}</h3>
+          <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>Short Description</b>
+              <a class="pull-right">{{ listDetail.short_description }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Long Description</b>
+              <a class="pull-right">{{ listDetail.long_description }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Capital</b>
+              <a class="pull-right">{{ listDetail.main_amount| number:'1.0-0' }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Invested</b>
+              <a class="pull-right">{{ listDetail.investment_amount }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Term</b>
+              <a class="pull-right">{{ listDetail.property_tenure }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Opening Date</b>
+              <a class="pull-right">{{
+                listDetail.start_date | date: "dd/MM/yyyy"
+              }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Closing Date</b>
+              <a class="pull-right">{{
+                listDetail.end_date | date: "dd/MM/yyyy"
+              }}</a>
+            </li>
+
+            <li class="list-group-item">
+              <b>Created On</b>
+              <a class="pull-right">{{
+                listDetail.created_at | date: "dd/MM/yyyy"
+              }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary pull-left"
+          data-dismiss="modal"
+          (click) = "onClose()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

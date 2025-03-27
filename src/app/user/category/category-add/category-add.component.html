@@ -1,0 +1,45 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="mode == 'create'">Add Cateogry</h5>
+        <h5 class="modal-title" *ngIf="mode == 'update'">Update Cateogry</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form role="form" [formGroup]="form" (submit)="onSave()">
+        <div class="box-body" *ngIf="isLoadingUpdate">
+            <mat-spinner class="mx-auto"></mat-spinner>
+        </div>
+        <div class="modal-body" *ngIf="!isLoadingUpdate">
+            <div class="box-body">
+                <figure class="position-relative overflow-hidden main-img-profile my-0" (click)="filePicker.click()">
+                    <img [src]="imagePreview" alt="" class="rounded-circle border h-100 w-100 rounded-circle border img-fluid" style="object-fit: cover;">
+                    <input type="file" class="d-none" accept="image/*" (change)="onImagePicked($event)" #filePicker >
+                    <div class="position-absolute rounded-circle bg-white border img-button-profile">
+                      <i class="fa fa-camera font-size-14"></i>
+                    </div>
+                </figure>
+                <div class="form-group" [ngClass]="{'has-error': form.get('category_name').invalid  && form.get('category_name').touched}">
+                    <label>Category Name</label>
+                    <input type="text" class="form-control" placeholder="Enter category name" formControlName="category_name" />
+                    <span class="help-block" *ngIf="form.get('category_name').invalid  && form.get('category_name').touched">
+                        Please enter a category name.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                <span *ngIf="!isLoading">
+                    <span *ngIf="mode === 'create'">Add</span>
+                    <span *ngIf="mode === 'update'">Update</span>
+                </span>
+                <span *ngIf="isLoading">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </span>
+
+            </button>
+        </div>
+    </form>
+</div>

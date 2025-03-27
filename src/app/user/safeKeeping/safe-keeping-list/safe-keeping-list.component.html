@@ -1,0 +1,131 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Safe Keeping
+        </h1>
+        <span class="breadcrumb">
+          <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#exampleModalAdd" (click)="openModal()">
+            Debit
+          </button>
+          <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          </a>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Safe Keeping List</h3>
+                <div class="row justify-content-end">
+                <div class="col-md-4 col-sm-4">
+                  <div class="loanbox">
+                    <p>Balance: <span class="float-right">{{safeKeepingAmount}}</span></p>
+                  </div>
+                </div>
+              </div>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>#</th>
+                        <!-- <th>Total Amount</th> -->
+                        <th>Amount</th>
+                        <th>Created on</th>
+                        <!-- <th>PF Amount</th>
+                        <th>PF Percent</th> -->
+                        <th>Status</th>
+                        <th>Note Title</th>
+                        <th>Note Description</th>
+                        <th>Payment Type</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists">
+                          <td>{{list.sno}}</td>
+                          <!-- <td>{{list.amount_total}}</td> -->
+                          <td>{{list.amount| number:'1.0-0'}}</td>
+                          <td>{{ list.created_at | date: 'dd MMM yyyy'}}</td>
+                          <!-- <td>{{list.pf_amount}}</td>
+                          <td>{{list.pf_percent}}</td> -->
+                          <td>
+                            <span class="badge badge-dark" *ngIf="list.payment_by == '1'">Cycle To Safekeeping</span>
+                            <span class="badge badge-dark" *ngIf="list.payment_by == '2'">Cycle</span>
+                            <span class="badge badge-primary" *ngIf="list.payment_by == '3'">Loan</span>
+                            <span class="badge badge-dark" *ngIf="list.payment_by == '4'">Emergency Loan</span>
+                            <span class="badge badge-primary" *ngIf="list.payment_by == '5'">Investment</span>
+                            <span class="badge badge-dark" *ngIf="list.payment_by == '6'">Provident Fund </span>
+                            <span class="badge badge-primary" *ngIf="list.payment_by == '7'">Direct</span>
+                          </td>
+                          <td>{{list.note_title}}</td>
+                          <td>{{list.note_description}}</td>
+                          <td>
+                            <span class="badge badge-danger" *ngIf="list.pyment_type == '1'">Debit</span>
+                            <span class="badge badge-success" *ngIf="list.pyment_type == '2'">Credit</span>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"  (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have no safe keeping funds
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->
+
+
+
+
+
+
+    <div class="modal fade" id="exampleModal">
+      <div class="modal-dialog">
+        <app-group-add [uniqueId]= "updateId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)"></app-group-add>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+
+    <div class="modal fade show" id="exampleModalAdd" [ngStyle]="{'display':display}">
+      <div class="modal-dialog">
+        <app-add-safe-keeping [userId]= "userId" [groupId] = "groupId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-add-safe-keeping>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+

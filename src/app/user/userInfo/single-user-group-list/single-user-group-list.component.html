@@ -1,0 +1,75 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          User Group List
+        </h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Single User Group List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Group Id</th>
+                        <th>Group Name</th>
+                        <th>Group Description</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists;let i = index" [ngClass]="{'bg-light-c': checkGroupExist(list.group_id)}">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" [value]="list.group_id" (change)="handleChange($event, list.group_id)" id="flexRadioDefault{{list.id}}" name="group_id">
+                              <label class="form-check-label" for="flexRadioDefault{{list.id}}"></label>
+                            </div>
+                          </td>
+                          <td>{{list.group_id}}</td>
+                          <td>{{list.group_cycle_name}}</td>
+                          <td>{{list.group_cycle_descp}}</td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any data yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <div class="box border-0 p-4 text-center" *ngIf="lists.length > 0 && !isLoading">
+              <button type="button" class="btn btn-primary w-25" (click)="onSave()">
+                Submit
+              </button>
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->

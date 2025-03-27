@@ -1,0 +1,56 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <div class="my-5 ct_section_center12">
+                    <div class="box-body ct_white_shadow12 w-100">
+                        <h1 class=" mb-0 pl-2 text-center ct_fw_600">Update Payment Info</h1>
+                        <form role="form" [formGroup]="form" (submit)="onSave()">
+                            <div class="row mt-5">
+                                <div class="col-md-6">
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': form.get('savings').invalid  && form.get('savings').touched}">
+                                        <label class="ct_fw_600">Savings Amount</label>
+                                        <input type="text" class="form-control" placeholder="Enter Amount"
+                                            formControlName="savings" />
+                                        <span class="help-block" *ngIf="form.get('savings').invalid  && form.get('savings').touched">
+                                            Please enter a first name.
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': form.get('jnr_amount').invalid  && form.get('jnr_amount').touched}">
+                                        <label class="ct_fw_600">JNR Amount</label>
+                                        <input type="text" class="form-control" placeholder="Enter Amount"
+                                            formControlName="jnr_amount" />
+                                        <span class="help-block"
+                                            *ngIf="form.get('jnr_amount').invalid  && form.get('jnr_amount').touched">
+                                            Please enter a last name.
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': form.get('expected_date').invalid  && form.get('expected_date').touched}">
+                                        <label class="ct_fw_600">Expected date</label>
+                                        <input type="date" class="form-control" placeholder="Enter expected date" formControlName="expected_date" />
+                                        <span class="help-block" *ngIf="form.get('expected_date').invalid  && form.get('expected_date').touched">
+                                            Please enter a expected date.
+                                        </span>
+                                    </div>
+                                </div>
+                
+                
+                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary pull-left">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,66 @@
+<div class="modal-content">
+  <div class="modal-header">
+     <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add Sub Admin</h1>
+     <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'update'">Update Sub Admin</h1>
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopupUser" (click)="onClose()">
+     <span aria-hidden="true">&times;</span>
+     </button>
+  </div>
+  <form role="form" [formGroup]="form" (submit)="onSave()">
+  <div class="box-body" *ngIf="isLoadingUpdate">
+     <mat-spinner class="mx-auto"></mat-spinner>
+  </div>
+  <div class="modal-body" *ngIf="!isLoadingUpdate">
+     <div class="box-body">
+        <!-- <figure class="position-relative overflow-hidden main-img-profile my-0" (click)="filePicker.click()">
+           <img [src]="imagePreview" alt="" class="rounded-circle border h-100 w-100 rounded-circle border img-fluid" style="object-fit: cover;">
+           <input type="file" class="d-none" accept="image/*" (change)="onImagePicked($event)" #filePicker >
+           <div class="position-absolute rounded-circle bg-white border img-button-profile">
+              <i class="fa fa-camera font-size-14"></i>
+           </div>
+        </figure> -->
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': form.get('name').invalid  && form.get('name').touched}">
+              <label>Name</label>
+              <input type="text" class="form-control" placeholder="Enter name" formControlName="name" />
+              <span class="help-block" *ngIf="form.get('name').invalid  && form.get('name').touched">
+              Please enter a name.
+              </span>
+           </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': form.get('email').invalid  && form.get('email').touched}">
+              <label>Email</label>
+              <input type="text" class="form-control" placeholder="Enter email" formControlName="email" />
+              <span class="help-block" *ngIf="form.get('email').invalid  && form.get('email').touched">
+              Please enter a email.
+              </span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': form.get('phone').invalid  && form.get('phone').touched}">
+              <label>Phone Number</label>
+              <input type="text" class="form-control" placeholder="Enter mobile number" formControlName="phone" />
+              <span class="help-block" *ngIf="form.get('phone').invalid  && form.get('phone').touched">
+              Please enter a phone number.
+              </span>
+            </div>
+          </div>
+        </div>
+     </div>
+  </div>
+  <div class="modal-footer">
+     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">Close</button>
+     <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+     <span *ngIf="!isLoading">
+     <span *ngIf="mode === 'create'">Add</span>
+     <span *ngIf="mode === 'update'">Update</span>
+     </span>
+     <span *ngIf="isLoading">
+     <i class="fa fa-refresh fa-spin"></i>
+     </span>
+     </button>
+  </div>
+  </form>
+</div>

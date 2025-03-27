@@ -1,0 +1,4 @@
+.modal-dialog
+{
+  pointer-events: auto !important;
+}

@@ -1,0 +1,228 @@
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Circle Users
+        </h1>
+
+        <h3>{{groupName}}</h3>
+        <span class="breadcrumb">
+          <a [routerLink]="['/user/circleUserGroupAddList', groupId, circleId]" class="btn bg-maroon">
+            Add
+          </a>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header d-flex align-items-center">
+                <h3 class="box-title"> Circle Name : {{circleName}}</h3>
+                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
+                  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="users.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Profile Image</th>
+
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of users">
+                      <td>{{user.sno}}</td>
+                      <td>{{user.first_name}}</td>
+                      <td>{{user.last_name}}</td>
+                      <td>{{user.email}}</td>
+                      <td>
+                        <img [src]="user.profile_image_thumb" class="direct-chat-img">
+                      </td>
+
+
+                      <td>
+                        <!-- <button type="button" class="btn btn-primary margin" data-toggle="modal"
+                          data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate('edit',user.id)">
+                          <i class="fa fa-edit"></i>
+                        </button> -->
+
+                        <button type="button" class="btn btn-warning margin" data-toggle="modal"
+                          data-target="#moveModal" ngbTooltip="Move user"
+                          (click)="getCircleList(user.user_id, user.id)">
+                          <i class="fa fa-arrows" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#deleteModal"
+                          ngbTooltip="Delete user" (click)="onUpdate('delete',user.id)">
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#emailModal"
+                          ngbTooltip="send email to user" (click)="onUpdate('delete',user.user_id)">
+                          Email send
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" (page)="onChangedPage($event)"
+                *ngIf="users.length > 0"></mat-paginator>
+              <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
+                You have'nt had any user yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+
+<!-- <div class="modal fade" id="viewModal">
+  <div class="modal-dialog">
+    <app-user-detail [uniqueId]="updateId" [eachChange]="eachChange"></app-user-detail>
+   
+  </div>
+ 
+</div> -->
+
+<!-- 
+<div class="modal fade show" id="exampleModal">
+  <div class="modal-dialog">
+    <app-edit-group-user-info [uniqueId]="updateId" [eachChange]="eachChange" [add]="add"
+      (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-edit-group-user-info>
+ 
+  </div>
+ 
+</div> -->
+
+<!-- assign moveModal popup start -->
+<div class="modal fade" id="moveModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Move user to another circle</h1>
+        <!--       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+            <span aria-hidden="true">&times;</span>
+        </button> -->
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <label class="label-walfare">Select circle</label>
+
+        <!--<input type="text" formControlName="loan_amount" placeholder="Enter Loan Amount" class="form-control"   *ngIf="mainId === '1'" (input)="onInputAmount1($event.target.value) ">-->
+        <select class="form-control" [(ngModel)]="selectedCircleId">
+          <option value="" [defaultSelected]="true">Select User</option>
+          <option *ngFor="let item of circlelists" value="{{ item.id }}">
+            {{ item.circle_name }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="submitMove()">Click to move</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock" #closeBlock>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- assign deleteModal popup start -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Are you sure you want to remove this user ?</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onDelete()">Remove</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2"
+          #closeBlock2>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':display}">
+  <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
+
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
+              <label>Subject</label>
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
+             
+              <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+                <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+              <label>Body</label>
+              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+              <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit">Send email</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
+            #closeBlock2>Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

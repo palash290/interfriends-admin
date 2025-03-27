@@ -1,0 +1,262 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          <span *ngIf="lifeCycleType === '1'">User Saving</span>
+          <span *ngIf="lifeCycleType === '2'">Saving JNR</span>
+          <span *ngIf="lifeCycleType === '3'">Help To Buy</span>
+        </h1>
+
+        <span class="breadcrumb">
+
+          <!-- <div class="">
+            <button class="">ddf sdfsd sdfd sfdd dd sd</button>
+            <div class="">ddf sdfsd sdfd sfdd dd sd
+              <button class="">ddf sdfsd sdfd sfdd dd sd</button>
+            </div>
+          </div> -->
+
+          <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()" *ngIf="!showAlredyPayoutAlertMessage && lists.length > 0 && this.cycleList.length > 0">
+            Create Cycle Payments
+          </button>
+
+          <div ngbDropdown class="d-inline-block mr-2" *ngIf="!isLoading && this.cycleList.length > 0 && lists.length > 0">
+            <button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{filterStartDate | date: 'dd MMM yyyy'}} - {{filterEndDate | date: 'dd MMM yyyy'}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem *ngFor="let data of cycleList" (click)="setCycle(data.id, data.start_date, data.end_date)"><hr>{{data.start_date | date: 'dd MMM yyyy'}}  -  {{data.end_date | date: 'dd MMM yyyy'}}</button>
+            </div>
+          </div>
+
+          <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          </a>
+
+        </span>
+        <div class="callout callout-danger pr-3 mt-4" *ngIf="showAlertMessage && showPayoutButton && lists.length > 0">
+          <h4 class="extra-hding d-flex">Note!
+            <button type="button" class="btn btn-box-tool ml-auto" (click)="onCloseMessage()">
+              <i class="fa fa-times text-white"></i>
+            </button>
+          </h4>
+
+          <p>Bulk funds not released</p>
+        </div>
+
+        <div class="callout callout-info pr-3" *ngIf="showAlredyPayoutAlertMessage && lists.length > 0">
+          <h4 class="extra-hding d-flex">Note!
+            <button type="button" class="btn btn-box-tool ml-auto" (click)="onCloseAlreadyMessage()">
+              <i class="fa fa-times text-white"></i>
+            </button>
+          </h4>
+          <p>{{showPayoutMessage}}</p>
+        </div>
+
+
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">
+                  <span *ngIf="lifeCycleType === '1'">User Saving</span>
+                  <span *ngIf="lifeCycleType === '2'">Saving JNR</span>
+                  <span *ngIf="lifeCycleType === '3'">Help To Buy</span>
+                </h3>
+                <h3 class="profile-username text-left mb-1 mt-2">{{firstname}} {{lastname}}</h3>
+                <p class="text-muted text-left"> {{useremail}}</p>
+                <button type="button" class="btn bg-success float-right text-white ml-auto mr-3 px-5" *ngIf=" lists.length > 0"  data-toggle="modal" data-target="#payoutModal" (click)="showPayoutModal()">
+                  <div class="fa fa-credit-card text-white mr-1"></div>
+                  Payout
+                </button>
+
+                <button type="button" class="btn bg-primary float-right text-white ml-auto mr-3 px-5" *ngIf=" lists.length > 0"  data-toggle="modal" data-target="#safekeepingModal" (click)="showModal()">
+                  <div class="fa fa-shield text-white mr-1"></div>
+                  Safe Keeping
+                </button>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingChangeCycle && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>Monthly Payment/Savings</th>
+                        <th>Month</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists; let i = index">
+                          <td>{{list.amount| number:'1.0-0'}}</td>
+                          <td>{{list.month}}</td>
+                          <td>{{list.date | date: 'dd MMM yyyy'}}</td>
+                          <td>
+                            <span class="badge badge-secondary" *ngIf="list.status === '1'">Pending</span>
+                            <span class="badge badge-success" *ngIf="list.status === '2'">Paid On Time</span>
+                            <span class="badge badge-warning" *ngIf="list.status === '3'">Missed Payment Deadline</span>
+                            <span class="badge badge-danger" *ngIf="list.status === '4'">Paid Late</span>
+                          </td>
+                          <td>
+                            <span class="badge badge-secondary" *ngIf="list.payment_method === '1'">Direct Transfer</span>
+                            <span class="badge badge-success" *ngIf="list.payment_method === '2'">From Provident</span>
+                            <span class="badge badge-warning" *ngIf="list.payment_method === '3'">From Safe Keeping</span>
+                          </td>
+                          <td>
+                            <button  class="btn btn-primary margin"  *ngIf="!(list.payment_method === '2' || list.payment_method === '3')" data-toggle="modal" data-target="#exampleModal" (click)="onUpdate(list.id, list.amount)">
+                              Update Payment
+                            </button>
+                            <a  class="btn btn-dark margin" [routerLink]="['/user/groupCycleStatusHistory',list.id]" ngbTooltip="Status Notes">
+                              <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                            </a>
+
+                            <!-- <div class="account-wrap display-inline-block">
+                              <div class="account-item clearfix js-item-menu"  [ngClass]="{'show-dropdown': checkCycleStatus(list.id)}">
+                                 <div class="content pt-0 pl-0 ml-0"> <span class="js-acc-btn" href="#">
+                                    <button class="item" data-placement="top" title="" (click)="onSetStatusId(list.id)">
+                                    <i style="color:#212529!important" class="fa fa-tag text-red" data-toggle="tooltip" data-placement="top" title="" ngbTooltip="Pending" *ngIf="list.status === '1'"></i>
+                                    <i style="color:#28A745!important" class="fa fa-tag  text-red" data-toggle="tooltip" data-placement="top" title="" ngbTooltip="Paid On Time" *ngIf="list.status === '2'"></i>
+                                    <i style="color:#007BFF!important" class="fa fa-tag  text-red" data-toggle="tooltip" data-placement="top" title="" ngbTooltip="Missed Payment Deadline" *ngIf="list.status === '3'"></i>
+                                    <i style="color:#FFC107!important"class="fa fa-tag  text-red" data-toggle="tooltip" data-placement="top" title="" ngbTooltip="Paid Late" *ngIf="list.status === '4'"></i>
+                                    </button></span>
+                                 </div>
+                                 <div class="account-dropdown mini-drop js-dropdown">
+                                    <div class="account-dropdown__body text-left">
+                                        <div class="account-dropdown__item">
+                                          <span class="d-flex align-items-center" (click)="updateStatus(list.id, '1', i)">
+                                            <i class="fa fa-tag mr-2"></i>
+                                            <span>Pending</span>
+                                          </span>
+                                        </div>
+                                        <div class="account-dropdown__item">
+                                          <span class="d-flex align-items-center" (click)="updateStatus(list.id, '2', i)">
+                                           <i class="fa fa-tag mr-2 text-success"></i>
+                                           <span>Paid On Time</span>
+                                          </span>
+                                        </div>
+                                        <div class="account-dropdown__item">
+                                          <span class="d-flex align-items-center" (click)="updateStatus(list.id, '3', i)">
+                                            <i class="fa fa-tag mr-2 text-primary"></i>
+                                            <span>Missed Payment Deadline</span>
+                                          </span>
+                                        </div>
+                                        <div class="account-dropdown__item">
+                                          <span class="d-flex align-items-center" (click)="updateStatus(list.id, '4', i)">
+                                            <i class="fa fa-tag mr-2 text-warning"></i>
+                                            <span>Paid Late</span>
+                                          </span>
+                                        </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div> -->
+
+
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group cycle yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->
+
+
+   <!-- payout model popup start -->
+   <div class="modal fade show" id="payoutModal" tabindex="-1" role="dialog" aria-labelledby="payoutModalLabel" aria-hidden="true" [ngStyle]="{'display':display1}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Confirm to make bulk payment to Member</p>
+          <p *ngIf="!isLoadingTotal">transfer amount: {{totalInfo.amount}}</p>
+          <p *ngIf="!isLoadingTotal">pf percent: {{totalInfo.pf_percent}} , pf amount: {{totalInfo.pf_amount}}</p>
+          <div class="form-group">
+            <label><b>Note</b></label>
+            <input type="text" [(ngModel)]="pfNote" placeholder="Enter Note" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onPayout()">Confirm</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closepayout" (click)=" onClose()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- payout model popup end -->
+
+  <!-- safekeeping model popup start -->
+  <div class="modal fade show" id="safekeepingModal" tabindex="-1" role="dialog" aria-labelledby="safekeepingModalLabel" aria-hidden="true" [ngStyle]="{'display':display2}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)=" onClose()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Transfer Payout to Member’s Safekeeping Account</p>
+          <p *ngIf="!isLoadingTotal">transfer amount: {{totalInfo.amount}}</p>
+          <p *ngIf="!isLoadingTotal">pf percent: {{totalInfo.pf_percent}} , pf amount: {{totalInfo.pf_amount}}</p>
+          <div class="form-group">
+            <label><b>Note</b></label>
+            <input type="text" [(ngModel)]="sfNote" placeholder="Enter Note" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onSafekeeping()">Yes</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closesafekeeping" (click)=" onClose()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- payout model popup end -->
+
+  <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  [ngStyle]="{'display':display}">
+    <div class="modal-dialog modal-lg" role="document">
+      <app-add-group-cycle-user [uniqueId]= 'updateId' [amountCheck]="amountCheck" [groupId]= "groupId" [groupLifecycle_id]= "groupLifecycle_id" [userId]= "userId"  [add]= "add" [eachChange]= "eachChange" (valueChange)="hidePopup()" (closeModal)="closeModalF($event)"></app-add-group-cycle-user>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+
+
+
+

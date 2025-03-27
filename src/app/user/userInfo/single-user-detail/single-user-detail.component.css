@@ -1,0 +1,51 @@
+.fa-credit-card:before {
+  content: "\f09d";
+  font-size: 12.72px !important;
+}
+/* .col_withd{
+-webkit-box-flex: 0;
+    -ms-flex: 0 0 25% ;
+    flex: 0 0 25%;
+    max-width: 20%!important;}
+.col_withd{
+  padding-right: 5px !important;
+    padding-left: 5px !important;
+} */
+.margin {
+  margin: 8px !important;
+}
+.redColor {
+  background-color: #ff000042;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+.greenColor {
+  background-color: #2978e573;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+.greenColor1 {
+  background-color: #ffff007a;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+.greenColor2 {
+  background-color: #00800063;
+  border-radius: 5px;
+}
+
+.ct_padd_inline_15 li.list-group-item {
+  padding-inline: 15px;
+}
+.ct_padd_inline_15 li.list-group-item:first-child {
+  /* border-top: 0px; */
+  border-radius: 5px 5px 0px 0px;
+}
+.ct_padd_inline_15 li.list-group-item:last-child {
+  /* border-top: 0px; */
+  border-radius: 0px 0px 5px 5px;
+}
+
+.ct_padd_inline_15 li + li {
+  border-top:  1px solid rgba(0, 0, 0, 0.125);
+}

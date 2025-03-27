@@ -1,0 +1,62 @@
+<div class="hold-transition sidebar-mini skin-blue">
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Map
+        </h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">AGM  Map</h3>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form role="form" [formGroup]="form" (submit)="onSubmit()">
+                <div class="box-body">
+                  <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="address" #search>
+                    <span class="help-block" *ngIf="form.get('address').invalid  && form.get('address').touched">
+                      Please enter a address.
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Map</label>
+                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" >
+                        <agm-marker
+                        [latitude]="latitude"
+                        [longitude]="longitude"></agm-marker>
+                    </agm-map>
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->

@@ -1,0 +1,150 @@
+<div class="modal-content">
+  <div class="modal-header">
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add Emergency Loans</h1>
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'update'">Update Emergency Loans</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <form role="form" [formGroup]="form" (submit)="onSave()">
+      <div class="box-body" *ngIf="isLoadingUpdate">
+          <mat-spinner class="mx-auto"></mat-spinner>
+      </div>
+      <div class="modal-body" *ngIf="!isLoadingUpdate">
+          <div class="col-md-12">
+              <div class="form-group" [ngClass]="{'has-error': form.get('loan_amount').invalid  && form.get('loan_amount').touched}">
+                  <label>Amount</label>
+                  <input type="text" class="form-control" placeholder="Enter Amount" formControlName="loan_amount" />
+                  <span class="help-block" *ngIf="form.get('loan_amount').invalid  && form.get('loan_amount').touched">
+                    Please enter a Amount.
+                  </span>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': form.get('created_at').invalid  && form.get('created_at').touched}">
+                <label>Created On</label>
+                <input type="date" class="form-control" placeholder="Enter Contact number" formControlName="created_at" />
+                <span class="help-block" *ngIf="form.get('created_at').invalid  && form.get('created_at').touched">
+                Please enter a created on.
+                </span>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': form.get('pay_by').invalid  && form.get('pay_by').touched}">
+                <label>Pay By</label>
+                <input type="date" data-date-format="Y-m-d" class="form-control"  formControlName="pay_by" />
+                <span class="help-block" *ngIf="form.get('pay_by').invalid  && form.get('pay_by').touched">
+                  Please enter a Date.
+                </span>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}" *ngIf="adminType === '2'">
+                <div *ngIf="loan!==undefined">
+                  <div class="d-inline mr-3" *ngIf="loan.status == '1' || loan.status == '5'">
+                    <input type="radio" id="html" formControlName="status" value="4" class="radio-it">
+                    <label for="html">Accepted</label>
+                  </div>
+                  <div class="d-inline" *ngIf="loan.status == '1' || loan.status == '3' || loan.status == '5'">
+                     <input type="radio" id="css" formControlName="status" value="3" class="radio-it">
+                     <label for="css">Decline</label>
+                  </div>
+                  <div class="d-inline" *ngIf="loan.status == '2' || loan.status == '4'">
+                    <input type="radio"  id="javascript" formControlName="status" value="2"  class="radio-it">
+                    &nbsp;<label for="css">Completed</label>
+                  </div>
+                  <span class="help-block" *ngIf="form.get('status').invalid  && form.get('status').touched">
+                    Please select a Status.
+                  </span>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}" *ngIf="adminType === '1'">
+              <div *ngIf="loan!==undefined">
+                <div class="d-inline mr-3" *ngIf="loan.status == '1'">
+                  <input type="radio" id="html" formControlName="status" value="5" class="radio-it">
+                  <label for="html">Process to Super Admin</label>
+                </div>
+                <div class="d-inline" *ngIf="loan.status == '1'">
+                   <input type="radio" id="css" formControlName="status" value="6" class="radio-it">
+                   <label for="css">Deny</label>
+                </div>
+                <div class="d-inline" *ngIf="loan.status == '2' || loan.status == '4'">
+                  <input type="radio"  id="javascript" formControlName="status" value="2"  class="radio-it">
+                  &nbsp;<label for="css">Completed</label>
+                </div>
+              </div>
+          </div>
+            <div class="form-group" [ngClass]="{'has-error': form.get('note_title').invalid  && form.get('note_title').touched}">
+              <label>Note Title</label>
+              <input type="text" class="form-control" placeholder="Enter Title" formControlName="note_title" />
+              <span class="help-block" *ngIf="form.get('note_title').invalid  && form.get('note_title').touched">
+                Please enter a Title.
+              </span>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': form.get('note_description').invalid  && form.get('note_description').touched}">
+              <label> Note Description</label>
+              <input type="text" class="form-control" placeholder="Enter Description" formControlName="note_description" />
+              <span class="help-block" *ngIf="form.get('note_description').invalid  && form.get('note_description').touched">
+                Please enter a Description.
+              </span>
+          </div>
+          <div *ngIf="loan!==undefined">
+          <div class="form-group" [ngClass]="{'has-error': form.get('payment_method').invalid  && form.get('payment_method').touched}" *ngIf="(loan.status == '2' || loan.status == '4')">
+            <label>Payment Method</label><br/>
+            <div class="d-inline mr-3">
+              <input type="radio"  id="javascript" formControlName="payment_method" value="1"  class="radio-it">
+              &nbsp;<label for="css">Direct Transfer</label>
+            </div>
+            <div class="d-inline mr-3">
+              <input type="radio" id="html" formControlName="payment_method" value="2" class="radio-it">
+              <label for="html">From Provident</label>
+            </div>
+            <div class="d-inline">
+               <input type="radio" id="css" formControlName="payment_method" value="3" class="radio-it">
+               <label for="css">From Safe Keeping</label>
+            </div>
+
+            <span class="help-block" *ngIf="form.get('payment_method').invalid  && form.get('payment_method').touched">
+              Please select a Payment Method.
+            </span>
+
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': form.get('paid_status').invalid  && form.get('paid_status').touched}" *ngIf="(loan.status == '2' || loan.status == '4')">
+          <label>Payment Status</label><br/>
+          <div class="d-inline mr-3">
+            <input type="radio"  id="javascript" formControlName="paid_status" value="1"  class="radio-it">
+            &nbsp;<label for="css">Paid On Time</label>
+          </div>
+          <div class="d-inline mr-3">
+            <input type="radio" id="html" formControlName="paid_status" value="2" class="radio-it">
+            <label for="html">Paid Late</label>
+          </div>
+          <div class="d-inline">
+             <input type="radio" id="css" formControlName="paid_status" value="3" class="radio-it">
+             <label for="css">Missed Payment Deadline</label>
+          </div>
+
+          <span class="help-block" *ngIf="form.get('paid_status').invalid  && form.get('paid_status').touched">
+            Please select a Paid Stauts.
+          </span>
+    </div>
+      <div *ngIf="!(loan.status == '2' || loan.status == '4')">
+        <input type="hidden" formControlName="payment_method" value="">
+      </div>
+      <div *ngIf="!(loan.status == '2' || loan.status == '4')">
+        <input type="hidden" formControlName="paid_status" value="">
+      </div>
+
+    </div>
+
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                  <span *ngIf="mode === 'create'">Add</span>
+                  <span *ngIf="mode === 'update'">Update</span>
+              </span>
+              <span *ngIf="isLoading">
+                  <i class="fa fa-refresh fa-spin"></i>
+              </span>
+
+          </button>
+      </div>
+  </form>
+</div>

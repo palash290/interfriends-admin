@@ -1,0 +1,169 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Property
+        </h1>
+        <span class="breadcrumb">
+          <a class="btn btn-primary" [routerLink]="['/user/propertyList']">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          </a>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title" *ngIf="mode === 'create'">Add Property</h3>
+                <h3 class="box-title" *ngIf="mode === 'update'">Update Property</h3>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="overlay" *ngIf="isLoadingUpdate">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div *ngIf="!isLoading">
+                <form role="form" [formGroup]="form" (submit)="onSave()">
+                      <div class="box-body">
+                          <figure class="position-relative overflow-hidden main-img-profile my-0" (click)="filePicker.click()">
+                              <img [src]="imagePreview" alt="" class="rounded-circle border h-100 w-100 rounded-circle border img-fluid" style="object-fit: cover;">
+                              <input type="file" class="d-none" accept="image/*" (change)="onImagePicked($event)" #filePicker >
+                              <div class="position-absolute rounded-circle bg-white border img-button-profile">
+                                <i class="fa fa-camera font-size-14"></i>
+                              </div>
+                          </figure>
+                          <div class="form-group" [ngClass]="{'has-error': form.get('title').invalid  && form.get('title').touched}">
+                              <label>Title</label>
+                              <input type="text" class="form-control" placeholder="Enter Title" formControlName="title" />
+                              <span class="help-block" *ngIf="form.get('title').invalid  && form.get('title').touched">
+                                  Please enter a title.
+                              </span>
+                          </div>
+                          <div class="form-group" [ngClass]="{'has-error': form.get('short_description').invalid  && form.get('short_description').touched}">
+                            <label>Short Description</label>
+                            <input type="text" class="form-control" placeholder="Enter Short Description" formControlName="short_description" />
+                            <span class="help-block" *ngIf="form.get('short_description').invalid  && form.get('short_description').touched">
+                                Please enter a short description.
+                            </span>
+                        </div>
+                        <div class="form-group" [ngClass]="{'has-error': form.get('long_description').invalid  && form.get('long_description').touched}">
+                          <label>Long Description</label>
+                          <input type="text" class="form-control" placeholder="Enter Long Description" formControlName="long_description" />
+                          <span class="help-block" *ngIf="form.get('long_description').invalid  && form.get('long_description').touched">
+                              Please enter a long_description.
+                          </span>
+                      </div>
+                      <div class="form-group" [ngClass]="{'has-error': form.get('main_amount').invalid  && form.get('main_amount').touched}">
+                        <label>Amount</label>
+                        <input type="text" class="form-control" placeholder="Enter Amount" formControlName="main_amount" />
+                        <span class="help-block" *ngIf="form.get('main_amount').invalid  && form.get('main_amount').touched">
+                            Please enter a amount.
+                        </span>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error': form.get('start_date').invalid  && form.get('start_date').touched}">
+                      <label>Start Date</label>
+                      <input type="date" data-date-format="Y-m-d" class="form-control" placeholder="Enter start date" formControlName="start_date" />
+                      <span class="help-block" *ngIf="form.get('start_date').invalid  && form.get('start_date').touched">
+                          Please enter a start date.
+                      </span>
+                  </div>
+                  <div class="form-group" [ngClass]="{'has-error': form.get('property_tenure').invalid  && form.get('property_tenure').touched}">
+                    <label>Tenure</label>
+                    <input type="text" class="form-control" placeholder="Enter Tenure" formControlName="property_tenure" />
+                    <span class="help-block" *ngIf="form.get('property_tenure').invalid  && form.get('property_tenure').touched">
+                        Please enter a tenure.
+                    </span>
+                </div>
+                <div class="form-group">
+                  <input type="file" class="d-none" (change)="onImagePickedMultiple($event)" multiple  #filePickerMultiple>
+
+                  <div class="upload-box-wrapper" (click)="filePickerMultiple.click()">
+                    <div class="rmpm dropzone upload-box" appImageDrag (files)="filesDropped($event)">
+                      <div class="upload-box-inner">
+                        <img src="assets/img/upload.png" alt="upload Icon" title="Upload" width="80">
+                        <h4>Upload or Drop your file here!</h4>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="form-group uploaded-box-img">
+
+                    <div class="">
+                      <div class="row">
+                        <div class="col-sm-12 mb-3">
+                          <div class="uploaded-item card" *ngFor="let file of filesPreview; let i = index">
+                            <button type="button" class="btn btn-danger dlt-btn" (click)="onRemoveImage(i)">
+                              <i class="fa fa-close"></i>
+                            </button>
+                            <img [src]="file" alt="Girl in a jacket">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                </div>
+                <div class="form-group mt-5">
+
+                  <div class="">
+                    <div class="row">
+                      <div class="col-sm-12 mb-3">
+                        <div class="uploaded-item card" *ngFor="let data of backgroundImage; let i = index">
+                          <button type="button" class="btn btn-danger dlt-btn dlt-btn-red" (click)="deleteImage(data.property_image_id, i)">
+                            <i class="fa fa-trash"></i>
+                          </button>
+                          <img [src]="data.background_image" alt="Girl in a jacket">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+              </div>
+
+                      </div>
+
+                      <div class="box-footer">
+
+                      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                          <span *ngIf="!isLoading">
+                              <span *ngIf="mode === 'create'">Add</span>
+                              <span *ngIf="mode === 'update'">Update</span>
+                          </span>
+                          <span *ngIf="isLoading">
+                              <i class="fa fa-refresh fa-spin"></i>
+                          </span>
+                      </button>
+                  </div>
+              </form>
+            </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->
+
+

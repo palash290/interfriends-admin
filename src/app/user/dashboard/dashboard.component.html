@@ -1,0 +1,374 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="wrapper ">
+  <app-header></app-header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Dashboard
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Info boxes -->
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">members</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.userCount}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-refresh" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Cycle saving</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.cycle| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-bicycle" aria-hidden="true"></i>
+            </span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Cycle savings pending</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.cycle_pending| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Cycle payout</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.payout| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-money" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Provident Fund</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.pf| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Loans paidout</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.loan_active| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Loan repaid</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.loan_paid_user| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Complete/closed loans</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.loan_completed| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Emergency loan active</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.emergency_loan_active| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Emergency Loan Completed</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.emergency_loan_completed| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-floppy-o" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Safe Keeping</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.safeKeeping| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-bar-chart" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Investment</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.investment| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Provident Fund Interest</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{info.pfInterest| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Help 2 Buy Car</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{helpToBuyCar| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+
+       <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Help 2 Buy HSC</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{hepToBuyHsc| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Total Saving JNR</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{totalSavingJnr| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12" [routerLink]="['/user/groupsOfuser']">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Group Members</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{group.length}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+
+        <div class="col-md-3 col-sm-6 col-xs-12" >
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Welfare</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{totalWelfare | currency:'GBP': 'symbol' : '1.0-0'}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+       <!-- <div (click)="saveGroupname(allGroup.group_cycle_name)" [routerLink]="['/user/userGroupList',allGroup.id]" class="col-md-3 col-sm-6 col-xs-12" *ngFor="let allGroup of group">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">{{allGroup.group_cycle_name}}</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{allGroup.usercount}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div> -->
+            <!-- /.info-box-content -->
+         <!-- </div> -->
+          <!-- /.info-box -->
+        <!-- </div> -->
+
+
+
+
+
+        <!-- /.col -->
+        <!-- <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Products</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{productCount}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Categorys</span>
+              <span class="info-box-number" *ngIf="!
+              isLoadingCount">{{categoryCount}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">New Members</span>
+              <span class="info-box-number">2,000</span>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <app-footer></app-footer>
+</div>
+<!-- ./wrapper -->
+</div>
+
+

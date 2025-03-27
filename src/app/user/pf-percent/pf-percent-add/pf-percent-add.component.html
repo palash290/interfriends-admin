@@ -1,0 +1,45 @@
+<div class="modal-content">
+  <div class="modal-header">
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add Group</h1>
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'update'">Update Group</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <form role="form" [formGroup]="form" (submit)="onSave()">
+      <div class="box-body" *ngIf="isLoadingUpdate">
+          <mat-spinner class="mx-auto"></mat-spinner>
+      </div>
+      <div class="modal-body" *ngIf="!isLoadingUpdate">
+          <div class="col-md-12">
+              <div class="form-group" [ngClass]="{'has-error': form.get('title').invalid  && form.get('title').touched}">
+                  <label>Title</label>
+                  <input type="text" class="form-control" placeholder="Enter Title" formControlName="title" />
+                  <span class="help-block" *ngIf="form.get('title').invalid  && form.get('title').touched">
+                    Please enter a Title.
+                  </span>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': form.get('percent').invalid  && form.get('percent').touched}">
+                <label>Percent</label>
+                <input type="text" class="form-control" placeholder="Enter Description" formControlName="percent" />
+                <span class="help-block" *ngIf="form.get('percent').invalid  && form.get('percent').touched">
+                  Please enter a Percent.
+                </span>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                  <span *ngIf="mode === 'create'">Add</span>
+                  <span *ngIf="mode === 'update'">Update</span>
+              </span>
+              <span *ngIf="isLoading">
+                  <i class="fa fa-refresh fa-spin"></i>
+              </span>
+
+          </button>
+      </div>
+  </form>
+</div>

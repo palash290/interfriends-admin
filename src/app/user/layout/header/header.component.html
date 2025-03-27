@@ -1,0 +1,118 @@
+<header class="main-header ">
+
+  <!-- Logo -->
+  <a  routerLink="/user/dashboard" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><b>A</b>LT</span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg">
+      <img src="assets/img/logo/logo.png"  alt="User Image">
+    </span>
+  </a>
+
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top p-0" >
+    <!-- Sidebar toggle button-->
+    <a  class="sidebar-toggle " (click)="onToggle()" data-toggle="push-menu" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+    <!-- Navbar Right Menu -->
+    <div class="navbar-custom-menu"  >
+      <ul class="nav navbar-nav flex-direction-row">
+        <!-- Notifications: style can be found in dropdown.less -->
+        <li class="dropdown notifications-menu">
+          <a routerLink="/user/notificationList">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-warning" *ngIf="notificationCount > 0">{{notificationCount}}</span>
+          </a>
+          <!-- <ul class="dropdown-menu">
+            <li class="header">You have 10 notifications</li>
+            <li>
+              <ul class="menu">
+                <li>
+                  <a href="#">
+                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                    page and may cause design problems
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-users text-red"></i> 5 new members joined
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-user text-red"></i> You changed your username
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="footer"><a href="#">View all</a></li>
+          </ul> -->
+        </li>
+
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="showDropDown()">
+            <img [src]="image" class="user-image" alt="User Image">
+            <span class="hidden-xs">{{name}}</span>
+          </a>
+          <ul class="dropdown-menu" [ngStyle]="{'display': display1}">
+            <!-- User image -->
+            <li class="user-header">
+              <img [src]="image" class="img-circle" alt="User Image">
+              <p>
+                {{name}}
+              </p>
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-left">
+                <a routerLink="/user/updateProfile" class="btn btn-default btn-flat">Profile</a>
+              </div>
+              <div class="pull-right">
+                <button class="btn btn-default btn-flat" data-toggle="modal" data-target="#logoutModal" (click)="openModal()">Sign out</button>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+
+  <!-- Logout Modal-->
+  <div class="modal fade show" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" [ngStyle]="{'display':display}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary bg-theme border-theme" href="javascript:void(0);" (click)="onLogout()">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+

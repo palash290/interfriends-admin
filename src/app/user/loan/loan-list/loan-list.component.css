@@ -1,0 +1,42 @@
+.account-wrap {position: relative;}
+.account-item {cursor: pointer;}
+.account-item>.content {padding: 9px 0 9px 12px;}
+.item {display: block; height: 42px; width: 42px; position: relative; border-radius: 100%; background: #eee;
+  margin-right: 10px; border: 1px solid #e0e0e0; border-radius: 5px;}
+.item:last-child {margin-right: 0;}
+.item i {font-size: 16px; color: grey; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);}
+.item:focus {border: 0px solid #fff;}
+.account-dropdown.mini-drop {min-width: 140px!important;}
+.show-dropdown .js-dropdown {transform: scale(1);}
+.account-dropdown {min-width: 305px; position: absolute; top: 58px; left: 0; background: #fff;
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%); transform: scale(0); transition: all .4s ease;
+  transform-origin: left top; z-index: 3;}
+.account-dropdown {top: 48px;}
+.account-dropdown__body {border: 1px solid #eee;}
+.content {min-height:auto}
+.account-dropdown__item i {width: 25px; height: 25px; background: #eaeaea; display: flex;
+  align-items: center; justify-content: center; border-radius: 5px; border-radius: 12px;}
+.account-dropdown__item {background-color: #fff; border-bottom: 1px solid #ececec; padding: 5px 10px;}
+.account-dropdown__item:hover {background-color: #ccc;}
+.js-acc-btn button:focus {outline: none;}
+.table-hover tbody tr:hover .item {background-color: #fff;}
+
+
+.dropdown-item{    padding: 0 1.2rem;}
+hr {
+  border-top: 1px solid #eee;
+  margin: 5px 0;
+  padding: 2px 0;
+}
+.display-inline-block {
+  display: inline-block;
+  vertical-align: bottom;
+}
+.item{height: 38px;}
+
+.extra-hding {font-size: 24px; margin: 0px 0px 8px;}
+
+.modal-dialog
+{
+  pointer-events: auto !important;
+}

@@ -1,0 +1,87 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+  <app-header></app-header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          {{groupName}} User Details
+        </h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Info boxes -->
+        <div class="row">
+          <div [routerLink]="['/user/userGroupList',groupId]" class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                 <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+                 <div class="info-box-content">
+                     <span class="info-box-text">Members</span>
+                     <span class="info-box-number" *ngIf="isLoadingCount">{{total_users}}</span>
+                     <div class="overlay" *ngIf="!isLoadingCount">
+                         <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                  </div>
+              <!-- /.info-box-content -->
+              </div>
+            <!-- /.info-box -->
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-refresh" aria-hidden="true"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Cycle saving</span>
+                <span class="info-box-number" *ngIf="isLoadingCount">{{user_cycle| currency:'GBP': 'symbol'}}</span>
+                <div class="overlay" *ngIf="!isLoadingCount">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-bicycle" aria-hidden="true"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Cycle savings pending</span>
+                <span class="info-box-number" *ngIf="isLoadingCount">{{user_cycle_help_to_buy| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+                <div class="overlay" *ngIf="!isLoadingCount">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">cycle payout</span>
+                <span class="info-box-number" *ngIf="isLoadingCount">{{user_cycle_jnr| currency:'GBP': 'symbol' : '1.0-0'}}</span>
+                <div class="overlay" *ngIf="!isLoadingCount">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <app-footer></app-footer>
+  </div>
+  <!-- ./wrapper -->
+  </div>

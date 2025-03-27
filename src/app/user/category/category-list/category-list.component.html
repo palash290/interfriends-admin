@@ -1,0 +1,138 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Categorys
+        </h1>
+        <span class="breadcrumb">
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+            Add
+          </button>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Category List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="categorys.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Category Name</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let category of categorys">
+                    <td>{{category.sno}}</td>
+                    <td>{{category.category_name}}</td>
+                    <td>
+                      <img [src]="category.category_image_thumb" class="direct-chat-img">
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" (click)="onUpdate(category.category_id)">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal" (click)="onSetId(category.category_id)" *ngIf="category.status === '1'">
+                        Block
+                      </button>
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unblockModal" (click)="onSetId(category.category_id)" *ngIf="category.status === '2'">
+                          UnBlock
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <mat-paginator [length]="totalCategorys" [pageSize]="categorysPerPage"  (page)="onChangedPage($event)"
+              *ngIf="categorys.length > 0"></mat-paginator>
+              <div class="box-body"  *ngIf="categorys.length <= 0 && !isLoading">
+                You have'nt had any user yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+  <!-- ./wrapper -->
+
+
+
+  <div class="modal fade" id="exampleModal">
+    <div class="modal-dialog">
+      <app-category-add [uniqueId]= "updateId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)"></app-category-add>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+
+  <!-- block model popup start -->
+  <div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Do You Realy Want To Block This Category</div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- block model popup end -->
+
+  <!-- unblock model popup start -->
+  <div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Do You Realy Want To Unblock This Category</div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- block model popup end -->
+

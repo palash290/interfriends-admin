@@ -1,0 +1,117 @@
+
+
+
+
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+
+        <app-header></app-header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- image upload s -->
+
+        <div class="ct_banner_table_main ">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <section  class="content-header ct_content_header">
+                  <h1 class="mb-0">Banner & Messages</h1>
+                  <span  class="breadcrumb">
+                    <button *ngIf="!(addStatus || editStatus)" type="button" data-toggle="modal" data-target="#exampleModal" class="btn bg-maroon" (click)="addBannerAndmessage()"> Add </button>
+                    <button *ngIf="(addStatus || editStatus)" type="button" data-toggle="modal" data-target="#exampleModal" class="btn bg-maroon" (click)="Back()"> Back </button>
+                  </span>
+                </section>
+                <div *ngIf="!(addStatus || editStatus)" class="ct_banner_table table-responsive box box-primary mt-2">
+
+                  <table class="table">
+                    <tr>
+                      <th>#</th>
+                      <th colspan="2">Banner & Messages</th>
+                      <!-- <th class="text-right">View</th> -->
+                    </tr>
+                    <tr *ngFor="let banner of allbannerAndmsg , let i = index">
+                      <td>{{i+1}}</td>
+                      <td *ngIf="banner.image != ''">
+                        <div class="ct_bnr_img">
+                          <img src="{{banner.image}}" alt="">
+
+                        </div>
+                      </td>
+                     <td *ngIf="banner.title != ''">{{banner.title}}</td>
+                      <td class="ct_buton_grp text-right">
+                        <button  data-toggle="modal" data-target="#exampleModal" ngbtooltip="Edit" class="btn btn-primary margin" ng-reflect-ngb-tooltip="Edit" (click)="editBannerAndmessage(banner)"><i aria-hidden="true" class="fa fa-pencil-square-o"></i></button>
+                        <button (click)="delete(banner.id)" type="button" data-toggle="modal" data-target="#deleteModal" ngbtooltip="Delete" class="btn btn-danger margin" ng-reflect-ngb-tooltip="Delete"><i  aria-hidden="true" class="fa fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <section class="content" *ngIf="editStatus==true || addStatus==true">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Update Banner & Messages</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <!-- <div class="box-body" >
+                  <mat-spinner  class="mx-auto"></mat-spinner>
+                </div> -->
+                <!-- <div class="overlay">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div> -->
+                <form [formGroup]="myForm">
+
+                  <div class="form-group box-header mb-0">
+                    <label>Message</label>
+                    <textarea formControlName="title"  rows="4" class="form-control" placeholder="Enter Your Message"></textarea>
+                  </div>
+
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary" (click)="submitMessage()">Upload Message</button>
+                  </div>
+                  <div class="ct_img_upload file-input box-header">
+                    <div class="form-group">
+                      <label for="file">File:</label>
+                      <input
+                          id="file"
+                          type="file"
+                          class="form-control"
+                          (change)="onFileChange($event)"
+                          multiple>
+                      <!-- <div *ngIf="f['file'].touched && f['file'].invalid" class="alert alert-danger">
+                          <div *ngIf="f['file'].errors && f['file'].errors['required']">File is required.</div>
+                      </div> -->
+                  </div>
+                    <!-- <div class="img"></div> -->
+                   <div class="ct_img_grid" *ngFor="let url of imageUrls">
+                    <img [src]="sanitizer.bypassSecurityTrustUrl(url)" style="height: 300px; width:500px">
+                   </div>
+                  </div>
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary" (click)="submit()">Upload Banner</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- /.row -->
+        </section>
+
+        <!-- image upload E -->
+      </div>
+      <!-- /.content-wrapper -->
+      <app-footer></app-footer>
+    </div>
+    </div>
+    <!-- ./wrapper -->
+
+
+

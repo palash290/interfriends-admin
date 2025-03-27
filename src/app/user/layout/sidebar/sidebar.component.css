@@ -1,0 +1,27 @@
+.sidebar-slide {
+    overflow: auto;
+    height: calc(100vh - 50px);
+    position: fixed;
+    width: 230px;
+}
+
+/* width */
+.sidebar-slide::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  /* Track */
+  .sidebar-slide::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  .sidebar-slide::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .sidebar-slide::-webkit-scrollbar-thumb:hover {
+    background: #666; 
+  }

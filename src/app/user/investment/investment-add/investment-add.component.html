@@ -1,0 +1,90 @@
+<div class="modal-content">
+  <div class="modal-header">
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add Investment</h1>
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'update'">Update Investment</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <form role="form" [formGroup]="form" (submit)="onSave()">
+      <div class="box-body" *ngIf="isLoadingUpdate">
+          <mat-spinner class="mx-auto"></mat-spinner>
+      </div>
+      <div class="modal-body" *ngIf="!isLoadingUpdate">
+          <div class="col-md-12">
+              <div class="form-group" [ngClass]="{'has-error': form.get('amount').invalid  && form.get('amount').touched}">
+                  <label>Amount</label>
+                  <input type="text" class="form-control" placeholder="Enter Amount" formControlName="amount" />
+                  <span class="help-block" *ngIf="form.get('amount').invalid  && form.get('amount').touched">
+                    Please enter a Amount.
+                  </span>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': form.get('description').invalid  && form.get('description').touched}">
+                <label>Description</label>
+                <input type="text" class="form-control" placeholder="Enter Description" formControlName="description" />
+                <span class="help-block" *ngIf="form.get('description').invalid  && form.get('description').touched">
+                  Please enter a Description.
+                </span>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': form.get('property_id').invalid  && form.get('property_id').touched}">
+              <label>Property</label>
+              <select class="form-control" formControlName="property_id">
+                <option value=''>Select Property</option>
+                <option [value]="data.item_id" *ngFor="let data of propertyList">{{data.item_text}}</option>
+                <option value='others'>Other</option>
+              </select>
+              <span class="help-block" *ngIf="form.get('property_id').invalid  && form.get('property_id').touched">
+                Please enter a property.
+              </span>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': form.get('payment_method').invalid  && form.get('payment_method').touched}">
+              <label>Payment Method</label><br/>
+              <div class="d-inline mr-3">
+                <input type="radio"  id="javascript" formControlName="payment_method" value="1"  class="radio-it">
+                &nbsp;<label for="css">Direct Transfer</label>
+              </div>
+              <div class="d-inline mr-3">
+                <input type="radio" id="html" formControlName="payment_method" value="2" class="radio-it">
+                <label for="html">From Provident</label>
+              </div>
+              <div class="d-inline">
+                 <input type="radio" id="css" formControlName="payment_method" value="3" class="radio-it">
+                 <label for="css">From Safe Keeping</label>
+              </div>
+
+              <span class="help-block" *ngIf="form.get('payment_method').invalid  && form.get('payment_method').touched">
+                Please select a Payment Method.
+              </span>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': form.get('note_title').invalid  && form.get('note_title').touched}">
+              <label>Note Title</label>
+              <input type="text" class="form-control" placeholder="Enter Title" formControlName="note_title" />
+              <span class="help-block" *ngIf="form.get('note_title').invalid  && form.get('note_title').touched">
+                Please enter a Title.
+              </span>
+          </div>
+          <div class="form-group" [ngClass]="{'has-error': form.get('note_description').invalid  && form.get('note_description').touched}">
+            <label> Note Description</label>
+            <input type="text" class="form-control" placeholder="Enter Description" formControlName="note_description" />
+            <span class="help-block" *ngIf="form.get('note_description').invalid  && form.get('note_description').touched">
+              Please enter a Description.
+            </span>
+        </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                  <span *ngIf="mode === 'create'">Add</span>
+                  <span *ngIf="mode === 'update'">Update</span>
+              </span>
+              <span *ngIf="isLoading">
+                  <i class="fa fa-refresh fa-spin"></i>
+              </span>
+
+          </button>
+      </div>
+  </form>
+</div>

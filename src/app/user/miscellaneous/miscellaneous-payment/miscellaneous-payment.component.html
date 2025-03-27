@@ -1,0 +1,128 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Miscellaneous Payment
+        </h1>
+        <span class="breadcrumb">
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+            Add
+          </button>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header bg-blue">
+
+                <div class="col-md-12 ">
+                     <h3 class="box-title">Miscellaneous Payment List</h3>
+                </div>
+                <!--<div class="float-right ml-auto">
+                  <p>Total Loan Amount: {{loanAmount}}</p>
+                  <p>Loan Amount: {{loanAmount_initital}}</p>
+                  <p>Paid Amount: {{totalPaidAmount}}</p>
+                  <p>Remaining Amount: {{loanAmount - totalPaidAmount}}</p>
+                </div>-->
+                 <div class="col-md-4 col-sm-4">
+                    <div class="loanbox">
+                      <p>Total Loan Amount: <span class="float-right">{{loanAmount}}</span></p>
+                   </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <div class="loanbox">
+                    <p>Loan Amount: <span class="float-right">{{loanAmount_initital}}</span></p>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <div class="loanbox">
+                    <p>Paid Amount: <span class="float-right">{{totalPaidAmount}}</span></p>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <div class="loanbox">
+                    <p>Remaining Amount: <span class="float-right">{{loanAmount - totalPaidAmount}}</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Amount</th>
+                        <th>Note Title</th>
+                        <th>Note Description</th>
+                        <th>Created on</th>
+                        <th>Payment Method</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists; let i = index">
+                          <td>{{i+1}}</td>
+                          <td>{{list.amount| number:'1.0-0'}}</td>
+                          <td>{{list.note_title}}</td>
+                          <td>{{list.note_description}}</td>
+                          <td>{{list.created_at| date: 'dd MMM yyyy'}}</td>
+                          <td>
+                            <span class="badge badge-secondary" *ngIf="list.payment_method === '1'">Direct Transfer</span>
+                            <span class="badge badge-success" *ngIf="list.payment_method === '2'">From Provident</span>
+                            <span class="badge badge-warning" *ngIf="list.payment_method === '3'">From Safe Keeping</span>
+                          </td>
+                          <td>
+                            <span class="badge badge-secondary" *ngIf="list.status === '1'">Paid On Time</span>
+                            <span class="badge badge-success" *ngIf="list.status === '2'">Paid Late</span>
+                            <span class="badge badge-warning" *ngIf="list.status === '3'">Missed Payment</span>
+                          </td>
+                          <td>
+                            <button *ngIf="!(list.payment_method === '2' || list.payment_method === '3')" class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" (click)="onUpdate(list.id)" ngbTooltip="Edit">
+                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->
+
+
+  <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display}">
+    <div class="modal-dialog">
+      <app-add-miscellaneous-payment [uniqueId]= "updateId" [groupId]= "groupId" [userId]= "userId" [loanId]= "loanId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-add-miscellaneous-payment>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>

@@ -1,0 +1,246 @@
+<div
+  class="hold-transition sidebar-mini"
+  [ngClass]="{
+    'skin-blue': checkAdminType(),
+    'skin-red-light': !checkAdminType()
+  }"
+>
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>Safe Keeping Withdrawal Request</h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Safe Keeping Withdrawal Request List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Amount</th>
+                      <th>Type</th>
+                      <th>Notes Reference</th>
+                      <th>Created on</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; let i = index">
+                      <td>{{ list.sno }}</td>
+                      <td>{{ list.first_name + " " + list.last_name }}</td>
+                      <td>
+                        <a href="mailto: {{ list.email }}">{{ list.email }}</a>
+                      </td>
+                      <td>{{ list.amount | number : "1.0-0" }}</td>
+                      <td *ngIf="list.request_type == 0">Safe Keeping</td>
+                      <td *ngIf="list.request_type == 1">Savings</td>
+                      <td>{{ list.reason }}</td>
+                      <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
+                      <td>
+                        <button
+                          type="button"
+                          class="m-1 btn btn-danger btn-sm"
+                          data-toggle="modal"
+                          data-target="#blockModal"
+                          ngbTooltip="rejected"
+                          *ngIf="list.request_status == '0'"
+
+                        >Rejected
+
+                        </button>
+                        <button
+                          type="button"
+                          class="m-1 btn btn-success btn-sm"
+                          data-toggle="modal"
+                          data-target="#blockModal"
+                          ngbTooltip="accepted"
+                          *ngIf="list.request_status == '1'"
+                        >Accepted
+                        </button>
+                        <button
+                          type="button"
+                          class="m-1 btn btn-primary btn-sm"
+                          data-toggle="modal"
+                          data-target="#blockModal"
+                          ngbTooltip="pending"
+                          *ngIf="list.request_status == '2'"
+                          (click)="addsafekeepingPayment(list)"
+                        >Pending
+
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator
+                [length]="totalLists"
+                [pageSize]="listsPerPage"
+                (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"
+              ></mat-paginator>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+<div class="modal fade show" id="blockModal" [ngStyle]="{ display: display }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add SafeKeeping</h1> -->
+        <h1 class="modal-title mb-0 pl-2">Update SafeKeeping</h1>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          id="closePopup"
+          (click)="onClose()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form role="form" [formGroup]="form" (ngSubmit)="onSubmit(form)">
+        <div class="box-body" *ngIf="isLoadingUpdate">
+          <mat-spinner class="mx-auto"></mat-spinner>
+        </div>
+        <div class="modal-body" *ngIf="!isLoadingUpdate">
+          <div class="col-md-12">
+            <div
+              class="form-group"
+              [ngClass]="{
+                'has-error':
+                  form.get('amount').invalid && form.get('amount').touched
+              }"
+            >
+              <label>Amount</label>
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Amount"
+                  formControlName="amount"
+               readonly/>
+              </div>
+              <span
+                class="help-block"
+                *ngIf="form.get('amount').invalid && form.get('amount').touched"
+              >
+                Please enter a Amount.
+              </span>
+            </div>
+            <div
+              class="form-group"
+              [ngClass]="{
+                'has-error':
+                  form.get('note_title').invalid &&
+                  form.get('note_title').touched
+              }"
+            >
+              <label>Note Title</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Title"
+                formControlName="note_title"
+              />
+              <span
+                class="help-block"
+                *ngIf="
+                  form.get('note_title').invalid &&
+                  form.get('note_title').touched
+                "
+              >
+                Please enter a Title.
+              </span>
+            </div>
+            <div
+              class="form-group"
+              [ngClass]="{
+                'has-error':
+                  form.get('note_description').invalid &&
+                  form.get('note_description').touched
+              }"
+            >
+              <label> Note Description</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Description"
+                formControlName="note_description"
+              />
+              <span
+                class="help-block"
+                *ngIf="
+                  form.get('note_description').invalid &&
+                  form.get('note_description').touched
+                "
+              >
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary pull-left"
+            data-dismiss="modal"
+            id="closePopup"
+            (click)="onClose()">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span *ngIf="mode === 'create'">Add</span>
+              <span *ngIf="mode === 'update'">Update</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

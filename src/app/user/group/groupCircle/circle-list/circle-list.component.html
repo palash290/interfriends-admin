@@ -1,0 +1,332 @@
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Groups Circle
+        </h1>
+        <span class="breadcrumb">
+        
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+            Add
+          </button>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Circle List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th> Circle Lead</th>
+                      <th> Deputy</th>
+                      <th>Trust Score</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; index as i">
+                      <td>{{i +1}}</td>
+                      <td>{{list.circle_name}}</td>
+                      <td>{{list.description}}</td>
+                      <td>{{list.circle_lead_name || '-'}}</td>
+                      <td>{{list.deputy_lead_name || '-'}}</td>
+                      <td>{{list.trust_score | number:'1.0-0'}}</td>
+                      <td>
+                        <!-- <button class="btn btn-primary margin" data-toggle="modal" data-target="#"
+                          (click)="onUpdate(list.id)" ngbTooltip="Edit">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button> -->
+
+                        <!-- <a class="btn btn-dark margin" [routerLink]="['/user/groupCycleList',list.id]"
+                          ngbTooltip="Cycle" *ngIf="list.existUserGroup_status">
+                          <i class="fa fa-repeat" aria-hidden="true"></i>
+                        </a> -->
+                        <a class="btn btn-warning margin" [routerLink]="['/user/circleUserList',groupID, list.id]"
+                          ngbTooltip="Users">
+                          <i class="fa fa-users" aria-hidden="true"></i>
+                        </a>
+                        <button type="button" class="btn btn-success margin" data-toggle="modal"
+                          ngbTooltip="Assign Lead" data-target="#leaderModal" (click)="getcircleUsers(list.id)">
+                         Lead
+                        </button>
+                        <button type="button" class="btn btn-success margin" data-toggle="modal"
+                          ngbTooltip="Assign deputy" data-target="#deputyModal" (click)="getcircleUsers(list.id)">
+                         Deputy Lead
+                        </button>
+                        <button type="button" class="btn btn-success margin" data-toggle="modal"
+                          ngbTooltip="Send email to this circle users" data-target="#emailModal" (click)="getcircleUsers(list.id)">
+                         Send email
+                        </button>
+                        <!-- <button type="button margin" class="btn btn-danger" data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetId(list.id)" *ngIf="adminType === '2'">
+                              <i class="fa fa-ban" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn " data-toggle="modal" ngbTooltip="Group circle" >
+                              <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            </button>  -->
+
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group circle yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add Group</h1>
+        <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'update'">Update Group</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form role="form" [formGroup]="form" (submit)="onSave()">
+      
+        <div class="modal-body">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': form.get('circle_name').invalid  && form.get('circle_name').touched}">
+              <label>Group Circle Name</label>
+              <input type="text" class="form-control" placeholder="Enter Title" formControlName="circle_name" />
+              <span class="help-block" *ngIf="form.get('circle_name').invalid  && form.get('circle_name').touched">
+                Please enter a Title.
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': form.get('description').invalid  && form.get('description').touched}">
+              <label>Description</label>
+              <input type="text" class="form-control" placeholder="Enter Description" formControlName="description" />
+              <span class="help-block" *ngIf="form.get('description').invalid  && form.get('description').touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal"
+            (click)="onClose()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span *ngIf="mode === 'create'">Add</span>
+              <span *ngIf="mode === 'update'">Update</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+
+          </button>
+        </div>
+      </form>
+    </div>
+
+    
+  </div>
+ 
+</div>
+
+
+
+<!-- assign leader popup start -->
+<div class="modal fade" id="leaderModal" tabindex="-1" role="dialog" aria-labelledby="leaderModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Assign Lead</h1>
+        <!--       
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+              <span aria-hidden="true">&times;</span>
+          </button> -->
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <label class="label-walfare">Select User</label>
+        <!--<input type="text" formControlName="loan_amount" placeholder="Enter Loan Amount" class="form-control"   *ngIf="mainId === '1'" (input)="onInputAmount1($event.target.value) ">-->
+        <select class="form-control" [(ngModel)]="selecteduser">
+          <option value="" [defaultSelected]="true">Select User</option>
+          <option *ngFor="let item of circleUsersList" value="{{ item.user_id }}">
+            {{ item.first_name }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onAssignLead()">Assign lead</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock" #closeBlock>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deputyModal" tabindex="-1" role="dialog" aria-labelledby="leaderModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Assign Deputy</h1>
+        <!--       
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+              <span aria-hidden="true">&times;</span>
+          </button> -->
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <label class="label-walfare">Select User</label>
+        <!--<input type="text" formControlName="loan_amount" placeholder="Enter Loan Amount" class="form-control"   *ngIf="mainId === '1'" (input)="onInputAmount1($event.target.value) ">-->
+        <select class="form-control" [(ngModel)]="selecteduser">
+          <option value="" [defaultSelected]="true">Select User</option>
+          <option *ngFor="let item of circleUsersList" value="{{ item.user_id }}">
+            {{ item.first_name }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onAssignDeputy()">Assign deputy</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock5" #closeBlock>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':display}">
+  <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
+
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2" >Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
+              <label>Subject</label>
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
+             
+              <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+                <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+              <label>Body</label>
+              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+              <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit" >Send email</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2" #closeBlock2 >Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="modal fade" id="emailLeadsModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':display}">
+  <form #mailForm="ngForm" (ngSubmit)="sendLeadsEmail(mailForm)">
+
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2" >Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
+              <label>Subject</label>
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
+             
+              <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+                <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+              <label>Body</label>
+              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+              <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit" >Send email</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2" #closeBlock2 >Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

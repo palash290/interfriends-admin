@@ -1,0 +1,28 @@
+.savings-box .box-line-white {
+  text-align: center;
+}
+
+.box-line-white.second-line-none {
+  border-top: 0px;
+}
+.border-left-5 {
+  border-left: 5px solid #092C4C!important;
+}
+.box-line-white {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  padding: 20px;
+  margin-top: 50px;
+  border: 2px dashed #092C4C;
+}
+.profile-click {
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: 0px!important;
+  margin-left: 14px;
+  border: 1px solid #868686;
+}

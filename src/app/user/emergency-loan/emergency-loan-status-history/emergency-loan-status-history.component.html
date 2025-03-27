@@ -1,0 +1,70 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Emergency Loan Status
+        </h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Emergency Loan Status History List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>Created on</th>
+                        <th>Note Title</th>
+                        <th>Note Description</th>
+                        <th>Status</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists;let i = index">
+                          <td>{{list.created_at | date: 'dd MMM yyyy'}}</td>
+                          <td>{{list.note_title}}</td>
+                          <td>{{list.note_description}}</td>
+                          <td>
+                            <span class="badge badge-primary" *ngIf="list.status === '1'">Pending</span>
+                            <span class="badge badge-success" *ngIf="list.status === '2'">Done</span>
+                            <span class="badge badge-danger" *ngIf="list.status === '3'">Decline</span>
+                            <span class="badge badge-secondary" *ngIf="list.status === '4'">Accept</span>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any loan yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->

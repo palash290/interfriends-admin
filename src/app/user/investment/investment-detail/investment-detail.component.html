@@ -1,0 +1,40 @@
+<div class="modal-content">
+  <div class="modal-header">
+      <h5 class="modal-title">Investment Detail</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+      <div class="box-body" *ngIf="isLoading">
+          <mat-spinner class="mx-auto"></mat-spinner>
+      </div>
+      <div class="modal-body" *ngIf="!isLoading">
+        <div class="box-body box-profile" *ngIf="!isLoading">
+          <div class="text-center">
+          <img class="profile-user-img img-responsive img-circle" [src]="investment.property_info.property_image_thumb" alt="User profile picture" *ngIf="investment.investment_type === '1'">
+          </div>
+          <h3 class="profile-username text-center" *ngIf="investment.investment_type === '1'">{{investment.property_info.title}}</h3>
+          <ul class="list-group list-group-unbordered">
+             <li class="list-group-item">
+                <b>Amount</b> <a class="pull-right">{{investment.amount}}</a>
+             </li>
+             <li class="list-group-item">
+                <b>Description</b> <a class="pull-right">{{investment.description}}</a>
+             </li>
+             <li class="list-group-item" *ngIf="investment.investment_type === '1'">
+                <b>Short description</b> <a class="pull-right">{{investment.property_info.short_description}}</a>
+             </li>
+             <li class="list-group-item" *ngIf="investment.investment_type === '1'">
+              <b>Long description</b> <a class="pull-right">{{investment.property_info.long_description}}</a>
+            </li>
+             <li class="list-group-item">
+               <b>Created On</b> <a class="pull-right">{{investment.created_at  | date: 'dd/MM/yyyy'}}</a>
+            </li>
+          </ul>
+       </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">Close</button>
+      </div>
+</div>
+

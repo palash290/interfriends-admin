@@ -1,0 +1,41 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="wrapper">
+<app-header></app-header>
+<!-- Left side column. contains the logo and sidebar -->
+<app-sidebar></app-sidebar>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Group of Users
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Info boxes -->
+      <div class="row">
+        <div (click)="saveGroupname(allGroup.group_cycle_name)" [routerLink]="['/user/groupedUserDetail',allGroup.id]" class="col-md-3 col-sm-6 col-xs-12" *ngFor="let allGroup of group">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">{{allGroup.group_cycle_name}}</span>
+              <span class="info-box-number" *ngIf="!isLoadingCount">{{allGroup.usercount}}</span>
+              <div class="overlay" *ngIf="isLoadingCount">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <app-footer></app-footer>
+</div>
+<!-- ./wrapper -->
+</div>

@@ -1,0 +1,184 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="wrapper">
+
+    <app-header></app-header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <app-sidebar></app-sidebar>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Users
+      </h1>
+      <span class="breadcrumb">
+        <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+          Add
+        </button>
+      </span>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box">
+            <div class="box-header d-flex align-items-center">
+              <h3 class="box-title">User List</h3>
+              <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+            </div>
+            <!-- /.box-header -->
+            <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+            <div class="box-body"  *ngIf="isLoading">
+              <mat-spinner  class="mx-auto"></mat-spinner>
+            </div>
+            <div class="box-body table-responsive" *ngIf="users.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Total Credit Score</th>
+                        <th>Unique Id</th>
+                        <th>Profile Image</th>
+                        <th>Action</th>
+                        <th>Last 5 Payments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.sno}}</td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.total_credit_score}}</td>
+                        <td>{{user.unique_id}}</td>
+                        <td>
+                          <img [src]="user.profile_image_thumb" class="direct-chat-img">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                          <button type="button" class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate(user.user_id)">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal" ngbTooltip="Block" (click)="onSetBlockId(user.user_id)" *ngIf="user.status === '1'" >
+                              <i class="fa fa-ban" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unblockModal" ngbTooltip="UnBlock" (click)="onSetUnblockId(user.user_id)" *ngIf="user.status === '2'">
+                              <i class="fa fa-ban" aria-hidden="true"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal" ngbTooltip="View" (click)="onUpdateView(user.user_id)">
+                              <i class="fa fa-eye"></i>
+                            </button>
+
+                            <a  class="btn btn-info" ngbTooltip="Group" [routerLink]="['/user/singleUserGroupList', user.user_id]">
+                              <i class="fa fa-users" aria-hidden="true"></i>
+                            </a>
+                          </div>
+                        </td>
+                        <td class="d-flex">
+                        <div class="ct_icon_list" *ngFor="let userGroupInfo of user.lastTransactionsUserCycle" >
+                          <div class="minus ct_icon_bg " *ngIf="userGroupInfo.status == 1 || userGroupInfo.status == 4">
+                            <i class="fa fa-minus" aria-hidden="true" ></i>
+                          </div>
+                          <div class="remove ct_icon_bg " *ngIf="userGroupInfo.status == 3">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                          </div>
+                          <!-- <div class="check ct_icon_bg " *ngIf="userGroupInfo.status == 3 || userGroupInfo.status == 4">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                          </div> -->
+                          <div class="check ct_icon_bg " *ngIf="userGroupInfo.status == 2">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                          </div>
+                          <!-- <div class="remove ct_icon_bg " *ngIf="userGroupInfo.status == 2">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                          </div> -->
+                        </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"  (page)="onChangedPage($event)"
+              *ngIf="users.length > 0"></mat-paginator>
+            <div class="box-body"  *ngIf="users.length <= 0 && !isLoading">
+              You have'nt had any user yet!
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <app-footer></app-footer>
+</div>
+</div>
+<!-- ./wrapper -->
+
+
+
+<!-- block model popup start -->
+<div class="modal fade show" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true" [ngStyle]="{'display':display4}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Do You Realy Want To Block This User</div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock" (click)="onCLose()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- block model popup end -->
+  <!-- unblock model popup start -->
+  <div class="modal fade show" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true" [ngStyle]="{'display':display2}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Do You Realy Want To Unblock This User</div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock" (click)="onCLose()" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- block model popup end -->
+
+
+  <div class="modal fade show" id="viewModal" [ngStyle]="{'display':display1}">
+    <div class="modal-dialog">
+      <app-user-detail [uniqueId]= "updateId" [eachChange]= "eachChange" (closeModal)="handleCounterChange($event)"></app-user-detail>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" [ngStyle]="{'display':display}">
+    <div class="modal-dialog modal-lg" >
+      <app-add-user [uniqueId]= "updateId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (change)="handleCounterChange($event)"></app-add-user>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+

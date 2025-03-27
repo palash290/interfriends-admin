@@ -1,0 +1,288 @@
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>Recommend User</h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Recommend User List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover et_table_verticle_middle">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Mobile Number</th>
+                      <th>Created on</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; let i = index">
+                      <td>{{ list.sno }}</td>
+                      <td>{{ list.name }}</td>
+                      <td><a href="mailto:{{list.email}}">{{ list.email }}</a></td>
+                      <td><a href="tel:+{{list.mobile_number}}">{{ list.mobile_number }}</a></td>
+                      <td>{{ list.created_at | date: 'dd MMM yyyy'}}</td>
+
+                      <td *ngIf="list.admin_status == 1">
+                        <span class="badge py-2 ct_fs_18 ct_fw_500 px-4 ct_border_radius_100"
+                          style="background-color: #29c074;color: #f3f3f3;">
+                          Accepted
+                        </span>
+                      </td>
+
+                      <td *ngIf="list.admin_status == 2">
+                        <span class="badge py-2 ct_fs_18 ct_fw_500 px-4 ct_border_radius_100"
+                          style="background-color: #29c074;color: #f3f3f3;">
+                          Rejected
+                        </span>
+                      </td>
+
+                      <td *ngIf="list.admin_status == 0">
+                        <span class="badge py-2 ct_fs_18 ct_fw_500 px-4 ct_border_radius_100"
+                          style="background-color: #f08c32;color: #ffffff;">
+                          Pending
+                        </span>
+                      </td>
+
+                      <td>
+                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
+                          ngbTooltip="View" (click)="onview(list.id, i)">
+                          <i class="fa fa-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#myModal"
+                          ngbTooltip="Accept / Reject"
+                          (click)="onUpdateUserStatus(list.id, i, list.recommended_user_id)">
+                          <i class="fa fa-eject" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any group yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+<!-- View Modal -->
+<div class="modal fade show" id="viewModal" [ngStyle]="{'display':display}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">User Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-body box-profile" *ngIf="listDetail !== undefined">
+          <h3 class="profile-username text-center">{{ listDetail.name }}</h3>
+          <p class="text-muted text-center">{{ listDetail.email }}</p>
+          <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>Mobile Number</b>
+              <a class="pull-right">{{ listDetail.mobile_number }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Friend Employed</b>
+              <a class="pull-right">{{ listDetail.friend_employed }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Employement Type</b>
+              <a class="pull-right">{{ listDetail.employement_type }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Known This Person</b>
+              <a class="pull-right">{{ listDetail.know_this_person }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Known Them As What</b>
+              <a class="pull-right">{{ listDetail.know_them_as_what }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Recommending This Person</b>
+              <a class="pull-right">{{
+                listDetail.recommending_this_person
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Referred By</b>
+              <a class="pull-right">{{
+                listDetail.first_name_main_refer+' '+listDetail.last_name_main_refer+','+listDetail.first_name_refer+'
+                '+listDetail.last_name_refer
+                }}</a>
+            </li>
+
+            <li class="list-group-item">
+              <b>Created On</b>
+              <a class="pull-right">{{
+                listDetail.created_at | date: "dd/MM/yyyy"
+                }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!-- accept reject modal  -->
+
+<div class="modal fade show" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':display1}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3 class="modal-title" id="myModalLabel">Update User Status</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" #closeBlock2
+          (click)="onClose2()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body" *ngIf="recommendUser">
+        <div class="box-body box-profile">
+          <h3 class="profile-username text-center">{{ recommendUser.first_name }}</h3>
+          <p class="text-muted text-center">{{ recommendUser.email }}</p>
+          <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>First Name</b>
+              <a class="pull-right">{{ recommendUser.first_name }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Last Name</b>
+              <a class="pull-right">{{ recommendUser.last_name }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Email</b>
+              <a class="pull-right">{{ recommendUser.email }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Unique Id</b>
+              <a class="pull-right">{{ recommendUser.unique_id }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>DOB</b>
+              <a class="pull-right">{{ recommendUser.dob }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Mobile Number</b>
+              <a class="pull-right">{{
+                recommendUser.mobile_number
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Next of kin</b>
+              <a class="pull-right">{{
+                recommendUser.kin_name
+                }}</a>
+            </li>
+
+            <li class="list-group-item">
+              <b>City</b>
+              <a class="pull-right">{{
+                recommendUser.city
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Adress line 1</b>
+              <a class="pull-right">{{
+                recommendUser.address_line_1
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Address line 2</b>
+              <a class="pull-right">{{
+                recommendUser.address_line_2
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Home number</b>
+              <a class="pull-right">{{
+                recommendUser.home_number
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Emergency number</b>
+              <a class="pull-right">{{
+                recommendUser.emergency_number
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Next of kin mobile number</b>
+              <a class="pull-right">{{
+                recommendUser.kin_number
+                }}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Post code</b>
+              <a class="pull-right">{{
+                recommendUser.post_code
+                }}</a>
+            </li>
+
+          </ul>
+        </div>
+
+        <p>Would you like to accept or reject?</p>
+        <button type="button" class="btn btn-primary" id="acceptBtn" (click)="userAccptReject('accept')">Accept</button>
+        <button type="button" class="btn btn-danger ml-2" id="rejectBtn"
+          (click)="userAccptReject('reject')">Reject</button>
+      </div>
+
+      <!-- Modal Footer -->
+
+    </div>
+  </div>
+</div>

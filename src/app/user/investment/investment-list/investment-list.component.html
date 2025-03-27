@@ -1,0 +1,121 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+     <app-header></app-header>
+     <!-- Left side column. contains the logo and sidebar -->
+     <app-sidebar></app-sidebar>
+     <!-- Content Wrapper. Contains page content -->
+     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+           <h1>
+            Investment
+           </h1>
+           <span class="breadcrumb">
+           <button type="button" class="btn bg-maroon margin" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+           Add
+           </button>
+           <a class="btn btn-primary margin" [routerLink]="['/user/singleUserDetail', userId, groupId]">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          </a>
+           </span>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="box">
+                    <div class="box-header">
+                       <h3 class="box-title">Investment List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                       <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <div class="box-body"  *ngIf="isLoading">
+                       <mat-spinner  class="mx-auto"></mat-spinner>
+                    </div>
+                    <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                       <table id="example2" class="table table-bordered table-hover">
+                          <thead>
+                             <tr>
+                                <th>#</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Payment Status</th>
+                                <th>Payment Method</th>
+                                <th>Note Title</th>
+                                <th>Note Description</th>
+                                <th>Action</th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                             <tr *ngFor="let list of lists; let i = index">
+                                <td>{{list.sno}}</td>
+                                <td>{{list.amount| number:'1.0-0'}}</td>
+                                <td>{{list.description}}</td>
+                                <td>
+                                  <span class="badge badge-primary" *ngIf="list.investment_type === '1'">Property</span>
+                                  <span class="badge badge-dark" *ngIf="list.investment_type === '2'">Others</span>
+                                </td>
+                                <td>
+                                  <span class="badge badge-info" *ngIf="list.payment_status === '1'">Credit</span>
+                                  <span class="badge badge-secondary" *ngIf="list.payment_status === '2'">Debit</span>
+                                </td>
+                                <td>
+                                  <span class="badge badge-secondary" *ngIf="list.payment_method === '1'">Direct Transfer</span>
+                                  <span class="badge badge-success" *ngIf="list.payment_method === '2'">From Provident</span>
+                                  <span class="badge badge-warning" *ngIf="list.payment_method === '3'">From Safe Keeping</span>
+                                </td>
+                                <td>{{list.note_title}}</td>
+                                <td>{{list.note_description}}</td>
+                                <td>
+                                   <button *ngIf="!(list.payment_method === '2' || list.payment_method === '3')"  class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" (click)="onUpdateEdit(list.id)" ngbTooltip="Edit" >
+                                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                   </button>
+                                   <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal" ngbTooltip="View" (click)="onUpdate(list.id)">
+                                    <i class="fa fa-eye"></i>
+                                  </button>
+                                </td>
+
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                    <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"  (page)="onChangedPage($event)"
+                    *ngIf="lists.length > 0"></mat-paginator>
+                    <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                       You have'nt had any investment yet!
+                    </div>
+                    <!-- /.box-body -->
+                 </div>
+                 <!-- /.box -->
+              </div>
+              <!-- /.col -->
+           </div>
+           <!-- /.row -->
+        </section>
+        <!-- /.content -->
+     </div>
+     <!-- /.content-wrapper -->
+     <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+<div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display1}">
+  <div class="modal-dialog">
+     <app-investment-add [uniqueId]= "updateId" [userId]= "userId" [groupId]= "groupId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-investment-add>
+     <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade show" id="viewModal" [ngStyle]="{'display':display}">
+  <div class="modal-dialog">
+    <app-investment-detail [uniqueId]= "updateId" [eachChange]= "eachChange" (closeModal)="closeModalF($event)"></app-investment-detail>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+

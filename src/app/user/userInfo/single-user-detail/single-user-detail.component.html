@@ -1,0 +1,205 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1 *ngIf="groupName == ''">
+          User Detail
+        </h1>
+        <h1 *ngIf="groupName != ''">
+          {{groupName}}
+        </h1>
+        <!-- <span class="breadcrumb">
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+            Add
+          </button>
+        </span> -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="">
+              <!-- /.box-header -->
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body box-profile" *ngIf="!isLoading">
+                <div class="box py-3 mb-4">
+
+
+                <div class="row align-items-center ">
+                  <div class="col-md-4 col-sm-12">
+                    <div class="text-center">
+                      <img class="profile-user-img img-responsive img-circle" [src]="user.profile_image_thumb" alt="User profile picture">
+                    </div>
+                    <h3 class="profile-username text-center mb-1 mt-2">{{user.first_name}} {{user.last_name}}</h3>
+                    <p class="text-muted text-center mb-0">{{user.email}}</p>
+                  </div>
+                  <div class="col-md-8 col-sm-12 text-md-right text-center">
+                    <div class="row">
+                    <div class=" col_withd redColor">
+                    <a  class="btn btn-primary margin" ngbTooltip="User Cycle" [routerLink]="['/user/groupCycleUserList', groupId, user.user_id, user.first_name, user.last_name, user.email]">
+                      <i class="fa fa-circle-o-notch" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-danger margin" ngbTooltip="User Cycle JNR" [routerLink]="['/user/groupCycleJNRUserList', groupId, user.user_id, '2', user.first_name, user.last_name, user.email]">
+                      <i class="fa fa-circle-o-notch" aria-hidden="true"></i>
+                    </a>
+
+
+                    <a  class="btn btn-success margin" ngbTooltip="User Cycle Help To Buy" [routerLink]="['/user/groupHelpToBuyUserList', groupId, user.user_id, '3', user.first_name, user.last_name, user.email]">
+                      <i class="fa fa-circle-o-notch" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class=" col_withd greenColor">
+                    <a  class="btn btn-secondary margin" ngbTooltip="Payout" [routerLink]="['/user/payoutList', groupId, user.user_id, user.first_name, user.last_name, user.email]">
+                      <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-danger margin" ngbTooltip="Payout JNR" [routerLink]="['/user/payoutJNRList', groupId, user.user_id, '2']">
+                      <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-success margin" ngbTooltip="Payout Help to Buy" [routerLink]="['/user/payoutHelpToBuyList', groupId, user.user_id, '3']">
+                      <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    </a>
+                  </div>
+
+                <div class=" col_withd greenColor1">
+                    <a  class="btn btn-info margin" ngbTooltip="Pf" [routerLink]="['/user/pfList', groupId, user.user_id]">
+                      <i class="fa fa-file-text" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-warning margin" ngbTooltip="Safe keeping" [routerLink]="['/user/safeKeepingList', groupId, user.user_id]">
+                      <i class="fa fa-shield" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class=" greenColor2">
+                    <a  class="btn btn-primary margin" ngbTooltip="Miscellaneous" [routerLink]="['/user/miscellaneousList', groupId, user.user_id]">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-success margin" ngbTooltip="Loan" [routerLink]="['/user/loanList', groupId, user.user_id]">
+                      <i class="fa fa-university" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-dark margin" ngbTooltip="Emergency Loan" [routerLink]="['/user/emergencyLoanList', groupId, user.user_id]">
+                      <i class="fa fa-university" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class=" greenColor3 ">
+                    <a  class="btn btn-light margin" ngbTooltip="Investment" [routerLink]="['/user/investmentList', groupId, user.user_id]">
+                      <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                    </a>
+
+                    <a  class="btn btn-info margin" ngbTooltip="Profit" [routerLink]="['/user/profitList', groupId, user.user_id]">
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </a>
+                    </div>
+                    <div class=" col_withd redColor">
+                      <a  class="btn btn-success margin" ngbTooltip="Help to Buy a Car" [routerLink]="['/user/helpToBuyCar', groupId, user.user_id]">
+                        <i class="fa fa-car" aria-hidden="true"></i>
+                      </a>
+
+                      <a  class="btn btn-primary margin" ngbTooltip="Help to Buy Property " [routerLink]="['/user/helpToBuyProperty', groupId, user.user_id]">
+                        <i class="fa fa-building-o" aria-hidden="true"></i>
+                     </a>
+
+                     <a  class="btn btn-dark margin" ngbTooltip="Help to Pay Car Insurance" [routerLink]="['/user/helpToPayCarInsurane', groupId, user.user_id]">
+                      <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                     </a>
+                     <a  class="btn btn-danger margin" ngbTooltip="Help to pay Credit Card" [routerLink]="['/user/helpToPaycc', groupId, user.user_id]">
+                      <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                     </a>
+                     <a  class="btn btn-success margin" ngbTooltip="Welfare" [routerLink]="['/user/welfare', groupId, user.user_id]">
+                      <i class=" fa fa-handshake-o" aria-hidden="true"></i>
+                     </a>
+                   </div>
+                   </div>
+
+                  </div>
+                </div>
+              </div>
+                <ul class="list-group list-group-unbordered ct_padd_inline_15">
+                   <li class="list-group-item">
+                      <b>First Name</b> <a class="pull-right">{{user.first_name}}</a>
+                   </li>
+                   <li class="list-group-item">
+                      <b>Last Name</b> <a class="pull-right">{{user.last_name}}</a>
+                   </li>
+                   <li class="list-group-item">
+                      <b>Email</b> <a class="pull-right">{{user.email}}</a>
+                   </li>
+                   <li class="list-group-item">
+                     <b>Created On</b> <a class="pull-right">{{user.created_at  | date: 'dd/MM/yyyy'}}</a>
+                   </li>
+
+                </ul>
+                <ul class="list-group list-group-unbordered ct_padd_inline_15 mt-4">
+                  <li class="list-group-item">
+                    <b>Savings</b> <a class="pull-right">{{saving | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Savings JNR</b> <a class="pull-right">{{savingJNR | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Help2Buy</b> <a class="pull-right">{{help2Buy | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Loans</b> <a class="pull-right">{{loans | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Safekeeping</b> <a class="pull-right">{{safekeeping | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Provident</b> <a class="pull-right">{{avgAmountPf | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <!-- <li class="list-group-item">
+                    <b>Pay Out</b> <a class="pull-right">{{payoutCycle | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>PayOut JNR</b> <a class="pull-right">{{payoutCycleJnr | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li> -->
+                   <li class="list-group-item">
+                    <b>Investment</b> <a class="pull-right">{{investment | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Dividend</b> <a class="pull-right">{{dividend | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Welfare</b> <a class="pull-right">{{welfare | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Miscellaneous</b> <a class="pull-right">{{misc | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Emergency loan</b> <a class="pull-right">{{emergencyLoan | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+                   <li class="list-group-item">
+                    <b>Overall account balance</b> <a class="pull-right">{{overAllTotal | currency:'GBP': 'symbol' : '1.0-0'}}</a>
+                   </li>
+
+                </ul>
+             </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->

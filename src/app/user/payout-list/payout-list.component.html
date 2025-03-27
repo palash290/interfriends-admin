@@ -1,0 +1,87 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+      <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          <span *ngIf="lifeCycleType === '1'">Payout (Savings)</span>
+          <span *ngIf="lifeCycleType === '2'">Payout (JNR)</span>
+          <span *ngIf="lifeCycleType === '3'">Payout To (Help to Buy)</span>
+        </h1>
+        <span class="breadcrumb">
+          <div ngbDropdown class="d-inline-block mr-2" *ngIf="!isLoading && this.cycleList.length > 0">
+            <button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{filterStartDate | date: 'dd MMM yyyy'}} - {{filterEndDate | date: 'dd MMM yyyy'}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem *ngFor="let data of cycleList" (click)="setCycle(data.id, data.start_date, data.end_date)"><hr>{{data.start_date | date: 'dd MMM yyyy'}}  -  {{data.end_date | date: 'dd MMM yyyy'}}</button>
+            </div>
+          </div>
+          <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          </a>
+        </span>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">
+                  <span *ngIf="lifeCycleType === '1'">Payout (Savings)</span>
+                  <span *ngIf="lifeCycleType === '2'">Payout (JNR)</span>
+                  <span *ngIf="lifeCycleType === '3'">Payout To (Help to Buy)</span>
+                </h3>
+                <h3 class="profile-username text-left mb-1 mt-2">{{firstname}} {{lastname}}</h3>
+                <p class="text-muted text-left"> {{useremail}}</p>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingChangeCycle && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body"  *ngIf="isLoading">
+                <mat-spinner  class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                  <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let list of lists; let i = index">
+                          <td>{{list.payout_amount}}</td>
+                          <td>{{list.created_at | date: 'dd MMM yyyy'}}</td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt received any payout yet for this cycle.
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+  </div>
+  <!-- ./wrapper -->
+
+
+
+

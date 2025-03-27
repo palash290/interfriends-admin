@@ -1,0 +1,24 @@
+.main-img-profile {
+  width: 100px;
+  height: 100px;
+  margin: 20px auto;
+}
+
+.main-img-profile .img-button-profile {
+  padding: 4px 7px;
+  bottom: 0px;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+}
+
+.main-img-profile .img-button-profile i {
+  color: #212529;
+}
+
+.ct_overflow_hidden {
+  height: 460px;
+  overflow-y: auto;
+}
+
+

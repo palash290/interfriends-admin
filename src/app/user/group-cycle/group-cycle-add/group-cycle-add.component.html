@@ -1,0 +1,66 @@
+<div class="modal-content">
+  <div class="modal-header">
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'create'">Add Group Cycle</h1>
+      <h1 class="modal-title mb-0 pl-2" *ngIf="mode == 'update'">Update Group Cycle</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <form role="form" [formGroup]="form" (submit)="onSave()">
+      <div class="box-body" *ngIf="isLoadingUpdate">
+          <mat-spinner class="mx-auto"></mat-spinner>
+      </div>
+      <div class="modal-body" *ngIf="!isLoadingUpdate">
+          <div class="col-md-12">
+              <div class="form-group" [ngClass]="{'has-error': form.get('start_date').invalid  && form.get('start_date').touched}">
+                  <label>Cycle Start Date</label>
+                  <input type="date" data-date-format="Y-m-d" class="form-control" placeholder="Start Date" formControlName="start_date" />
+                  <span class="help-block" *ngIf="form.get('start_date').invalid  && form.get('start_date').touched">
+                    Please enter a start date.
+                  </span>
+              </div>
+            <div class="form-group" [ngClass]="{'has-error': form.get('month_count').invalid  && form.get('month_count').touched}">
+              <label>Cycle Duration</label>
+              <select class="form-control" formControlName="month_count">
+                <option value=''>Please Select</option>
+                <option value="6">6 months</option>
+                <option value="12">12 months</option>
+                <option value="18">18 months</option>
+                <option value="24">24 months</option>
+                <option value="30">30 months</option>
+                <option value="36">36 months</option>
+                <option value="40">40 months</option>
+              </select>
+              <span class="help-block" *ngIf="form.get('month_count').invalid  && form.get('month_count').touched">
+                Please select a Type.
+              </span>
+          </div>
+
+
+          <div class="form-group" [ngClass]="{'has-error': form.get('group_type_id').invalid  && form.get('group_type_id').touched}">
+            <label>Cycle Duration</label>
+            <select class="form-control" formControlName="group_type_id">
+              <option value=''>Please Select</option>
+              <option [value]="data.id" *ngFor="let data of pfPercentList">{{data.title}}</option>
+            </select>
+            <span class="help-block" *ngIf="form.get('group_type_id').invalid  && form.get('group_type_id').touched">
+              Please select a Type.
+            </span>
+        </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                  <span *ngIf="mode === 'create'">Add</span>
+                  <span *ngIf="mode === 'update'">Update</span>
+              </span>
+              <span *ngIf="isLoading">
+                  <i class="fa fa-refresh fa-spin"></i>
+              </span>
+
+          </button>
+      </div>
+  </form>
+</div>

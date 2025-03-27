@@ -1,0 +1,90 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+    
+        <app-header></app-header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Users
+          </h1>
+      
+        </section>
+    
+        <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box">
+                <div class="box-header d-flex align-items-center">
+                  <h3 class="box-title">Block User List</h3>
+                  <!-- <input type="text" class="form-control w-25 rounded float-right ml-auto"  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()"> -->
+                </div>
+                <!-- /.box-header -->
+                <!-- <div class="overlay" >
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div class="box-body" >
+                  <mat-spinner  class="mx-auto"></mat-spinner>
+                </div> -->
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Email</th>
+                          <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let user of users">
+                            <td>{{user.sno}}</td>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>
+
+                              <button type="button" class="btn btn-success m-1" data-toggle="modal" data-target="#blockModal" ngbTooltip="Accept" (click)="onSetId(user.user_id , '2')">
+                                <i class="fa fa-ban" aria-hidden="true"></i>
+                              </button>
+                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unblockModal" ngbTooltip="Reject" (click)="onSetId(user.user_id, '1')">
+                                <i class="fa fa-ban" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                          
+                           
+                            <td>
+                        
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"  (page)="onChangedPage($event)"
+                  *ngIf="users.length > 0"></mat-paginator> -->
+                <!-- <div class="box-body"  *ngIf="users.length <= 0 && !isLoading">
+                  You have'nt had any user yet!
+                </div> -->
+                <!-- /.box-body -->
+              </div>
+              <!-- /.box -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <app-footer></app-footer>
+    </div>
+    </div>
+    <!-- ./wrapper -->
+    
+    
+    
