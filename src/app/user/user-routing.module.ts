@@ -66,6 +66,8 @@ import { CircleUsersComponent } from './group/groupCircle/circle-list/circle-use
 import { CircleUsersAddComponent } from './group/groupCircle/circle-users-add/circle-users-add.component';
 import { UpdateUserPaymentComponent } from './userInfo/update-user-payment/update-user-payment.component';
 import { AdminNotificationsComponent } from './admin-notifications/admin-notifications.component';
+import { ContactManagementComponent } from './contact-management/contact-management.component';
+import { IntrestedUsersComponent } from './intrested-users/intrested-users.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -384,7 +386,18 @@ const routes: Routes = [
           component: NotesHistoryComponent,
           canActivate: [AuthUserGuard]
 
-         }
+         },
+
+         {
+            path: 'contact-management',
+            component: ContactManagementComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'intrested-users',
+            component: IntrestedUsersComponent,
+            canActivate: [AuthUserGuard]
+         },
     ]
   }
 ];

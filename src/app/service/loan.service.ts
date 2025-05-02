@@ -144,7 +144,8 @@ export class LoanService {
     note_description: string,
     payment_method: string,
     status: string,
-    created_at: string
+    created_at: string,
+    loan_title: any
   ): any {
     const instituteData = new FormData();
     let adminId = this.authService.getUserId();
@@ -158,6 +159,7 @@ export class LoanService {
     instituteData.append('payment_method', payment_method);
     instituteData.append('status', status);
     instituteData.append('created_at', created_at);
+    instituteData.append('loan_title', loan_title);
 
     return this.http.post<{
       success: string;

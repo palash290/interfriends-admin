@@ -8,6 +8,7 @@ import { UserList } from '../../model/userList.model';
   styleUrls: ['./block-user.component.css']
 })
 export class BlockUserComponent implements OnInit {
+  
   users: UserList[] = [];
 
   constructor(
@@ -16,25 +17,25 @@ export class BlockUserComponent implements OnInit {
 
   ngOnInit(): void {
     const searchkey: any = ''
-    this.userService.userBlockRequestList(searchkey).subscribe((userData: { userList: UserList[]; userCount: number })=>{
-      console.log(userData,"userData")
+    this.userService.userBlockRequestList(searchkey).subscribe((userData: { userList: UserList[]; userCount: number }) => {
+      console.log(userData, "userData")
       this.users = userData.userList;
     })
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
     }
   }
 
-  onSetId(id : string , status : string){
-this.userService.userBlockconfirm(id , status).subscribe((response : any)=>{
- 
-  this.toastr.success(response.message);
-})
+  onSetId(id: string, status: string) {
+    this.userService.userBlockconfirm(id, status).subscribe((response: any) => {
+
+      this.toastr.success(response.message);
+    })
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { LoanPayment } from '../../../model/loanPayment.model';
 import { Subscription } from 'rxjs';
-import { LoanService} from '../../../service/loan.service';
+import { LoanService } from '../../../service/loan.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 // import * as $ from 'jquery'
 declare var $: any;
 
@@ -24,10 +24,10 @@ export class LoanPaymentComponent implements OnInit {
   interest_rate: number;
   interest_payable: number;
   loanAmount_initital: number;
-  guarantor : string;
-  display : string = 'none';
-  headerName:string;
-  provident:number
+  guarantor: string;
+  display: string = 'none';
+  headerName: string;
+  provident: number
 
 
   // add edit code start
@@ -46,7 +46,7 @@ export class LoanPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.groupId =paramMap.get('groupId');
+      this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
       this.loanId = paramMap.get('loanId');;
 
@@ -65,11 +65,10 @@ export class LoanPaymentComponent implements OnInit {
         this.provident = response.provident;
         this.isLoading = false;
       });
-  });
+    });
 
-  this.getHeaderName()
+    this.getHeaderName()
   }
-
 
 
   // add edit code start
@@ -78,7 +77,7 @@ export class LoanPaymentComponent implements OnInit {
     this.updateId = id;
     console.log(id, 'idddddd');
     this.eachChange = Math.random().toString();
-    this.display= "block";
+    this.display = "block";
   }
 
   hidePopup(status: string): void {
@@ -90,7 +89,7 @@ export class LoanPaymentComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -99,44 +98,47 @@ export class LoanPaymentComponent implements OnInit {
 
   onAdd(): void {
     this.add = Math.random().toString();
-    this.display= "block";
+    this.display = "block";
+    // localStorage.setItem('headerName', this.headerName)
   }
 
-  sendMail(user_id : string, guarantor : string, loanAmount : string)
-  {
+  ngOnDestroy() {
+    localStorage.removeItem('headerName');
+  }
+
+  sendMail(user_id: string, guarantor: string, loanAmount: string) {
 
     this.loanService.emailMissedPayment(
       user_id,
       guarantor,
       loanAmount
     ).subscribe((response: any) => {
-       if (response.success == 0)
-       {
-           this.toastr.error(response.message);
-       }
-       else if(response.success == 1)
-       {
+      if (response.success == 0) {
+        this.toastr.error(response.message);
+      }
+      else if (response.success == 1) {
         this.toastr.success(response.message);
-       }
-  });
-}
+      }
+    });
+  }
 
-closeModalF(event : any) {
-  this.display = event;
-}
+  closeModalF(event: any) {
+    this.display = event;
+  }
 
   // add edit code end
 
-    getHeaderName(){
-    this.userService.loanHeaderName.subscribe((res:string)=>{
-this.headerName = res
+  getHeaderName() {
+    this.userService.loanHeaderName.subscribe((res: string) => {
+      this.headerName = res
       console.log(res, "headr name")
+      localStorage.setItem('headerName', this.headerName)
     })
   }
 
-//   ngOnDestroy() {
-//     console.log("unsicrbe")
-//     this.userService.loanHeaderName.unsubscribe() // <-------
-// }
+  //   ngOnDestroy() {
+  //     console.log("unsicrbe")
+  //     this.userService.loanHeaderName.unsubscribe() // <-------
+  // }
 
 }

@@ -1,0 +1,107 @@
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+
+    <app-header></app-header>
+    <app-sidebar></app-sidebar>
+    <div class="content-wrapper">
+      <section class="content-header">
+        <h1>
+          Contact Management
+        </h1>
+      </section>
+
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header d-flex align-items-center">
+                <h3 class="box-title">Contact Management</h3>
+                <!-- <input type="text" class="form-control w-25 rounded float-right ml-auto" placeholder="Search.."> -->
+              </div>
+              <div class="box-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Received On</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of users; let i=index">
+                      <td>{{i+1}}</td>
+                      <td>{{user.first_name}}</td>
+                      <td>{{user.last_name}}</td>
+                      <td>{{user.email}}</td>
+                      <td>{{user.created_at | date: 'dd/MM/yyyy'}}</td>
+                      <td>
+                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
+                          ngbTooltip="View" (click)="onUpdateView(user)">
+                          <i class="fa fa-eye"></i>
+                        </button>
+                      </td>
+                      <td>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"  (page)="onChangedPage($event)"
+                  *ngIf="users.length > 0"></mat-paginator> -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+
+<div class="modal fade show" id="viewModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">User Detail</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-body box-profile">
+          <h3 class="profile-username text-center">{{user?.first_name}} {{user?.last_name}}</h3>
+          <p class="text-muted text-center">{{user?.email}}</p>
+          <!-- <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>First Name</b> <a class="pull-right">{{user?.first_name}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Last Name</b> <a class="pull-right">{{user?.last_name}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Email</b> <a class="pull-right">{{user?.email}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Received On</b> <a class="pull-right">{{user?.created_at | date: 'dd/MM/yyyy'}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Message</b> <a class="pull-right">{{user?.message}}</a>
+            </li>
+          </ul> -->
+          <div class="list-group-item">
+            <textarea class="w-100" name="" disabled id="" [value]="user?.message"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+  <!-- /.modal-dialog -->
+</div>

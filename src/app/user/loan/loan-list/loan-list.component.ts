@@ -39,7 +39,7 @@ export class LoanListComponent implements OnInit {
 
 
   constructor(
-    /*public userService: UserService,*/
+    public userService: UserService,
     public authService: AuthService,
     public loanService: LoanService,
     private toastr: ToastrService,
@@ -140,5 +140,11 @@ export class LoanListComponent implements OnInit {
     this.display = event;
     this.display1 = event;
   }
+
+  sendHeader(name:string){
+    console.log(name,"name")
+    this.userService.sendheaderName(name)
+  }
+  
 
 }

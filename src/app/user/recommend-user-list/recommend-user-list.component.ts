@@ -55,14 +55,12 @@ export class RecommendUserListComponent implements OnInit {
 
 
   getLists() {
-    console.log("Calling");
     this.recommendUserService.getListUpdateListener().subscribe(
       (listData: { lists: RecommendUserList[]; listCount: number }) => {
         this.lists = listData.lists;
         this.totalLists = listData.listCount;
         this.isLoading = false;
         this.isLoadingPage = false;
-        console.log(this.listDetail, 'listDetail');
       });
   };
 
@@ -77,14 +75,14 @@ export class RecommendUserListComponent implements OnInit {
     this.listDetail = this.lists[index];
     this.display = "block";
   }
-  onUpdateUserStatus(id: string, index: number, userId:number) {
+
+  onUpdateUserStatus(id: string, index: number, userId: number) {
     const formData = new FormData();
     formData.append('user_id', userId.toString())
     this.recommendUserService.viewRecommnedUserForm(formData).subscribe(
       {
         next: resp => {
           this.recommendUser = resp.userinfo;
-      console.log(resp);
           // this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
           // if (resp.success == 1) {
           //   this.onClose2()
@@ -95,11 +93,11 @@ export class RecommendUserListComponent implements OnInit {
         },
         error: error => {
           this.toastr.warning('Something went wrong.');
-
         }
       }
     );
     this.selectListId = id;
+    //debugger
     this.listDetail = this.lists[index];
     this.display1 = "block";
   }
@@ -107,6 +105,7 @@ export class RecommendUserListComponent implements OnInit {
   onClose() {
     this.display = 'none';
   };
+
   onClose2() {
     this.display1 = 'none';
   };
@@ -124,27 +123,21 @@ export class RecommendUserListComponent implements OnInit {
     this.recommendUserService.UpdateStatusAccept(formData).subscribe(
       {
         next: resp => {
-      
           this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
           if (resp.success == 1) {
-              this.toastr.success(resp.message);
-              this.closeModal2.nativeElement.click();
-              document.getElementById('closePopup').click();
-    
-       
+            this.toastr.success(resp.message);
+            this.closeModal2.nativeElement.click();
+            document.getElementById('closePopup').click();
           } else {
-           
+
           }
         },
         error: error => {
           this.toastr.warning('Something went wrong.');
-
         }
       }
     );
-
-
-
   }
+
 
 }

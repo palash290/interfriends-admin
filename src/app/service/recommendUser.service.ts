@@ -47,10 +47,10 @@ export class RecommendUserService {
   };
 
   UpdateStatusAccept(data: any): Observable<any> {
-    return this.http.post<any>('https://interfriends.uk/interfriendsApp/Api/Admin/recommendUser_status', data);
+    return this.http.post<any>(API_URL + '/recommendUser_status', data);
   }
   viewRecommnedUserForm(data: any): Observable<any> {
-    return this.http.post<any>('https://interfriends.uk/interfriendsApp/Api/Admin/userDetailInfo', data);
+    return this.http.post<any>(API_URL + '/userDetailInfo', data);
   }
   
 }

@@ -74,11 +74,11 @@
                           <td>
                             <span class="badge badge-primary" *ngIf="list.status === '1'">Pending</span>
                             <span class="badge badge-success" *ngIf="list.status === '2'">Completed</span>
-                            <span class="badge badge-danger" *ngIf="list.status === '3'">Decline</span>
+                            <span class="badge badge-danger" *ngIf="list.status === '3'">Declined</span>
                             <span class="badge badge-secondary" *ngIf="list.status === '4'">Accepted</span>
                           </td>
                           <td>
-                            <a  class="btn btn-success margin"  [routerLink]="['/user/LoanPayment', groupId, userId, list.id]" ngbTooltip="Payment History">
+                            <a  class="btn btn-success margin"  [routerLink]="['/user/LoanPayment', groupId, userId, list.id]" ngbTooltip="Payment History" (click)="sendHeader('Loan Payment')">
                               <i class="fa fa-history" aria-hidden="true"></i>
                             </a>
 

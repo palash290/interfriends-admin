@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { UserService} from '../../../service/user.service';
-import { UserListService} from '../../../service/userList.service';
+import { AuthService } from '../../../service/auth.service';
+import { UserService } from '../../../service/user.service';
+import { UserListService } from '../../../service/userList.service';
 import { UserList } from 'src/app/model/userList.model';
 
 @Component({
@@ -23,7 +23,7 @@ export class AddUserComponent implements OnInit {
   @Input() eachChange: string;
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
-  @Output()  change: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() change: EventEmitter<string> = new EventEmitter<string>();
 
   user: UserList;
   imagePreview = 'assets/img/default-user-icon.jpg';
@@ -41,7 +41,7 @@ export class AddUserComponent implements OnInit {
     this.form = new FormGroup({
       first_name: new FormControl(null, { validators: [Validators.required] }),
       last_name: new FormControl(null, { validators: [Validators.required] }),
-      email: new FormControl(null, { validators: [Validators.required] }),
+      email: new FormControl(null, { validators: [Validators.required, Validators.email] }),
       unique_id: new FormControl(null, { validators: [Validators.required] }),
       dob: new FormControl(null, { validators: [Validators.required] }),
       created_at: new FormControl(null, { validators: [Validators.required] }),
@@ -54,7 +54,7 @@ export class AddUserComponent implements OnInit {
       address_line_2: new FormControl(null, { validators: [Validators.required] }),
       post_code: new FormControl(null, { validators: [Validators.required] }),
       city: new FormControl(null, { validators: [Validators.required] }),
-      employement_type: new FormControl(null, { validators: [Validators.required] }),
+      employement_type: new FormControl('', { validators: [Validators.required] }),
       image: new FormControl(null, {})
     });
   }
@@ -64,19 +64,19 @@ export class AddUserComponent implements OnInit {
     console.log("changes===========>", changes)
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.userService.getUserInfo(this.mainId)
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+        this.userService.getUserInfo(this.mainId)
           .subscribe((response: any) => {
-            this.user =  response.userinfo;
+            this.user = response.userinfo;
             this.form.patchValue({
               first_name: this.user.first_name,
               last_name: this.user.last_name,
@@ -92,7 +92,7 @@ export class AddUserComponent implements OnInit {
               post_code: this.user.post_code,
               city: this.user.city,
               employement_type: this.user.employement_type,
-              unique_id: this.user.	unique_id,
+              unique_id: this.user.unique_id,
               created_at: this.user.created_at
             });
             this.isLoadingUpdate = false;
@@ -104,9 +104,9 @@ export class AddUserComponent implements OnInit {
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }

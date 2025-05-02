@@ -95,7 +95,7 @@ export class SubadminListComponent implements OnInit {
   // block and unblock code start
   onSetId(id: string): void {
     this.selectPlanId = id;
-    this.display = "block";
+    //this.display = "block";
   }
 
   onBlockUnblock(status: string): void {

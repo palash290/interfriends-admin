@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
   onLogin(): void {
     this.form.markAllAsTouched();
 
@@ -36,10 +35,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.authService.login(
-        this.form.value.email,
-        this.form.value.password
-    );
+    this.authService.login(this.form.value.email, this.form.value.password);
 
     this.form.reset();
   }

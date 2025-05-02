@@ -3,7 +3,10 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { Loanpercent } from 'src/app/model/loanpercent.model';
 import { SafeKeeping } from 'src/app/model/safeKeeping.model';
+import { GroupService } from 'src/app/service/group.service';
+import { LoanpercentService } from 'src/app/service/loanpercent.service';
 import { SafeKeepingService } from 'src/app/service/safeKeeping.service';
 import { UserService } from 'src/app/service/user.service';
 import { UserListService } from 'src/app/service/userList.service';
@@ -14,7 +17,7 @@ import { UserListService } from 'src/app/service/userList.service';
   styleUrls: ['./admin-notifications.component.css']
 })
 export class AdminNotificationsComponent implements OnInit {
-  @ViewChild(MatPaginator, { static : false} ) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   lists: SafeKeeping[] = [];
   users: any[] = [];
   totalUsers = 0;
@@ -30,7 +33,7 @@ export class AdminNotificationsComponent implements OnInit {
   selectListId: string;
   userId: string;
   groupId: string;
-  display : string = 'none';
+  display: string = 'none';
   search = '';
 
   // add edit code start
@@ -38,6 +41,9 @@ export class AdminNotificationsComponent implements OnInit {
   updateId: string;
   eachChange: string;
   add: string;
+  loanList: any;
+  changedStatus: any = '';
+  selectedLoanType: any = '';
   // add edit code end
 
   constructor(
@@ -45,7 +51,8 @@ export class AdminNotificationsComponent implements OnInit {
     public safeKeepingService: SafeKeepingService,
     public userListService: UserListService,
     private toastr: ToastrService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public groupService: GroupService,
   ) { }
 
   ngOnInit(): void {
@@ -60,9 +67,8 @@ export class AdminNotificationsComponent implements OnInit {
     this.eachChange = Math.random().toString();
   };
 
-  getAdminNotifications(listsPerPage :any, currentPage:any, search_keyword:any){
+  getAdminNotifications(listsPerPage: any, currentPage: any, search_keyword: any) {
     const listData = new FormData();
-
 
     if (currentPage) {
       const totalPage = listsPerPage * currentPage;
@@ -71,13 +77,21 @@ export class AdminNotificationsComponent implements OnInit {
 
     listData.append('search_keyword', search_keyword);
 
+    listData.append('loan_type', this.selectedLoanType);
+
+    listData.append('status', this.changedStatus);
+
     this.userListService.postAPI('/paymentallNotification', listData).subscribe(
       (listData: any) => {
-      this.lists = listData.userList;
-      this.totalLists =  listData.userCount;
-      this.isLoading = false;
-      this.isLoadingPage = false;
-    });
+        this.lists = listData.userList;
+        this.totalLists = listData.userCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+      });
+  }
+
+  change(){
+    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
   }
 
   hidePopup(status: string): void {
@@ -93,7 +107,7 @@ export class AdminNotificationsComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -135,20 +149,20 @@ export class AdminNotificationsComponent implements OnInit {
     this.getAdminNotifications(this.listsPerPage, this.currentPage, '');
   }
 
-  openModal(){
+  openModal() {
     this.display = "block";
   }
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   };
 
 
-    // search start
-    keyPress(): any {
-      if (this.users.length > 0) {
-        this.paginator.pageIndex = 0;
-      }
-      this.currentPage = 0;
-      this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+  // search start
+  keyPress(): any {
+    if (this.users.length > 0) {
+      this.paginator.pageIndex = 0;
     }
+    this.currentPage = 0;
+    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+  }
 }

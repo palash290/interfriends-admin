@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import {UserListService} from '../../../service/userList.service';
+import { UserListService } from '../../../service/userList.service';
 import { UserList } from '../../../model/userList.model';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/service/auth.service';
 
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator, { static : false} ) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   users: UserList[] = [];
   totalUsers = 0;
   usersPerPage = 10;
@@ -28,7 +28,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   search = '';
 
 
- // view detail
+  // view detail
   updateId: string;
   eachChange: string;
   add: string;
@@ -45,19 +45,19 @@ export class UserListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-      this.adminType = this.authService.getAdminType();
-      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
-      this.usersSub = this.userService.getUserUpdateListener().subscribe(
-        (userData: { users: UserList[]; userCount: number }) => {
+    this.adminType = this.authService.getAdminType();
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.usersSub = this.userService.getUserUpdateListener().subscribe(
+      (userData: { users: UserList[]; userCount: number }) => {
         this.users = userData.users;
-        this.totalUsers =  userData.userCount;
+        this.totalUsers = userData.userCount;
         this.isLoading = false;
         this.isLoadingPage = false;
       });
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -73,9 +73,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
 
-   // add edit code start
+  // add edit code start
 
-   onUpdate(id: string): void {
+  onUpdate(id: string): void {
     this.updateId = id;
     this.eachChange = Math.random().toString();
     this.display = 'block'
@@ -122,15 +122,15 @@ export class UserListComponent implements OnInit, OnDestroy {
 
 
   onBlockUnblock(status: string): void {
-      this.userService.blockUnblock(this.selectPlanId , status, this.adminType).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
-        this.toastr.success(response.message);
-      });
+    this.userService.blockUnblock(this.selectPlanId, status, this.adminType).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+      this.toastr.success(response.message);
+    });
   }
 
   // search start
@@ -143,8 +143,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
 
-  onCLose()
-  {
+  onCLose() {
     this.display = 'none';
     this.display2 = 'none'
     this.display4 = 'none'
@@ -156,7 +155,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.usersSub.unsubscribe();
   }
 
-  handleCounterChange(event : any) {
+  handleCounterChange(event: any) {
     this.display = event;
     this.display1 = event;
   }
