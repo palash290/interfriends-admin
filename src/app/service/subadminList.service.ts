@@ -7,14 +7,14 @@ import { Subadmin } from '../model/subadmin.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class SubadminListService {
 
   private users: Subadmin[] = [];
-  private usersUpdated = new Subject<{ users: Subadmin[]; userCount: number;}>();
+  private usersUpdated = new Subject<{ users: Subadmin[]; userCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
   getUsers(usersPerPage: number, currentPage: number, search: string) {
@@ -30,8 +30,8 @@ export class SubadminListService {
     userData.append('search_keyword', search);
 
     this.http
-      .post<{ success: string; message: string; userList: any;  userCount: number;}>(
-        API_URL + '/subadmin_list' , userData
+      .post<{ success: string; message: string; userList: any; userCount: number; }>(
+        API_URL + '/subadmin_list', userData
       ).subscribe(responseData => {
         this.users = responseData.userList;
 
@@ -57,8 +57,8 @@ export class SubadminListService {
       message: string,
       userInfo: any
     }>(
-        API_URL + '/subadminDetailInfo', authData
-      );
+      API_URL + '/subadminDetailInfo', authData
+    );
   }
 
 
@@ -75,8 +75,8 @@ export class SubadminListService {
       message: string;
       status: string
     }>(
-        API_URL + '/blockUnblockSubadmin', instituteData
-      );
+      API_URL + '/blockUnblockSubadmin', instituteData
+    );
   }
 
 
@@ -90,28 +90,25 @@ export class SubadminListService {
       success: string;
       message: string;
     }>(
-        API_URL + '/deleteSubAdmin', instituteData
-      );
+      API_URL + '/deleteSubAdmin', instituteData
+    );
   }
 
 
 
-  addUser(
-    name: string,
-    email: string,
-    phone: string,
-  ): any {
+  addUser(name: string, email: string, phone: string, selectedCircle: any): any {
     const userData = new FormData();
-    userData.append('name',name);
-    userData.append('email',email);
-    userData.append('phone',phone);
+    userData.append('name', name);
+    userData.append('email', email);
+    userData.append('phone', phone);
+    userData.append('selectedCircle', selectedCircle);
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/addSubadmin', userData
-      );
+      API_URL + '/addSubadmin', userData
+    );
   }
 
   editUser(
@@ -119,20 +116,21 @@ export class SubadminListService {
     name: string,
     email: string,
     phone: string,
+    selectedCircle: any
   ): any {
     const userData = new FormData();
-    userData.append('id',id);
-    userData.append('name',name);
-    userData.append('email',email);
-    userData.append('phone',phone);
-
+    userData.append('id', id);
+    userData.append('name', name);
+    userData.append('email', email);
+    userData.append('phone', phone);
+    userData.append('selectedCircle', selectedCircle);
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/editSubadmin', userData
-      );
+      API_URL + '/editSubadmin', userData
+    );
   }
 
 }

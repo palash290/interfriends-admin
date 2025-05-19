@@ -199,7 +199,7 @@
         <select class="form-control" [(ngModel)]="selecteduser">
           <option value="" [defaultSelected]="true">Select User</option>
           <option *ngFor="let item of circleUsersList" value="{{ item.user_id }}">
-            {{ item.first_name }}
+            {{ item.first_name }} {{ item.last_name }} 
           </option>
         </select>
       </div>

@@ -22,6 +22,7 @@ export class RecommendUserListComponent implements OnInit {
   pageSizeOptions = [1, 2, 5, 10];
   private listsSub: Subscription;
   isLoading = true;
+  isLoadingBtn = false;
   isLoadingPage = true;
   selectListId: string;
   userId: string;
@@ -111,6 +112,7 @@ export class RecommendUserListComponent implements OnInit {
   };
 
   userAccptReject(value: string) {
+    this.isLoadingBtn = true;
     const formData = new FormData();
     formData.append('id', this.selectListId)
     if (value == 'accept') {
@@ -128,11 +130,13 @@ export class RecommendUserListComponent implements OnInit {
             this.toastr.success(resp.message);
             this.closeModal2.nativeElement.click();
             document.getElementById('closePopup').click();
+            this.isLoadingBtn = false;
           } else {
-
+            this.isLoadingBtn = false;
           }
         },
         error: error => {
+          this.isLoadingBtn = false;
           this.toastr.warning('Something went wrong.');
         }
       }

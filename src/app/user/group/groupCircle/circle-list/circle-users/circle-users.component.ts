@@ -105,7 +105,7 @@ export class CircleUsersComponent implements OnInit {
         this.totalUsers = responseData.userCount;
         this.isLoading = false;
         this.isLoadingPage = false;
-       
+
       });
   };
 
@@ -145,9 +145,9 @@ export class CircleUsersComponent implements OnInit {
 
   // add edit code start
 
-  onUpdate(type:string,id: string): void {
+  onUpdate(type: string, id: string): void {
     this.updateId = id;
-    if(type =='edit'){
+    if (type == 'edit') {
       this.display = "block";
     }
   }
@@ -187,7 +187,7 @@ export class CircleUsersComponent implements OnInit {
   }
 
   onReload(): any {
-    this.getUsers(this.usersPerPage, this.currentPage,this.search);
+    this.getUsers(this.usersPerPage, this.currentPage, this.search);
   }
 
 
@@ -196,10 +196,10 @@ export class CircleUsersComponent implements OnInit {
     this.selectPlanId = id;
   };
 
-  sendEmail(data:NgForm){
+  sendEmail(data: NgForm) {
     console.log("data", data);
     data.control.markAllAsTouched();
-    if(data.invalid){
+    if (data.invalid) {
       return
     }
     const userData = new FormData();
@@ -211,17 +211,17 @@ export class CircleUsersComponent implements OnInit {
       .postAPI(
         '/sendEmailtoUserinCircle', userData
       ).subscribe(responseData => {
-        if(responseData.success == 0){
+        if (responseData.success == 0) {
           this.toastr.warning(responseData.message);
-        }else{
+        } else {
           this.toastr.success(responseData.message)
           // this.totalUsers =  responseData.userCount;
           this.isLoading = false;
           this.isLoadingPage = false;
           document.getElementById('closeBlock3').click();
         }
-    
-       
+
+
       });
   };
 
@@ -255,8 +255,8 @@ export class CircleUsersComponent implements OnInit {
   };
 
 
-  onDelete(){
-   
+  onDelete() {
+
     const formData = new FormData();
     formData.append('id', this.updateId);
     this.groupService.postAPI('/deleteUserCircle', formData).subscribe({
@@ -274,5 +274,12 @@ export class CircleUsersComponent implements OnInit {
       }
     })
   }
+
+  userImg1: any;
+
+  showImg(url: any) {
+    this.userImg1 = url;
+  }
+
 
 }

@@ -1,0 +1,25 @@
+.et_para_verticle_scroll_240{
+    height: auto;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+/* width */
+.et_para_verticle_scroll_240::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.et_para_verticle_scroll_240::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.et_para_verticle_scroll_240::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.et_para_verticle_scroll_240::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

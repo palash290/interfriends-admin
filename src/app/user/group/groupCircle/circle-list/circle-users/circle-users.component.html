@@ -57,8 +57,10 @@
                       <td>{{user.first_name}}</td>
                       <td>{{user.last_name}}</td>
                       <td>{{user.email}}</td>
-                      <td>
-                        <img [src]="user.profile_image_thumb" class="direct-chat-img">
+                      <td data-bs-toggle="modal" data-bs-target="#img22">
+                        <div (click)="showImg(user.profile_image_thumb)" >
+                          <img [src]="user.profile_image_thumb" class="direct-chat-img">
+                        </div>
                       </td>
 
 
@@ -201,16 +203,18 @@
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
               <label>Subject</label>
-              <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
-             
-              <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject" ngModel required />
+
+              <span class="help-block"
+                *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
                 <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
               </span>
             </div>
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
               <label>Body</label>
-              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel
+                required></textarea>
               <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
                 Please enter a Description.
               </span>
@@ -225,4 +229,17 @@
       </div>
     </div>
   </form>
+</div>
+
+
+
+
+<!-- Img -->
+<div class="modal fade" id="img22" tabindex="-1" aria-labelledby="ct_add_eventLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <img [src]="userImg1  ? userImg1 : 'assets/img/np_pro.png'" alt="img">
+      sfsfdsfs
+    </div>
+  </div>
 </div>

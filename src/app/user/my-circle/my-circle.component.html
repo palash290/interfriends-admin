@@ -1,0 +1,90 @@
+<div class="hold-transition sidebar-mini"
+    [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+
+        <app-header></app-header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Groups Circle
+                </h1>
+                <span class="breadcrumb">
+
+                    <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+                        Add
+                    </button>
+                </span>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">INTERFRIENDS (UK) Circle List</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                            <div class="box-body" *ngIf="isLoading">
+                                <mat-spinner class="mx-auto"></mat-spinner>
+                            </div>
+                            <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th> Circle Lead</th>
+                                            <th> Deputy</th>
+                                            <th>Trust Score</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let list of lists; index as i">
+                                            <td>{{i +1}}</td>
+                                            <td>{{list.circle_name}}</td>
+                                            <td>{{list.description}}</td>
+                                            <td>{{list.circle_lead_name || '-'}}</td>
+                                            <td>{{list.deputy_lead_name || '-'}}</td>
+                                            <td>{{list.trust_score | number:'1.0-0'}}</td>
+                                            <td>
+
+                                                <a class="btn btn-warning margin"
+                                                    [routerLink]="['/user/circleUserList',groupID, list.id]"
+                                                    ngbTooltip="Users">
+                                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"
+                                (page)="onChangedPage($event)" *ngIf="lists.length > 0"></mat-paginator>
+                            <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                                You have'nt had any group circle yet!
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <app-footer></app-footer>
+    </div>
+</div>

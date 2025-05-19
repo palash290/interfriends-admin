@@ -98,6 +98,28 @@
               </span>
             </div>
           </div>
+
+          <div class="col-md-6">
+            <div class="form-group"
+              [ngClass]="{'has-error': form.get('country').invalid  && form.get('country').touched}">
+              <label>Country</label>
+              <input type="text" class="form-control" placeholder="Enter country" formControlName="country" />
+              <span class="help-block" *ngIf="form.get('country').invalid  && form.get('country').touched">
+                Please enter a country.
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': form.get('state').invalid  && form.get('state').touched}">
+              <label>State</label>
+              <input type="text" class="form-control" placeholder="Enter state" formControlName="state" />
+              <span class="help-block" *ngIf="form.get('state').invalid  && form.get('state').touched">
+                Please enter a state.
+              </span>
+            </div>
+          </div>
+
           <div class="col-md-6">
             <div class="form-group" [ngClass]="{'has-error': form.get('city').invalid  && form.get('city').touched}">
               <label>City</label>
@@ -183,8 +205,8 @@
                 <option value='1'>Full Time</option>
                 <option value='2'>Part Time</option>
                 <option value='3'>Self employed</option>
-                <option value='4'>Student</option>
-                <option value='5'>Unemployed</option>
+                <option value='4'>Other</option>
+                <!-- <option value='5'>Unemployed</option> -->
               </select>
               <span class="help-block"
                 *ngIf="form.get('employement_type')?.invalid && form.get('employement_type').touched">
@@ -204,6 +226,22 @@
               </span>
             </div>
           </div>
+          <div class="col-sm-3">
+            <label>Documents</label>
+            <figure class="position-relative overflow-hidden main-img-profile m-0 my-0"
+              style="width: auto !important; height: auto !important;" (click)="filePickerId.click()">
+              <img [src]="id_proof_image" alt="" class=" border et_identity_card_img_upload border img-fluid"
+                style="object-fit: cover;">
+              <input type="file" class="d-none" accept="image/*" (change)="onIdImagePicked($event)" #filePickerId>
+              <div class="position-absolute rounded-circle bg-white border img-button-profile"
+                style="left: 50%; top:50%; transform: translate(-50%,-50%);">
+                <i class="fa fa-camera font-size-14"></i>
+              </div>
+            </figure>
+          </div>
+
+
+
         </div>
       </div>
     </div>

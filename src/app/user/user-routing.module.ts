@@ -54,11 +54,11 @@ import { UserCreditScoreComponent } from './user-credit-score/user-credit-score.
 
 /*Aishwarya Holkar Changes Start*/
 import { HelpToBuyCarComponent } from './loan/help-to-buy-car/help-to-buy-car.component'
-import { HelpToBuyPropertyComponent} from './loan/help-to-buy-property/help-to-buy-property.component'
-import {HelpToPayCarInsuraneComponent} from './loan/help-to-pay-car-insurane/help-to-pay-car-insurane.component'
-import {HelpToPayccComponent} from './loan/help-to-paycc/help-to-paycc.component'
-import {GroupsOfUserComponent} from './dashboard/groups-of-user/groups-of-user.component'
-import {GroupedUserDetailComponent} from './dashboard/grouped-user-detail/grouped-user-detail.component'
+import { HelpToBuyPropertyComponent } from './loan/help-to-buy-property/help-to-buy-property.component'
+import { HelpToPayCarInsuraneComponent } from './loan/help-to-pay-car-insurane/help-to-pay-car-insurane.component'
+import { HelpToPayccComponent } from './loan/help-to-paycc/help-to-paycc.component'
+import { GroupsOfUserComponent } from './dashboard/groups-of-user/groups-of-user.component'
+import { GroupedUserDetailComponent } from './dashboard/grouped-user-detail/grouped-user-detail.component'
 import { WelfareComponent } from './loan/welfare/welfare.component';
 import { NotesHistoryComponent } from './loan/welfare/notes-history/notes-history.component';
 import { CircleListComponent } from './group/groupCircle/circle-list/circle-list.component';
@@ -68,12 +68,13 @@ import { UpdateUserPaymentComponent } from './userInfo/update-user-payment/updat
 import { AdminNotificationsComponent } from './admin-notifications/admin-notifications.component';
 import { ContactManagementComponent } from './contact-management/contact-management.component';
 import { IntrestedUsersComponent } from './intrested-users/intrested-users.component';
+import { MyCircleComponent } from './my-circle/my-circle.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
-  {
-    path: '',
-    children: [
+   {
+      path: '',
+      children: [
          {
             path: 'dashboard',
             component: DashboardComponent,
@@ -364,27 +365,30 @@ const routes: Routes = [
             component: HelpToPayccComponent,
             canActivate: [AuthUserGuard]
          },
-         { path: 'groupsOfuser',
-           component : GroupsOfUserComponent,
-           canActivate: [AuthUserGuard]
-         },
-         { path: 'UpdateUserPayment/:id',
-           component : UpdateUserPaymentComponent,
-       
-         },
-         { path: 'groupedUserDetail/:groupId',
-         component : GroupedUserDetailComponent,
-         canActivate: [AuthUserGuard]
+         {
+            path: 'groupsOfuser',
+            component: GroupsOfUserComponent,
+            canActivate: [AuthUserGuard]
          },
          {
-           path : 'welfare/:groupId/:userId',
-           component : WelfareComponent,
-           canActivate: [AuthUserGuard]
+            path: 'UpdateUserPayment/:id',
+            component: UpdateUserPaymentComponent,
+
          },
          {
-          path: 'notesHistoryComponent/:cycleId',
-          component: NotesHistoryComponent,
-          canActivate: [AuthUserGuard]
+            path: 'groupedUserDetail/:groupId',
+            component: GroupedUserDetailComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'welfare/:groupId/:userId',
+            component: WelfareComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'notesHistoryComponent/:cycleId',
+            component: NotesHistoryComponent,
+            canActivate: [AuthUserGuard]
 
          },
 
@@ -398,15 +402,20 @@ const routes: Routes = [
             component: IntrestedUsersComponent,
             canActivate: [AuthUserGuard]
          },
-    ]
-  }
+         {
+            path: 'my-circle',
+            component: MyCircleComponent,
+            canActivate: [AuthUserGuard]
+         },
+      ]
+   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [
-    AuthUserGuard
-  ]
+   imports: [RouterModule.forChild(routes)],
+   exports: [RouterModule],
+   providers: [
+      AuthUserGuard
+   ]
 })
 export class UserRoutingModule { }

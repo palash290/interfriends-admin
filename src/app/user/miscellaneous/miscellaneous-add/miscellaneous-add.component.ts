@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
+import { AuthService } from '../../../service/auth.service';
 import { UserService } from 'src/app/service/user.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MiscellaneousService } from 'src/app/service/miscellaneous.service';
@@ -29,9 +29,9 @@ export class MiscellaneousAddComponent implements OnInit {
   @Input() eachChange: string;
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal1: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal1: EventEmitter<string> = new EventEmitter<string>();
   miscellaneous: Miscellaneous;
-  dropdownSettings:IDropdownSettings = {
+  dropdownSettings: IDropdownSettings = {
     singleSelection: false,
     idField: 'item_id',
     textField: 'item_text',
@@ -54,11 +54,11 @@ export class MiscellaneousAddComponent implements OnInit {
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
       amount: new FormControl(null, { validators: [Validators.required] }),
-      status	: new FormControl(null, { validators: [Validators.required] }),
-      note_title	: new FormControl(null, { validators: [Validators.required] }),
-      note_description	: new FormControl(null, { validators: [Validators.required] }),
-      payment_method: new FormControl(null, { }),
-      paid_status: new FormControl(null, { })
+      status: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, { validators: [Validators.required] }),
+      payment_method: new FormControl(null, {}),
+      paid_status: new FormControl(null, {})
     });
   }
 
@@ -66,19 +66,19 @@ export class MiscellaneousAddComponent implements OnInit {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.miscellaneousService.miscellaneous_detail(this.mainId)
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+        this.miscellaneousService.miscellaneous_detail(this.mainId)
           .subscribe((response: any) => {
-            this.miscellaneous =  response.miscellaneousDetail;
+            this.miscellaneous = response.miscellaneousDetail;
             this.form.patchValue({
               amount: this.miscellaneous.amount,
               status: this.miscellaneous.status,
@@ -93,9 +93,9 @@ export class MiscellaneousAddComponent implements OnInit {
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -150,31 +150,32 @@ export class MiscellaneousAddComponent implements OnInit {
         this.form.value.payment_method,
         this.form.value.paid_status
       ).subscribe({
-next:(response: any) => {
-        console.log("response=======>", response)
-        this.form.reset();
-        document.getElementById('closePopup').click();
-        this.isLoading = false;
-        if (response.success === '1') {
-          this.valueChange.emit('update');
-          this.toastr.success(response.message);
-        } else {
-          this.toastr.error(response.message);
+        next: (response: any) => {
+          console.log("response=======>", response)
+          this.form.reset();
+          document.getElementById('closePopup').click();
+          this.isLoading = false;
+          if (response.success === '1') {
+            this.valueChange.emit('update');
+            this.toastr.success(response.message);
+          } else {
+            this.toastr.error(response.message);
+          }
+        },
+        error: (err: any) => {
+          console.log("err===========>", err)
         }
-      },
-      error:(err:any)=>{
-console.log("err===========>", err)
-      }});
+      });
     }
   }
 
 
 
-  onItemSelect(item:any){
+  onItemSelect(item: any) {
 
   }
 
-  OnItemDeSelect(item:any){
+  OnItemDeSelect(item: any) {
 
   }
 

@@ -27,6 +27,7 @@ export class AddUserComponent implements OnInit {
 
   user: UserList;
   imagePreview = 'assets/img/default-user-icon.jpg';
+  id_proof_image = 'assets/img/blank.webp';
 
   constructor(
     public authService: AuthService,
@@ -53,9 +54,12 @@ export class AddUserComponent implements OnInit {
       address_line_1: new FormControl(null, { validators: [Validators.required] }),
       address_line_2: new FormControl(null, { validators: [Validators.required] }),
       post_code: new FormControl(null, { validators: [Validators.required] }),
+      country: new FormControl(null, { validators: [Validators.required] }),
+      state: new FormControl(null, { validators: [Validators.required] }),
       city: new FormControl(null, { validators: [Validators.required] }),
       employement_type: new FormControl('', { validators: [Validators.required] }),
-      image: new FormControl(null, {})
+      image: new FormControl(null, {}),
+      id_proof_image: new FormControl(null, {})
     });
   }
 
@@ -90,6 +94,8 @@ export class AddUserComponent implements OnInit {
               address_line_1: this.user.address_line_1,
               address_line_2: this.user.address_line_2,
               post_code: this.user.post_code,
+              country: this.user.country,
+              state: this.user.state,
               city: this.user.city,
               employement_type: this.user.employement_type,
               unique_id: this.user.unique_id,
@@ -97,6 +103,7 @@ export class AddUserComponent implements OnInit {
             });
             this.isLoadingUpdate = false;
             this.imagePreview = this.user.profile_image;
+            this.id_proof_image = this.user.id_proof_image
           });
       }
     }
@@ -119,6 +126,17 @@ export class AddUserComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onIdImagePicked(event: Event): any {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({ id_proof_image: file });
+    this.form.get('id_proof_image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.id_proof_image = reader.result as string;
     };
     reader.readAsDataURL(file);
   }
@@ -149,8 +167,11 @@ export class AddUserComponent implements OnInit {
         this.form.value.address_line_1,
         this.form.value.address_line_2,
         this.form.value.post_code,
+        this.form.value.country,
+        this.form.value.state,
         this.form.value.city,
         this.form.value.image,
+        this.form.value.id_proof_image,
         this.form.value.employement_type,
         this.form.value.unique_id,
         this.form.value.created_at
@@ -187,8 +208,11 @@ export class AddUserComponent implements OnInit {
         this.form.value.address_line_1,
         this.form.value.address_line_2,
         this.form.value.post_code,
+        this.form.value.country,
+        this.form.value.state,
         this.form.value.city,
         this.form.value.image,
+        this.form.value.id_proof_image,
         this.form.value.employement_type,
         this.form.value.unique_id,
         this.form.value.created_at

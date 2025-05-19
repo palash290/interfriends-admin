@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { GroupCycleService} from '../../../service/groupCycle.service';
+import { AuthService } from '../../../service/auth.service';
+import { GroupCycleService } from '../../../service/groupCycle.service';
 import { UserService } from 'src/app/service/user.service';
 import { userCycle } from 'src/app/model/userCycle.model';
 import { UserPaymentAmountCheckService } from 'src/app/service/userPaymentAmountCheck.service';
@@ -27,19 +27,21 @@ export class AddGroupCycleUserComponent implements OnInit {
   @Input() eachChange: string;
   @Input() add: string;
   @Input() amountCheck: any;
-  adminType : any
+  adminType: any
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
   group: userCycle;
-  isDisabled : boolean = false;
-amount : any
+  isDisabled: boolean = false;
+  amount: any;
+  minDate: any;
+
   constructor(
     public authService: AuthService,
     public groupCycleService: GroupCycleService,
     public userService: UserService,
     private toastr: ToastrService,
     private router: Router,
-    private userPaymentCheckService : UserPaymentAmountCheckService
+    private userPaymentCheckService: UserPaymentAmountCheckService
   ) { }
 
   ngOnInit(): void {
@@ -55,22 +57,25 @@ amount : any
       payment_method: new FormControl(null, { validators: [Validators.required] }),
     });
 
-   this.adminType = localStorage.getItem('admin_type_interFriendAdmin')
-  this.userPaymentCheckService.amountCheck.subscribe((amount : any)=>{
+    this.adminType = localStorage.getItem('admin_type_interFriendAdmin')
+    this.userPaymentCheckService.amountCheck.subscribe((amount: any) => {
 
-   if(this.adminType == '1' && amount == 0.00){
-    console.log(this.adminType, "==", amount)
-     this.isDisabled = false
-   }else{
-    this.isDisabled = true;
-   }
-})
+      if (this.adminType == '1' && amount == 0.00) {
+        console.log(this.adminType, "==", amount)
+        this.isDisabled = false
+      } else {
+        this.isDisabled = true;
+      }
+    })
+
+        const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
 
   }
 
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return false;
     } else {
       return true;
@@ -81,19 +86,19 @@ amount : any
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.groupCycleService.userGroupCycle(this.mainId)
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+        this.groupCycleService.userGroupCycle(this.mainId)
           .subscribe((response: any) => {
-            this.group =  response.groupDetail;
+            this.group = response.groupDetail;
             this.form.patchValue({
               start_date: this.group.date,
               amount: this.group.amount,
@@ -109,12 +114,12 @@ amount : any
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-            this.form.patchValue({
-              status: '1',
-            });
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+        this.form.patchValue({
+          status: '1',
+        });
+      }
     }
 
   }

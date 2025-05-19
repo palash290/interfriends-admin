@@ -21,4 +21,8 @@
   overflow-y: auto;
 }
 
-
+.et_identity_card_img_upload {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+}

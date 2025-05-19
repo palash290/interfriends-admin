@@ -7,14 +7,14 @@ import { UserList } from '../model/userList.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class UserListService {
 
   private users: UserList[] = [];
-  private usersUpdated = new Subject<{ users: UserList[]; userCount: number;}>();
+  private usersUpdated = new Subject<{ users: UserList[]; userCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
   getUsers(usersPerPage: number, currentPage: number, search: string) {
@@ -30,8 +30,8 @@ export class UserListService {
     userData.append('search_keyword', search);
 
     this.http
-      .post<{ success: string; message: string; userList: any;  userCount: number;}>(
-        API_URL + '/user_list' , userData
+      .post<{ success: string; message: string; userList: any; userCount: number; }>(
+        API_URL + '/user_list', userData
       ).subscribe(responseData => {
         this.users = responseData.userList;
 
@@ -51,7 +51,7 @@ export class UserListService {
   blockUnblock(
     id: string,
     status: string,
-    admintype : string
+    admintype: string
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
@@ -63,13 +63,13 @@ export class UserListService {
       message: string;
       status: string
     }>(
-        API_URL + '/blockUnblockUser', instituteData
-      );
+      API_URL + '/blockUnblockUser', instituteData
+    );
   }
 
   userBlockconfirm(
     id: string,
-    status: string) : any{
+    status: string): any {
 
     const instituteData = new FormData();
     instituteData.append('id', id);
@@ -80,11 +80,11 @@ export class UserListService {
       message: string;
       status: string
     }>(
-        API_URL + '/blockUnblocksubadminuser', instituteData
-      );
+      API_URL + '/blockUnblocksubadminuser', instituteData
+    );
   }
 
-  userBlockRequestList(search_keyword : any) : any{
+  userBlockRequestList(search_keyword: any): any {
     const instituteData = new FormData();
     instituteData.append('search_keyword', search_keyword);
 
@@ -93,8 +93,8 @@ export class UserListService {
       message: string;
       status: string
     }>(
-        API_URL + '/user_list_subadmin', instituteData
-      );
+      API_URL + '/user_list_subadmin', instituteData
+    );
   }
 
   addUser(
@@ -110,45 +110,51 @@ export class UserListService {
     address_line_1: string,
     address_line_2: string,
     post_code: string,
+    country: any,
+    state: any,
     city: string,
     image: string,
+    id_proof_image: any,
     employement_type: string,
     unique_id: string,
     created_at: string
   ): any {
     const userData = new FormData();
-    userData.append('first_name',first_name);
-    userData.append('last_name',last_name);
-    userData.append('email',email);
-    userData.append('dob',dob);
-    userData.append('mobile_number',mobile_number);
-    userData.append('home_number',home_number);
-    userData.append('emergency_number',emergency_number);
-    userData.append('kin_name',kin_name);
-    userData.append('kin_number',kin_number);
-    userData.append('address_line_1',address_line_1);
-    userData.append('address_line_2',address_line_2);
-    userData.append('post_code',post_code);
-    userData.append('city',city);
-    userData.append('image',image);
-    userData.append('employement_type',employement_type);
-    userData.append('unique_id',unique_id);
-    userData.append('created_at',created_at);
+    userData.append('first_name', first_name);
+    userData.append('last_name', last_name);
+    userData.append('email', email);
+    userData.append('dob', dob);
+    userData.append('mobile_number', mobile_number);
+    userData.append('home_number', home_number);
+    userData.append('emergency_number', emergency_number);
+    userData.append('kin_name', kin_name);
+    userData.append('kin_number', kin_number);
+    userData.append('address_line_1', address_line_1);
+    userData.append('address_line_2', address_line_2);
+    userData.append('post_code', post_code);
+    userData.append('country', country);
+    userData.append('state', state);
+    userData.append('city', city);
+    userData.append('image', image);
+    userData.append('id_proof_image', id_proof_image);
+    userData.append('employement_type', employement_type);
+    userData.append('unique_id', unique_id);
+    userData.append('created_at', created_at);
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/addUser', userData
-      );
+      API_URL + '/addUser', userData
+    );
   }
 
-  postAPI(url:any, data:any):Observable<any>{
-    return this.http.post(API_URL + url ,data )
+  postAPI(url: any, data: any): Observable<any> {
+    return this.http.post(API_URL + url, data)
   };
 
-  getApi(url:any):Observable<any>{
-    return this.http.get(API_URL + url )
+  getApi(url: any): Observable<any> {
+    return this.http.get(API_URL + url)
   };
 
   editUser(
@@ -165,39 +171,45 @@ export class UserListService {
     address_line_1: string,
     address_line_2: string,
     post_code: string,
+    country: any,
+    state: any,
     city: string,
     image: string,
+    id_proof_image: any,
     employement_type: string,
     unique_id: string,
     created_at: string
   ): any {
     const userData = new FormData();
-    userData.append('user_id',user_id);
-    userData.append('first_name',first_name);
-    userData.append('last_name',last_name);
-    userData.append('email',email);
-    userData.append('dob',dob);
-    userData.append('mobile_number',mobile_number);
-    userData.append('home_number',home_number);
-    userData.append('emergency_number',emergency_number);
-    userData.append('kin_name',kin_name);
-    userData.append('kin_number',kin_number);
-    userData.append('address_line_1',address_line_1);
-    userData.append('address_line_2',address_line_2);
-    userData.append('post_code',post_code);
-    userData.append('city',city);
-    userData.append('image',image);
-    userData.append('employement_type',employement_type);
-    userData.append('unique_id',unique_id);
-    userData.append('created_at',created_at);
+    userData.append('user_id', user_id);
+    userData.append('first_name', first_name);
+    userData.append('last_name', last_name);
+    userData.append('email', email);
+    userData.append('dob', dob);
+    userData.append('mobile_number', mobile_number);
+    userData.append('home_number', home_number);
+    userData.append('emergency_number', emergency_number);
+    userData.append('kin_name', kin_name);
+    userData.append('kin_number', kin_number);
+    userData.append('address_line_1', address_line_1);
+    userData.append('address_line_2', address_line_2);
+    userData.append('post_code', post_code);
+    userData.append('country', country);
+    userData.append('state', state);
+    userData.append('city', city);
+    userData.append('image', image);
+    userData.append('id_proof_image', id_proof_image);
+    userData.append('employement_type', employement_type);
+    userData.append('unique_id', unique_id);
+    userData.append('created_at', created_at);
 
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/editUser', userData
-      );
+      API_URL + '/editUser', userData
+    );
   }
 
 }

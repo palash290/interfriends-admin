@@ -112,6 +112,7 @@ import { UpdateUserPaymentComponent } from './userInfo/update-user-payment/updat
 import { AdminNotificationsComponent } from './admin-notifications/admin-notifications.component';
 import { ContactManagementComponent } from './contact-management/contact-management.component';
 import { IntrestedUsersComponent } from './intrested-users/intrested-users.component';
+import { MyCircleComponent } from './my-circle/my-circle.component';
 
 @NgModule({
   imports: [
@@ -224,7 +225,8 @@ import { IntrestedUsersComponent } from './intrested-users/intrested-users.compo
   UpdateUserPaymentComponent,
   AdminNotificationsComponent,
   ContactManagementComponent,
-  IntrestedUsersComponent
+  IntrestedUsersComponent,
+  MyCircleComponent
   ],
   providers: [],
   exports: [],

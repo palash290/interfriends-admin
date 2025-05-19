@@ -12,9 +12,12 @@ export interface UserList {
   address_line_1: string;
   address_line_2: string;
   post_code: string;
+  country: any;
+  state: any;
   city: string;
   fcm_token: string;
   profile_image: string;
+  id_proof_image: any;
   profile_image_thumb: string;
   notification_count: string;
   created_at: string;
