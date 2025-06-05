@@ -45,6 +45,13 @@
           <i class="fa fa-users fa-th-list"></i> <span>Block User</span>
         </a>
       </li>
+
+      <li routerLinkActive="active" *ngIf="adminType === '2'">
+        <a routerLink="/user/defaultUser">
+          <i class="fa fa-users fa-th-list"></i> <span>Default User</span>
+        </a>
+      </li>
+
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/subadminList">
           <i class="fa fa-users fa-th-list"></i> <span>Sub Admin</span>
@@ -75,6 +82,13 @@
           <i class="fa fa-fw fa-th-list"></i> <span>Safe Keeping Request</span>
         </a>
       </li>
+
+      <li routerLinkActive="active">
+        <a routerLink="/user/payout-request">
+          <i class="fa fa-fw fa-th-list"></i> <span>Payout Request</span>
+        </a>
+      </li>
+
       <li routerLinkActive="active">
         <a routerLink="/user/adminNotifications">
           <i class="fa fa-fw fa-th-list"></i> <span>Notifications</span>
@@ -91,11 +105,18 @@
         </a>
       </li>
 
+      <li routerLinkActive="active">
+        <a routerLink="/user/outstanding-payments">
+          <i class="fa fa-fw fa-shield"></i> <span>Outstanding Payments</span>
+        </a>
+      </li>
+
       <!-- <li routerLinkActive="active">
         <a routerLink="/user/categoryList">
           <i class="fa fa-sitemap"></i> <span>Category</span>
         </a>
       </li> -->
+
       <li routerLinkActive="active">
         <a routerLink="/user/privacyPolicy">
           <i class="fa fa-fw fa-shield"></i> <span>Privacy Policy</span>

@@ -17,8 +17,8 @@ import { UserListService } from 'src/app/service/userList.service';
 })
 export class UserGroupListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild('closeModal') closeModal!:ElementRef;
-  @ViewChild('closeModal2') closeModal2!:ElementRef;
+  @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('closeModal2') closeModal2!: ElementRef;
   users: UsergroupList[] = [];
   totalUsers = 0;
   usersPerPage = 10;
@@ -164,7 +164,7 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
         const mailButton = document.getElementById('sendMail') as HTMLElement
         mailButton.classList.remove("show");
         this.display4 = 'none'
-console.log(this.display4);
+        console.log(this.display4);
         this.toastr.success(response.message);
         // this.isLoading = false;
       });
@@ -172,12 +172,12 @@ console.log(this.display4);
   onSendMailToAll() {
     this.isLoading = true;
     const userData = new FormData();
-    userData.append('group_id', this.groupId .toString());
-   
+    userData.append('group_id', this.groupId.toString());
+
 
     this.userListService.postAPI('/sendEmailtoUserGroupAll', userData)
       .subscribe((response: any) => {
-       
+
         this.closeModal2.nativeElement.click()
         const mailButton = document.getElementById('sendMail') as HTMLElement
         mailButton.classList.remove("show");
@@ -186,14 +186,14 @@ console.log(this.display4);
         this.toastr.success(response.message);
         this.isLoading = false;
       }
-      ,(err)=>{
-        this.display5 = 'none'
-        this.closeModal2.nativeElement.click()
-        this.toastr.success("Sent successfully");
-        this.isLoading = false;
-       
+        , (err) => {
+          this.display5 = 'none'
+          this.closeModal2.nativeElement.click()
+          this.toastr.success("Sent successfully");
+          this.isLoading = false;
 
-      });
+
+        });
   };
 
   onCLose() {

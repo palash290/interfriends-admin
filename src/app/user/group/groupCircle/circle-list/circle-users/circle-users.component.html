@@ -8,17 +8,30 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>
+      <section class="content-header d-flex align-items-center justify-content-between" style="gap: 10px;">
+        <div>
+           <h1 class="mb-0">
           Circle Users
         </h1>
 
         <h3>{{groupName}}</h3>
-        <span class="breadcrumb">
-          <a [routerLink]="['/user/circleUserGroupAddList', groupId, circleId]" class="btn bg-maroon">
-            Add
-          </a>
-        </span>
+        </div>
+
+        <div class="d-flex" style="gap: 10px;">
+          <span class="">
+            <a [routerLink]="['/user/waiting-list', groupId, circleId]" class="btn bg-warning text-white">
+              Waiting List
+            </a>
+          </span>
+
+          <span class="">
+            <a [routerLink]="['/user/circleUserGroupAddList', groupId, circleId]" class="btn bg-maroon">
+              Add
+            </a>
+          </span>
+        </div>
+
+
       </section>
 
       <!-- Main content -->
@@ -47,7 +60,6 @@
                       <th>Last Name</th>
                       <th>Email</th>
                       <th>Profile Image</th>
-
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -57,13 +69,11 @@
                       <td>{{user.first_name}}</td>
                       <td>{{user.last_name}}</td>
                       <td>{{user.email}}</td>
-                      <td data-bs-toggle="modal" data-bs-target="#img22">
-                        <div (click)="showImg(user.profile_image_thumb)" >
+                      <td data-toggle="modal" data-target="#img22">
+                        <div (click)="showImg(user.profile_image_thumb)">
                           <img [src]="user.profile_image_thumb" class="direct-chat-img">
                         </div>
                       </td>
-
-
                       <td>
                         <!-- <button type="button" class="btn btn-primary margin" data-toggle="modal"
                           data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate('edit',user.id)">
@@ -183,8 +193,6 @@
   </div>
 </div>
 
-
-
 <!-- assign mailModal popup start -->
 <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
   [ngStyle]="{'display':display}">
@@ -235,11 +243,24 @@
 
 
 <!-- Img -->
-<div class="modal fade" id="img22" tabindex="-1" aria-labelledby="ct_add_eventLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-dialog-centered">
+<div class="modal fade" id="img22">
+  <div class="modal-dialog">
     <div class="modal-content">
       <img [src]="userImg1  ? userImg1 : 'assets/img/np_pro.png'" alt="img">
-      sfsfdsfs
     </div>
   </div>
 </div>
+
+<!-- <div  class="circle-modal">
+  <div class="modal-content">
+    <h2>{{ circleName }} Members</h2>
+    <button class="close-btn" >×</button>
+
+    <div class="members-grid">
+      <div *ngFor="let member of users" class="member-card">
+        <img [src]="member.profile_image_thumb || 'assets/default-user.png'" alt="{{ member.name }}">
+        <p>{{ member.first_name }}</p>
+      </div>
+    </div>
+  </div>
+</div> -->

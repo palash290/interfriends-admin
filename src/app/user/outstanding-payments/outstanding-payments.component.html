@@ -1,0 +1,108 @@
+<div class="hold-transition sidebar-mini"
+    [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+
+        <app-header></app-header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Outstanding Payments
+                </h1>
+                <span class="breadcrumb">
+                    <!-- <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+                        Add
+                    </button> -->
+                </span>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header d-flex align-items-center">
+                                <h3 class="box-title">Outstanding Payment List</h3>
+
+                                <!-- <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
+                                    <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Group Type</label>
+                                    <select class="form-control py-2 h-auto ct_input"
+                                        style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedGroupType"
+                                        name="loan_type">
+                                        <option value="">All</option>
+                                        <option value="1">Loan</option>
+                                        <option value="2">Saving</option>
+                                        <option value="3">Mis</option>
+                                    </select>
+                                </div> -->
+
+                                <input type="text" class="form-control w-25 rounded float-right ml-auto"
+                                    *ngIf="!isLoading" placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                            <div class="box-body" *ngIf="isLoading">
+                                <mat-spinner class="mx-auto"></mat-spinner>
+                            </div>
+                            <div class="box-body" *ngIf="users.length > 0 && !isLoading">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Amount</th>
+                                            <th>Group Name</th>
+                                            <th>Created At</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of users, let i = index">
+                                            <td>{{user.sno}}</td>
+                                            <td>{{user.user_info.first_name}}</td>
+                                            <td>{{user.user_info.last_name}}</td>
+                                            <td>{{user.user_info.email}}</td>
+                                            <td>
+                                                <div *ngIf="user.amount">
+                                                    {{user.amount}}
+                                                </div>
+
+                                                <div *ngIf="user.loan_amount">
+                                                    {{user.loan_amount}}
+                                                </div>
+
+                                            </td>
+                                            <td>{{user.type}}</td>
+                                            <td>{{user.created_at | date: 'dd/MM/yyyy'}}</td>
+                                            <!-- <td>
+                                                <button type="button" class="btn btn-dark margin" data-toggle="modal"
+                                                    data-target="#viewModal" ngbTooltip="View"
+                                                    (click)="onUpdateView(user)">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
+                                (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
+
+                            <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
+                                You have'nt had any user yet!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

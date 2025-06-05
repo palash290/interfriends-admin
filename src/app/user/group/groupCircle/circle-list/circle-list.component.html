@@ -13,10 +13,11 @@
           Groups Circle
         </h1>
         <span class="breadcrumb">
-        
+
           <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
             Add
           </button>
+          
         </span>
       </section>
 
@@ -72,15 +73,16 @@
                         </a>
                         <button type="button" class="btn btn-success margin" data-toggle="modal"
                           ngbTooltip="Assign Lead" data-target="#leaderModal" (click)="getcircleUsers(list.id)">
-                         Lead
+                          Lead
                         </button>
                         <button type="button" class="btn btn-success margin" data-toggle="modal"
                           ngbTooltip="Assign deputy" data-target="#deputyModal" (click)="getcircleUsers(list.id)">
-                         Deputy Lead
+                          Deputy Lead
                         </button>
                         <button type="button" class="btn btn-success margin" data-toggle="modal"
-                          ngbTooltip="Send email to this circle users" data-target="#emailModal" (click)="getcircleUsers(list.id)">
-                         Send email
+                          ngbTooltip="Send email to this circle users" data-target="#emailModal"
+                          (click)="getcircleUsers(list.id)">
+                          Send email
                         </button>
                         <!-- <button type="button margin" class="btn btn-danger" data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetId(list.id)" *ngIf="adminType === '2'">
                               <i class="fa fa-ban" aria-hidden="true"></i>
@@ -88,8 +90,6 @@
                             <button type="button" class="btn " data-toggle="modal" ngbTooltip="Group circle" >
                               <i class="fa fa-user-circle" aria-hidden="true"></i>
                             </button>  -->
-
-
                       </td>
                     </tr>
                   </tbody>
@@ -132,7 +132,7 @@
         </button>
       </div>
       <form role="form" [formGroup]="form" (submit)="onSave()">
-      
+
         <div class="modal-body">
           <div class="col-md-12">
             <div class="form-group"
@@ -170,9 +170,9 @@
       </form>
     </div>
 
-    
+
   </div>
- 
+
 </div>
 
 
@@ -199,7 +199,7 @@
         <select class="form-control" [(ngModel)]="selecteduser">
           <option value="" [defaultSelected]="true">Select User</option>
           <option *ngFor="let item of circleUsersList" value="{{ item.user_id }}">
-            {{ item.first_name }} {{ item.last_name }} 
+            {{ item.first_name }} {{ item.last_name }}
           </option>
         </select>
       </div>
@@ -253,8 +253,8 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title mb-0 pl-2" >Send Mail to Circle`s Users</h1>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close" >
+          <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -263,16 +263,18 @@
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
               <label>Subject</label>
-              <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
-             
-              <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject" ngModel required />
+
+              <span class="help-block"
+                *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
                 <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
               </span>
             </div>
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
               <label>Body</label>
-              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel
+                required></textarea>
               <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
                 Please enter a Description.
               </span>
@@ -280,8 +282,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" type="submit" >Send email</button>
-          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2" #closeBlock2 >Close</button>
+          <button class="btn btn-primary" type="submit">Send email</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2"
+            #closeBlock2>Close</button>
         </div>
       </div>
     </div>
@@ -289,15 +292,15 @@
 </div>
 
 
-<div class="modal fade" id="emailLeadsModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
-  [ngStyle]="{'display':display}">
+<div class="modal fade" id="emailLeadsModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display}">
   <form #mailForm="ngForm" (ngSubmit)="sendLeadsEmail(mailForm)">
 
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title mb-0 pl-2" >Send Mail to Circle`s Users</h1>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close" >
+          <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -306,16 +309,18 @@
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
               <label>Subject</label>
-              <input type="text" class="form-control" placeholder="Enter subject" name="subject"  ngModel required />
-             
-              <span class="help-block" *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject" ngModel required />
+
+              <span class="help-block"
+                *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
                 <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
               </span>
             </div>
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
               <label>Body</label>
-              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel required></textarea>
+              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel
+                required></textarea>
               <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
                 Please enter a Description.
               </span>
@@ -323,8 +328,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" type="submit" >Send email</button>
-          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2" #closeBlock2 >Close</button>
+          <button class="btn btn-primary" type="submit">Send email</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2"
+            #closeBlock2>Close</button>
         </div>
       </div>
     </div>

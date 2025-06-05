@@ -36,6 +36,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   display1 = 'none';
   display2 = 'none'
   display4 = 'none'
+  displayDefault = 'none'
+
+  group_ids: any;
 
   constructor(
     public userService: UserListService,
@@ -45,8 +48,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.group_ids = localStorage.getItem('group_ids');
     this.adminType = this.authService.getAdminType();
-    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids);
     this.usersSub = this.userService.getUserUpdateListener().subscribe(
       (userData: { users: UserList[]; userCount: number }) => {
         this.users = userData.users;
@@ -114,6 +118,10 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.selectPlanId = id;
     this.display4 = 'block'
   }
+  onSetDefaultId(id: string): void {
+    this.selectPlanId = id;
+    this.displayDefault = 'block'
+  }
   onSetUnblockId(id: string): void {
     this.selectPlanId = id;
     this.display2 = 'block'
@@ -133,6 +141,16 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDefaultUser(isDefault: string): void {
+    this.userService.setDefault(this.selectPlanId, isDefault, this.adminType).subscribe((response: any) => {
+    
+        document.getElementById('closeDefault').click();
+      
+      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+      this.toastr.success(response.message);
+    });
+  }
+
   // search start
   keyPress(): any {
     if (this.users.length > 0) {
@@ -147,7 +165,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.display = 'none';
     this.display2 = 'none'
     this.display4 = 'none'
-
+    this.displayDefault = 'none'
   }
 
 

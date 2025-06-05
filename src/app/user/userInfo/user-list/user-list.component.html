@@ -66,17 +66,29 @@
                       </td>
                       <td>
                         <div class="d-flex align-items-center">
-                          <button type="button" class="btn btn-primary margin" data-toggle="modal"
-                            data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate(user.user_id)">
+                          <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#exampleModal"
+                            ngbTooltip="Edit" (click)="onUpdate(user.user_id)">
                             <i class="fa fa-edit"></i>
                           </button>
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal"
-                            ngbTooltip="Block" (click)="onSetBlockId(user.user_id)" *ngIf="user.status === '1'">
+                          <!-- Block - Unblock -->
+                          <button type="button" class="btn btn-success margin" data-toggle="modal"
+                            data-target="#blockModal" ngbTooltip="Block" (click)="onSetBlockId(user.user_id)"
+                            *ngIf="user.status === '1'">
                             <i class="fa fa-ban" aria-hidden="true"></i>
                           </button>
                           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unblockModal"
                             ngbTooltip="UnBlock" (click)="onSetUnblockId(user.user_id)" *ngIf="user.status === '2'">
                             <i class="fa fa-ban" aria-hidden="true"></i>
+                          </button>
+
+                          <!-- Default -  -->
+                          <button type="button" class="btn btn-success " data-toggle="modal" data-target="#defaultModal"
+                            ngbTooltip="Default" (click)="onSetDefaultId(user.user_id)"
+                            *ngIf="user.is_default == '1' || user.is_default == '0'">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                          </button>
+                          <button type="button" class="btn btn-danger" *ngIf="user.is_default == '2'">
+                            <i class="fa fa-times" aria-hidden="true"></i>
                           </button>
 
                           <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
@@ -195,3 +207,28 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+
+
+
+
+<!-- block model popup start -->
+<div class="modal fade show" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayDefault}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Mark Default This User</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onDefaultUser('2')">Default</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault"
+          (click)="onCLose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->

@@ -36,6 +36,9 @@ export class AdminNotificationsComponent implements OnInit {
   display: string = 'none';
   search = '';
 
+  startDate: any = '';
+  endDate: any = '';
+
   // add edit code start
   listId: string;
   updateId: string;
@@ -44,6 +47,7 @@ export class AdminNotificationsComponent implements OnInit {
   loanList: any;
   changedStatus: any = '';
   selectedLoanType: any = '';
+  selectedGroupType: any = '';
   // add edit code end
 
   constructor(
@@ -79,7 +83,13 @@ export class AdminNotificationsComponent implements OnInit {
 
     listData.append('loan_type', this.selectedLoanType);
 
+    listData.append('group_type_id', this.selectedGroupType);
+
     listData.append('status', this.changedStatus);
+
+    if (this.startDate && this.endDate) {
+      listData.append('date_range', `${this.startDate}, ${this.endDate}`);
+    }
 
     this.userListService.postAPI('/paymentallNotification', listData).subscribe(
       (listData: any) => {
@@ -90,7 +100,15 @@ export class AdminNotificationsComponent implements OnInit {
       });
   }
 
-  change(){
+  change() {
+    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+  }
+
+  reset() {
+    this.startDate = '';
+    this.endDate = '';
+    this.selectedLoanType = '';
+    this.changedStatus = '';
     this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
   }
 

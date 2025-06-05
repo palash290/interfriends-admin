@@ -34,7 +34,7 @@ export class UpdateUserPaymentComponent implements OnInit {
       savings: new FormControl(null),
       jnr_amount: new FormControl(null),
       expected_date: new FormControl(null, { validators: [Validators.required] }),
-
+      christmas_date: new FormControl(null, { validators: [Validators.required] }),
     });
   };
 
@@ -42,7 +42,7 @@ export class UpdateUserPaymentComponent implements OnInit {
   onSave(): void {
     this.form.markAllAsTouched();
     console.log(this.form.invalid);
-   
+
 
     if (this.form.invalid) {
       return;
@@ -57,13 +57,14 @@ export class UpdateUserPaymentComponent implements OnInit {
 
     }
     userData.append('expected_date', this.form.value.expected_date);
-
+    userData.append('christmas_date', this.form.value.christmas_date);
 
     userData.append('id', this.ID);
+    
     this.userListService.postAPI('/editUserGroupJnr', userData).subscribe((response: any) => {
       this.form.reset();
 
- 
+
       this.isLoading = false;
       console.log("out", this.isLoading)
 

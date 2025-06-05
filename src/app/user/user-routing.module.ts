@@ -69,6 +69,10 @@ import { AdminNotificationsComponent } from './admin-notifications/admin-notific
 import { ContactManagementComponent } from './contact-management/contact-management.component';
 import { IntrestedUsersComponent } from './intrested-users/intrested-users.component';
 import { MyCircleComponent } from './my-circle/my-circle.component';
+import { OutstandingPaymentsComponent } from './outstanding-payments/outstanding-payments.component';
+import { DefaultUserComponent } from './default-user/default-user.component';
+import { PayoutRequestComponent } from './payout-request/payout-request.component';
+import { WaitingListComponent } from './waiting-list/waiting-list.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -108,6 +112,11 @@ const routes: Routes = [
          {
             path: 'circleUserGroupAddList/:groupId/:circleId',
             component: CircleUsersAddComponent,
+            canActivate: [AuthUserGuard]
+         },
+                  {
+            path: 'waiting-list/:groupId/:circleId',
+            component: WaitingListComponent,
             canActivate: [AuthUserGuard]
          },
          {
@@ -405,6 +414,22 @@ const routes: Routes = [
          {
             path: 'my-circle',
             component: MyCircleComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'outstanding-payments',
+            component: OutstandingPaymentsComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'defaultUser',
+            component: DefaultUserComponent,
+            canActivate: [AuthUserGuard]
+         },
+
+         {
+            path: 'payout-request',
+            component: PayoutRequestComponent,
             canActivate: [AuthUserGuard]
          },
       ]

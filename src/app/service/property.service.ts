@@ -59,6 +59,7 @@ export class PropertyService {
     property_tenure: string,
     image: any,
     file: any,
+    userId: any
   ): any {
     const userData = new FormData();
     userData.append('title', title);
@@ -68,6 +69,7 @@ export class PropertyService {
     userData.append('start_date', start_date);
     userData.append('property_tenure', property_tenure);
     userData.append('image', image);
+    userData.append('admin_id', userId);
     if(file.length > 0) {
       for  (var i =  0; i <  file.length; i++)  {
         userData.append("background_image[]",  file[i]);

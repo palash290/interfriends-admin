@@ -113,6 +113,10 @@ import { AdminNotificationsComponent } from './admin-notifications/admin-notific
 import { ContactManagementComponent } from './contact-management/contact-management.component';
 import { IntrestedUsersComponent } from './intrested-users/intrested-users.component';
 import { MyCircleComponent } from './my-circle/my-circle.component';
+import { OutstandingPaymentsComponent } from './outstanding-payments/outstanding-payments.component';
+import { DefaultUserComponent } from './default-user/default-user.component';
+import { PayoutRequestComponent } from './payout-request/payout-request.component';
+import { WaitingListComponent } from './waiting-list/waiting-list.component';
 
 @NgModule({
   imports: [
@@ -226,7 +230,11 @@ import { MyCircleComponent } from './my-circle/my-circle.component';
   AdminNotificationsComponent,
   ContactManagementComponent,
   IntrestedUsersComponent,
-  MyCircleComponent
+  MyCircleComponent,
+  OutstandingPaymentsComponent,
+  DefaultUserComponent,
+  PayoutRequestComponent,
+  WaitingListComponent
   ],
   providers: [],
   exports: [],

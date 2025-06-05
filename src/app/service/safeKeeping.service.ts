@@ -9,14 +9,14 @@ import { SafeKeeping } from '../model/safeKeeping.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class SafeKeepingService {
 
   private lists: SafeKeeping[] = [];
-  private listsUpdated = new Subject<{ lists: SafeKeeping[]; listCount: number; safeKeepingAmount: number;}>();
+  private listsUpdated = new Subject<{ lists: SafeKeeping[]; listCount: number; safeKeepingAmount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
   getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string) {
@@ -34,8 +34,8 @@ export class SafeKeepingService {
 
 
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number; safeKeepingAmount: number;}>(
-        API_URL + '/safeKeeping_list' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; safeKeepingAmount: number; }>(
+        API_URL + '/safeKeeping_list', listData
       ).subscribe(responseData => {
         this.lists = responseData.lists;
 
@@ -61,10 +61,10 @@ export class SafeKeepingService {
     payment_method: string,
     note_title: string,
     note_description: string,
-    safe_keeping_id : string,
-    request_type:number
+    safe_keeping_id: string,
+    request_type: number
   ): any {
-    
+
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
     instituteData.append('group_id', groupId);
@@ -78,7 +78,31 @@ export class SafeKeepingService {
       success: string;
       message: string;
     }>(
-        API_URL + '/debit_Safekeeping', instituteData
-      );
+      API_URL + '/debit_Safekeeping', instituteData
+    );
   }
+
+
+
+  acceptRejectPayout(
+    payout_id: string,
+    request_status: string,
+    group_id: any,
+    user_id: string
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('payout_id', payout_id);
+    instituteData.append('request_status', request_status);
+    instituteData.append('grour_id', group_id);
+    instituteData.append('admin_id', '1');
+    instituteData.append('user_id', user_id);
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/updatePayoutRequestStatus', instituteData
+    );
+  }
+
 }

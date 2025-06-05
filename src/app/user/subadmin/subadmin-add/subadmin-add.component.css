@@ -7,7 +7,7 @@
 .dropdown-toggle {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     background-color: #fff;
 }
@@ -51,14 +51,14 @@
 }
 
 .ct_multi_drop_custom_main .dropdown-toggle {
-    padding: 13.27px 10px;
+    padding: 8.27px 10px;
 }
 
 span.selected-seat {
     background: #3b82f6;
     color: #fff;
     padding: 5px 15px;
-    border-radius: 5px;
+    border-radius: 0px;
 }
 
 .ct_multi_drop_custom_main .dropdown-toggle span {
@@ -78,6 +78,8 @@ span.selected-seat {
     margin-top: 10px;
     border-radius: 10px;
     border: 1px solid #e6e6e6;
+    position: absolute;
+    width: 100%;
 }
 
 .ct_multi_drop_custom_scroll .dropdown-item {

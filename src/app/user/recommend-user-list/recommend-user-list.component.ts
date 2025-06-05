@@ -77,7 +77,10 @@ export class RecommendUserListComponent implements OnInit {
     this.display = "block";
   }
 
-  onUpdateUserStatus(id: string, index: number, userId: number) {
+  btn_status: any;
+
+  onUpdateUserStatus(id: string, index: number, userId: number, admin_status: any) {
+    this.btn_status = admin_status;
     const formData = new FormData();
     formData.append('user_id', userId.toString())
     this.recommendUserService.viewRecommnedUserForm(formData).subscribe(
@@ -98,7 +101,6 @@ export class RecommendUserListComponent implements OnInit {
       }
     );
     this.selectListId = id;
-    //debugger
     this.listDetail = this.lists[index];
     this.display1 = "block";
   }
@@ -132,6 +134,7 @@ export class RecommendUserListComponent implements OnInit {
             document.getElementById('closePopup').click();
             this.isLoadingBtn = false;
           } else {
+            this.toastr.success(resp.message);
             this.isLoadingBtn = false;
           }
         },

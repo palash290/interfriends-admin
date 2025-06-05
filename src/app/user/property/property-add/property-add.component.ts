@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
+import { AuthService } from '../../../service/auth.service';
 import { FileHandle } from '../../../directive/image-drag.directive';
-import { PropertyService} from '../../../service/property.service';
+import { PropertyService } from '../../../service/property.service';
 import { Property } from 'src/app/model/property.model';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-property-add',
@@ -20,20 +20,21 @@ export class PropertyAddComponent implements OnInit {
   form: FormGroup;
   mode = 'create';
   mainId: string;
+  userId: any;
   @Input() uniqueId: string;
   @Input() eachChange: string;
   @Input() add: string;
   property: Property;
   imagePreview = 'assets/img/default-user-icon.jpg';
-  backgroundImage:  {
+  backgroundImage: {
     property_image_id: string;
     background_image: string;
     property_id: string;
-} [] = [];
+  }[] = [];
 
   // image code start
-  fileUploads:any  []  =  [];
-  filesPreview:any  []  =  [];
+  fileUploads: any[] = [];
+  filesPreview: any[] = [];
   files: FileHandle[] = [];
 
   constructor(
@@ -48,15 +49,21 @@ export class PropertyAddComponent implements OnInit {
     this.mode = 'create';
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required] }),
-      short_description: new FormControl(null, { validators: [Validators.required, Validators.minLength(2),
-        Validators.maxLength(70)] }),
-      long_description: new FormControl(null, { validators: [Validators.required, Validators.minLength(2),
-        Validators.maxLength(100)] }),
+      short_description: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(2),
+        Validators.maxLength(70)]
+      }),
+      long_description: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(2),
+        Validators.maxLength(100)]
+      }),
       main_amount: new FormControl(null, { validators: [Validators.required] }),
       start_date: new FormControl(null, { validators: [Validators.required] }),
       property_tenure: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null, {})
     });
+
+    this.userId = localStorage.getItem('userId_interFriendAdmin');
 
     this.setAddEditForm();
   }
@@ -65,26 +72,26 @@ export class PropertyAddComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.mainId = paramMap.get('propertyId');
       console.log(this.mainId, 'this.mainId');
-      if(this.mainId) {
+      if (this.mainId) {
         console.log(this.mainId, 'this. after')
         this.isLoadingUpdate = true;
         this.mode = 'update';
         this.propertyService.property_detail(this.mainId)
-        .subscribe((response: any) => {
-          this.property =  response.propertyDetail;
-          this.form.patchValue({
-            title: this.property.title,
-            short_description: this.property.short_description,
-            long_description: this.property.long_description,
-            main_amount: this.property.main_amount,
-            start_date: this.property.start_date,
-            property_tenure: this.property.property_tenure
-          });
+          .subscribe((response: any) => {
+            this.property = response.propertyDetail;
+            this.form.patchValue({
+              title: this.property.title,
+              short_description: this.property.short_description,
+              long_description: this.property.long_description,
+              main_amount: this.property.main_amount,
+              start_date: this.property.start_date,
+              property_tenure: this.property.property_tenure
+            });
 
-          this.backgroundImage = this.property.background_image;
-          this.imagePreview = this.property.property_image_thumb;
-          this.isLoadingUpdate = false;
-        });
+            this.backgroundImage = this.property.background_image;
+            this.imagePreview = this.property.property_image_thumb;
+            this.isLoadingUpdate = false;
+          });
       } else {
         this.mode = 'create';
         console.log(this.mainId, 'this before')
@@ -93,7 +100,7 @@ export class PropertyAddComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -113,10 +120,10 @@ export class PropertyAddComponent implements OnInit {
   }
 
 
-   // image code start
+  // image code start
 
-   onImagePickedMultiple(event: any): any {
-    for  (var i =  0; i <  event.target.files.length; i++)  {
+  onImagePickedMultiple(event: any): any {
+    for (var i = 0; i < event.target.files.length; i++) {
       this.fileUploads.push(event.target.files[i]);
 
       const reader = new FileReader();
@@ -137,20 +144,20 @@ export class PropertyAddComponent implements OnInit {
     this.files = $event;
     console.log(this.files);
 
-    for  (var i =  0; i < this.files.length; i++)  {
-        console.log(this.files[i].file);
-        this.fileUploads.push(this.files[i].file);
-        this.filesPreview.push(this.files[i].url);
-        console.log(this.files[i].url);
+    for (var i = 0; i < this.files.length; i++) {
+      console.log(this.files[i].file);
+      this.fileUploads.push(this.files[i].file);
+      this.filesPreview.push(this.files[i].url);
+      console.log(this.files[i].url);
     }
   }
 
-   // image code end
+  // image code end
 
 
   deleteImage(id: string, index: number) {
     this.propertyService.deletePropertyImage(id).subscribe((response: any) => {
-      if(response.success === '1') {
+      if (response.success === '1') {
         this.toastr.success(response.message);
         this.backgroundImage.splice(index, 1);
       } else {
@@ -180,7 +187,8 @@ export class PropertyAddComponent implements OnInit {
         this.form.value.start_date,
         this.form.value.property_tenure,
         this.form.value.image,
-        this.fileUploads
+        this.fileUploads,
+        this.userId
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';
@@ -223,4 +231,6 @@ export class PropertyAddComponent implements OnInit {
       });
     }
   }
+
+
 }

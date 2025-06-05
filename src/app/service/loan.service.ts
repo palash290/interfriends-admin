@@ -357,7 +357,9 @@ export class LoanService {
     note_description : string,
     status : string,
     startDate : string,
-    paymentMethod : string
+    paymentMethod : string,
+    is_completed: any,
+    welfare_uuid: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
@@ -371,7 +373,8 @@ export class LoanService {
     instituteData.append('status', status);
     instituteData.append('created_at', startDate);
     instituteData.append('payment_method',paymentMethod);
-
+    instituteData.append('is_completed',is_completed ? is_completed : '');
+    instituteData.append('welfare_uuid',welfare_uuid ? welfare_uuid : '');
     return this.http.post<{
       success: string;
       message: string;

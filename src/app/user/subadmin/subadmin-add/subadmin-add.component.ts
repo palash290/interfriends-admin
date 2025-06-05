@@ -7,6 +7,7 @@ import { SubadminListService } from '../../../service/subadminList.service';
 import { Subadmin } from 'src/app/model/subadmin.model';
 import { GroupService } from 'src/app/service/group.service';
 import { Group } from 'src/app/model/group.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-subadmin-add',
@@ -28,6 +29,10 @@ export class SubadminAddComponent implements OnInit {
   user: Subadmin;
   imagePreview = 'assets/img/default-user-icon.jpg';
   lists: Group[] = [];
+  listsPerPage = 10;
+  currentPage = 0;
+  private listsSub: Subscription;
+  totalLists = 0;
 
   constructor(
     public authService: AuthService,
@@ -44,7 +49,25 @@ export class SubadminAddComponent implements OnInit {
       email: new FormControl(null, { validators: [Validators.required] }),
       phone: new FormControl(null, { validators: [Validators.required] })
     });
-    this.getCircleList();
+    this.groupService.getLists(this.listsPerPage, this.currentPage);
+
+    this.listsSub = this.groupService.getListUpdateListener().subscribe(
+      (listData: { lists: Group[]; listCount: number }) => {
+        this.lists = listData.lists;
+        this.totalLists = listData.listCount;
+        this.isLoading = false;
+      });
+
+
+    // this.userListService.getUserInfo(this.mainId)
+    //   .subscribe((response: any) => {
+    //     this.user = response.userinfo;
+    //     debugger
+    //     this.selectedSeats = response.userinfo.group_ids
+    //       .filter((p: { group_cycle_name: any }) => p.group_cycle_name !== null)
+    //       .map((p: { group_cycle_name: any }) => p.group_cycle_name);
+    //   });
+
   }
 
   //passengers: [{ circle_name: 'test' }, { circle_name: 'second circle' }]
@@ -71,12 +94,19 @@ export class SubadminAddComponent implements OnInit {
               phone: this.user.phone
             });
             this.isLoadingUpdate = false;
+
             // this.imagePreview = this.user.profile_image;
+const groupIds = response.userinfo?.group_ids
+  ?.split(',')
+  .filter((id: string) => id.trim() !== '');
+
+this.selectedSeats = this.lists
+  .filter(seat => groupIds.includes(seat.id.toString()))
+  .map(seat => seat.group_cycle_name);
+
+
           });
 
-        // this.selectedSeats = this.passengers
-        //   .filter((p: { circle_name: any }) => p.circle_name !== null)
-        //   .map((p: { circle_name: any }) => p.circle_name);
       }
     }
 
@@ -90,19 +120,6 @@ export class SubadminAddComponent implements OnInit {
 
   }
 
-  getCircleList() {
-    const formData = new FormData();
-    formData.append('group_id', '22');
-    this.groupService.postAPI('/getCircleBygroupid', formData).subscribe({
-      next: (res: any) => {
-        if (res.success == 1) {
-          this.lists = res.data;
-        } else {
-
-        }
-      }
-    })
-  }
 
   onImagePicked(event: Event): any {
     const file = (event.target as HTMLInputElement).files[0];
@@ -182,7 +199,7 @@ export class SubadminAddComponent implements OnInit {
 
 
   dropdownOpen = false;
-  selectedSeats: number[] = [];
+  selectedSeats: any[] = [];
   selectedCircleIds: number[] = [];
   seatOptions: number[] = [];
 

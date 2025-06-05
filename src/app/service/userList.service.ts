@@ -17,13 +17,17 @@ export class UserListService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  getUsers(usersPerPage: number, currentPage: number, search: string) {
+  getUsers(usersPerPage: number, currentPage: number, search: string, group_ids?: any) {
 
     const userData = new FormData();
 
     if (currentPage) {
       const totalPage = usersPerPage * currentPage;
       userData.append('start', totalPage.toString());
+    }
+    console.log({ group_ids })
+    if (group_ids && group_ids != "") {
+      userData.append('group_ids', group_ids.toString());
     }
 
 
@@ -84,6 +88,23 @@ export class UserListService {
     );
   }
 
+  userDefaultConfirm(
+    id: string,
+    status: string): any {
+
+    const instituteData = new FormData();
+    instituteData.append('id', id);
+    instituteData.append('is_default', status);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + '/isDefaultApproval', instituteData
+    );
+  }
+
   userBlockRequestList(search_keyword: any): any {
     const instituteData = new FormData();
     instituteData.append('search_keyword', search_keyword);
@@ -94,6 +115,38 @@ export class UserListService {
       status: string
     }>(
       API_URL + '/user_list_subadmin', instituteData
+    );
+  }
+
+  userDefaultList(search_keyword: any): any {
+    const instituteData = new FormData();
+    instituteData.append('search_keyword', search_keyword);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + '/default_user_list_subadmin', instituteData
+    );
+  }
+
+  setDefault(
+    id: string,
+    status: string,
+    admintype: string
+  ): any {
+    const instituteData = new FormData();
+    instituteData.append('id', id);
+    instituteData.append('is_default', status);
+    instituteData.append('admintype', admintype);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + '/isDefaultUser', instituteData
     );
   }
 

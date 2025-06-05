@@ -1,0 +1,144 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{
+    'skin-blue': checkAdminType(),
+    'skin-red-light': !checkAdminType()
+  }">
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>Payout Withdrawal Request</h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Payout Withdrawal Request List</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Payout Amount</th>
+                      <th>Total Amount</th>
+                      <th>Status</th>
+                      <th>Created on</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; let i = index">
+                      <td>{{ list.sno }}</td>
+                      <td>{{ list.user_info.first_name + " " + list.user_info.last_name }}</td>
+                      <td>
+                        <a href="mailto: {{ list.user_info.email }}">{{ list.user_info.email }}</a>
+                      </td>
+                      <td>{{ list.payout_amount | number : "1.0-0" }}</td>
+                      <td>{{list.payout_amount_total | number : "1.0-0"}}</td>
+                      <td *ngIf="list.request_status == 0">
+                        <span class="m-1 btn btn-danger btn-sm et_cstm_badge text-white" >Rejected</span>
+                      </td>
+                      <td *ngIf="list.request_status == 1" > <span class="m-1 btn btn-success btn-sm et_cstm_badge  text-white" style="border-radius: 15px;width: 100px;">Accepted</span></td>
+                      <td *ngIf="list.request_status == 2"><span class="m-1 btn btn-warning btn-sm et_cstm_badge  text-white">Pending</span></td>
+                      <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
+                      <td *ngIf="list.request_status == 2">
+                        <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
+                          data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">Rejected
+                        </button>
+                        <button type="button" class="m-1 btn btn-success btn-sm" data-toggle="modal"
+                          data-target="#ct_accept_modal" ngbTooltip="accepted" (click)="getAcceptId(list)">Accepted
+                        </button>
+                      </td>
+
+                      <td *ngIf="list.request_status == 0 || list.request_status == 1">
+                        <button type="button" class="m-1 btn btn-danger btn-sm" ngbTooltip="rejected"
+                          (click)="showMsg()">Rejected
+                        </button>
+                        <button type="button" class="m-1 btn btn-success btn-sm" ngbTooltip="accepted"
+                          (click)="showMsg()">Accepted
+                        </button>
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any payout request yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+
+
+<!-- delete Modal S -->
+<div class="modal fade " id="ct_reject_modal" tabindex="-1" aria-labelledby="ct_reject_modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Reject This Request</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onReject()">Reject</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>
+        <button hidden type="button" class="btn btn-secondary" #closeModal1 data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete Modal E -->
+
+
+<!-- delete Modal S -->
+<div class="modal fade " id="ct_accept_modal" tabindex="-1" aria-labelledby="ct_accept_modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Accept This Request</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onAccept()">Accept</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>
+        <button hidden type="button" class="btn btn-secondary" #closeModal2 data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete Modal E -->

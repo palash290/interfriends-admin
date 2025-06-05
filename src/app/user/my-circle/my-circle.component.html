@@ -13,10 +13,9 @@
                     Groups Circle
                 </h1>
                 <span class="breadcrumb">
-
-                    <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+                    <!-- <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
                         Add
-                    </button>
+                    </button> -->
                 </span>
             </section>
 
@@ -41,9 +40,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Description</th>
-                                            <th> Circle Lead</th>
-                                            <th> Deputy</th>
+                                            <!-- <th>Description</th> -->
+                                            <th>Circle Lead</th>
+                                            <th>Deputy</th>
                                             <th>Trust Score</th>
                                             <th>Action</th>
                                         </tr>
@@ -52,18 +51,16 @@
                                         <tr *ngFor="let list of lists; index as i">
                                             <td>{{i +1}}</td>
                                             <td>{{list.circle_name}}</td>
-                                            <td>{{list.description}}</td>
+                                            <!-- <td>{{list.description}}</td> -->
                                             <td>{{list.circle_lead_name || '-'}}</td>
                                             <td>{{list.deputy_lead_name || '-'}}</td>
                                             <td>{{list.trust_score | number:'1.0-0'}}</td>
                                             <td>
-
                                                 <a class="btn btn-warning margin"
                                                     [routerLink]="['/user/circleUserList',groupID, list.id]"
                                                     ngbTooltip="Users">
                                                     <i class="fa fa-users" aria-hidden="true"></i>
                                                 </a>
-
                                             </td>
                                         </tr>
                                     </tbody>

@@ -35,7 +35,7 @@
                   <div class="form-group"
                      [ngClass]="{'has-error': form.get('email').invalid  && form.get('email').touched}">
                      <label>Email</label>
-                     <input type="text" class="form-control" placeholder="Enter email" formControlName="email" />
+                     <input type="email" class="form-control" placeholder="Enter email" formControlName="email" />
                      <span class="help-block" *ngIf="form.get('email').invalid  && form.get('email').touched">
                         Please enter a email.
                      </span>
@@ -55,11 +55,10 @@
 
 
                <div class="col-md-6">
-                  <div class="form-group"
-                     [ngClass]="{'has-error': form.get('phone').invalid  && form.get('phone').touched}">
-                     <label>Circle</label>
+                  <div class="form-group">
+                     <label>Group List</label>
 
-                     <div #dropdown class="custom-dropdown ct_multi_drop_custom_main mb-4" [class.open]="dropdownOpen">
+                     <div #dropdown class="custom-dropdown ct_multi_drop_custom_main mb-0" [class.open]="dropdownOpen">
                         <div class="dropdown-toggle position-relative" [ngClass]="{'py-2': selectedSeats.length > 0}"
                            (click)="toggleDropdown()">
                            <span *ngIf="selectedSeats.length; else placeholder">
@@ -72,15 +71,15 @@
                         </div>
                         <div class="ct_multi_drop_custom_scroll" *ngIf="dropdownOpen">
                            <div class="dropdown-item" *ngFor="let seat of lists"
-                              (click)="toggleSeatSelection(seat.circle_name, seat.id)"
-                              [class.selected]="selectedSeats.includes(seat.circle_name)">
-                              {{ seat.circle_name }}
+                              (click)="toggleSeatSelection(seat.group_cycle_name, seat.id)"
+                              [class.selected]="selectedSeats.includes(seat.group_cycle_name)">
+                              {{ seat.group_cycle_name }}
                            </div>
                         </div>
                      </div>
 
-                     <span class="help-block" *ngIf="form.get('phone').invalid  && form.get('phone').touched">
-                        Please enter a phone number.
+                     <span class="help-block" *ngIf="selectedSeats.length == 0">
+                        Please select group.
                      </span>
                   </div>
                </div>

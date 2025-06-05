@@ -163,7 +163,6 @@ export class GroupCycleUserListComponent implements OnInit {
   }
 
   showModal() {
-
     this.display2 = "block";
   }
 

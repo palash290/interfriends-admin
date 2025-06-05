@@ -16,7 +16,7 @@
           [ngClass]="{'has-error': form.get('start_date').invalid  && form.get('start_date').touched}">
           <label>Date of Payment</label>
           <input type="date" data-date-format="Y-m-d" class="form-control" placeholder="Start Date"
-            formControlName="start_date" [attr.max]="minDate"/>
+            formControlName="start_date" [attr.max]="minDate" />
           <span class="help-block" *ngIf="form.get('start_date').invalid  && form.get('start_date').touched">
             Please enter a start date.
           </span>

@@ -78,7 +78,7 @@ export class AuthService {
       token: string,
       name: string
     }>(API_URL + '/login', authData)
-      .subscribe(response => {
+      .subscribe((response: any) => {
         const token = response.token;
         //console.log("token", token)
         this.token = token;
@@ -86,6 +86,8 @@ export class AuthService {
           this.isUserAuthenticated = true;
           this.userId = response.user_id;
           this.email = response.email;
+          
+          localStorage.setItem('group_ids', response?.group_ids)
           this.admin_type = response.admin_type;
           this.name = response.name;
           this.authUserStatusListner.next(true);

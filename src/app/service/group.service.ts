@@ -9,17 +9,17 @@ import { Group } from '../model/group.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class GroupService {
 
   private lists: Group[] = [];
-  private listsUpdated = new Subject<{ lists: Group[]; listCount: number;}>();
+  private listsUpdated = new Subject<{ lists: Group[]; listCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
-  getLists(listsPerPage: number, currentPage: number) {
+  getLists(listsPerPage: number, currentPage: number, group_ids?: any) {
 
     const listData = new FormData();
 
@@ -29,10 +29,13 @@ export class GroupService {
       listData.append('start', totalPage.toString());
     }
 
+    if(group_ids){
+    listData.append('group_ids', group_ids.toString());
+    }
 
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number;}>(
-        API_URL + '/group_list' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/group_list', listData
       ).subscribe(responseData => {
         this.lists = responseData.lists;
 
@@ -49,12 +52,12 @@ export class GroupService {
   };
 
 
-  postAPI(url:any, data:any):Observable<any>{
-    return this.http.post(API_URL + url ,data )
+  postAPI(url: any, data: any): Observable<any> {
+    return this.http.post(API_URL + url, data)
   };
 
-  getApi(url:any):Observable<any>{
-    return this.http.get(API_URL + url )
+  getApi(url: any): Observable<any> {
+    return this.http.get(API_URL + url)
   };
 
 
@@ -71,8 +74,8 @@ export class GroupService {
       message: string;
       group_id: string;
     }>(
-        API_URL + '/addGroup', userData
-      );
+      API_URL + '/addGroup', userData
+    );
   }
 
 
@@ -90,8 +93,8 @@ export class GroupService {
       success: string;
       message: string;
     }>(
-        API_URL + '/editGroup', userData
-      );
+      API_URL + '/editGroup', userData
+    );
   }
 
 
@@ -107,8 +110,8 @@ export class GroupService {
       groupDetail: any;
       members: any
     }>(
-        API_URL + '/group_detail', userData
-      );
+      API_URL + '/group_detail', userData
+    );
   }
 
 
@@ -125,7 +128,7 @@ export class GroupService {
       message: string;
       status: string
     }>(
-        API_URL + '/blockUnblockGroup', userData
-      );
+      API_URL + '/blockUnblockGroup', userData
+    );
   }
 }

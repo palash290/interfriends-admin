@@ -9,14 +9,14 @@ import { AuthService } from './auth.service';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class GroupCycleService {
 
   private lists: GroupCycle[] = [];
-  private listsUpdated = new Subject<{ lists: GroupCycle[]; listCount: number;}>();
+  private listsUpdated = new Subject<{ lists: GroupCycle[]; listCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
 
   getLists(listsPerPage: number, currentPage: number, groupId: string) {
@@ -32,8 +32,8 @@ export class GroupCycleService {
     listData.append('group_id', groupId);
 
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number;}>(
-        API_URL + '/groupCycle_list' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/groupCycle_list', listData
       ).subscribe(responseData => {
         this.lists = responseData.lists;
 
@@ -67,8 +67,8 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addGroupCycle', userData
-      );
+      API_URL + '/addGroupCycle', userData
+    );
   }
 
 
@@ -91,8 +91,8 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/editGroupCycle', userData
-      );
+      API_URL + '/editGroupCycle', userData
+    );
   }
 
 
@@ -107,8 +107,8 @@ export class GroupCycleService {
       message: string;
       groupDetail: any;
     }>(
-        API_URL + '/groupCycle_detail', userData
-      );
+      API_URL + '/groupCycle_detail', userData
+    );
   }
 
 
@@ -125,8 +125,8 @@ export class GroupCycleService {
       message: string;
       status: string
     }>(
-        API_URL + '/blockUnblockGroupCycle', userData
-      );
+      API_URL + '/blockUnblockGroupCycle', userData
+    );
   }
 
 
@@ -146,8 +146,8 @@ export class GroupCycleService {
       message: string;
       groupCycleList: any
     }>(
-        API_URL + '/getuser_group_by_singlecycle', userData
-      );
+      API_URL + '/getuser_group_by_singlecycle', userData
+    );
   }
 
   editUserGroupCycleStatus(
@@ -164,8 +164,8 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/edituser_groupCycle', userData
-      );
+      API_URL + '/edituser_groupCycle', userData
+    );
   }
 
   editUserGroupCycle(
@@ -198,15 +198,15 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/edituser_groupCycle', userData
-      );
+      API_URL + '/edituser_groupCycle', userData
+    );
   }
 
 
 
   adduserGroupCycle(
     group_id: string,
-    groupLifecycle_id	: string,
+    groupLifecycle_id: string,
     user_id: string,
     amount: string,
     note: string,
@@ -233,8 +233,8 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/adduser_groupCycle', userData
-      );
+      API_URL + '/adduser_groupCycle', userData
+    );
   }
 
   userGroupCycle(
@@ -248,8 +248,8 @@ export class GroupCycleService {
       message: string;
       groupDetail: any;
     }>(
-        API_URL + '/userCycle_detail', userData
-      );
+      API_URL + '/userCycle_detail', userData
+    );
   }
 
 
@@ -266,8 +266,8 @@ export class GroupCycleService {
       message: string;
       lists: any;
     }>(
-        API_URL + '/groupCycleAll_list_web', userData
-      );
+      API_URL + '/groupCycleAll_list_web', userData
+    );
   }
 
 
@@ -289,8 +289,8 @@ export class GroupCycleService {
       showAlertMessage: boolean;
       showAlreadyAlertMessage: boolean;
     }>(
-        API_URL + '/showStatus', userData
-      );
+      API_URL + '/showStatus', userData
+    );
   }
 
   showStatus(
@@ -310,8 +310,8 @@ export class GroupCycleService {
       showAlertMessage: boolean;
       showAlreadyAlertMessage: boolean;
     }>(
-        API_URL + '/showStatus', userData
-      );
+      API_URL + '/showStatus', userData
+    );
   }
 
 
@@ -320,7 +320,7 @@ export class GroupCycleService {
     user_id: string,
     group_cycle_id: string,
     group_id: string,
-    pfNote : any
+    pfNote: any
   ): any {
     const userData = new FormData();
     let admin_id = this.authService.getUserId();
@@ -334,8 +334,8 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addPayout', userData
-      );
+      API_URL + '/addPayout', userData
+    );
   }
 
 
@@ -343,7 +343,7 @@ export class GroupCycleService {
     user_id: string,
     group_cycle_id: string,
     group_id: string,
-    sfNote : any
+    sfNote: any
   ): any {
     const userData = new FormData();
     let admin_id = this.authService.getUserId();
@@ -357,8 +357,8 @@ export class GroupCycleService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addSafeKeeping', userData
-      );
+      API_URL + '/addSafeKeeping', userData
+    );
   }
 
 
@@ -378,7 +378,7 @@ export class GroupCycleService {
       payoutCycle: any;
     }>(
       API_URL + '/payoutDetail', userData
-      );
+    );
   }
 
 
@@ -394,7 +394,7 @@ export class GroupCycleService {
       cycleDetail: any;
     }>(
       API_URL + '/userCycleStatusHistoryDetail', userData
-      );
+    );
   }
 
   welfareStatusHistoryDetail(
@@ -409,7 +409,7 @@ export class GroupCycleService {
       cycleDetail: any;
     }>(
       API_URL + '/welfareStatusHistoryDetail', userData
-      );
+    );
   }
 }
 

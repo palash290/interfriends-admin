@@ -60,15 +60,15 @@ export class CircleUsersComponent implements OnInit {
 
       localStorage.setItem('groupId_interFriendAdmin', this.groupId);
       this.groupName = localStorage.getItem('GroupnameForUserList');
-      this.getUsers(this.usersPerPage, this.currentPage, this.search)
-      // this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
-      // this.usersSub = this.singleUserGroupList.getUserUpdateListener().subscribe(
-      //   (userData: { users: UsergroupList[]; userCount: number }) => {
-      //   this.users = userData.users;
-      //   this.totalUsers =  userData.userCount;
-      //   this.isLoading = false;
-      //   this.isLoadingPage = false;
-      // });
+      //this.getUsers(this.usersPerPage, this.currentPage, this.search)
+      this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+      this.usersSub = this.singleUserGroupList.getUserUpdateListener().subscribe(
+        (userData: { users: UsergroupList[]; userCount: number }) => {
+        this.users = userData.users;
+        this.totalUsers =  userData.userCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+      });
 
       this.userService.chekgroupLifeCycleExist(this.groupId)
         .subscribe((response: any) => {
@@ -100,7 +100,11 @@ export class CircleUsersComponent implements OnInit {
         '/circleUser_list', userData
       ).subscribe(responseData => {
         this.circleName = responseData.circle_name;
-        this.users = responseData.userList;
+        // this.users = responseData.userList;
+
+        this.users = responseData.userList
+          .filter((user: any) => user.user_id !== this.userId)
+          .sort((a: any, b: any) => a.first_name.localeCompare(b.first_name));
 
         this.totalUsers = responseData.userCount;
         this.isLoading = false;
@@ -136,7 +140,7 @@ export class CircleUsersComponent implements OnInit {
 
 
   onChangedPage(pageData: PageEvent): any {
-    this.isLoadingPage = true;
+    //this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
     this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);

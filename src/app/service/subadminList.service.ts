@@ -94,14 +94,12 @@ export class SubadminListService {
     );
   }
 
-
-
   addUser(name: string, email: string, phone: string, selectedCircle: any): any {
     const userData = new FormData();
     userData.append('name', name);
     userData.append('email', email);
     userData.append('phone', phone);
-    userData.append('selectedCircle', selectedCircle);
+    userData.append('group_ids', selectedCircle);
 
     return this.http.post<{
       success: string;
@@ -123,7 +121,7 @@ export class SubadminListService {
     userData.append('name', name);
     userData.append('email', email);
     userData.append('phone', phone);
-    userData.append('selectedCircle', selectedCircle);
+    userData.append('group_ids', selectedCircle);
 
     return this.http.post<{
       success: string;

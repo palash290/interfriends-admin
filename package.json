@@ -27,6 +27,7 @@
     "@types/jquery": "^3.5.5",
     "agm-direction": "^0.8.9",
     "angular2-multiselect-dropdown": "^5.0.4",
+    "bootstrap": "^5.3.6",
     "ckeditor4-angular": "^2.2.1",
     "firebase": "^8.2.9",
     "ng-multiselect-dropdown": "^0.3.4",
