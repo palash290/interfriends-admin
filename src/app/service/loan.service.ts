@@ -9,16 +9,16 @@ import { AuthService } from './auth.service';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class LoanService {
 
   private lists: Loan[] = [];
-  private listsUpdated = new Subject<{ lists: Loan[]; listCount: number;}>();
+  private listsUpdated = new Subject<{ lists: Loan[]; listCount: number; }>();
   private listsHelp2Pay: Loan[] = [];
-  private listsUpdatedHelp2Pay = new Subject<{ lists: Loan[]; listCount: number;}>();
+  private listsUpdatedHelp2Pay = new Subject<{ lists: Loan[]; listCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
 
   getLists(listsPerPage: number, currentPage: number, userId: string, groupId: string, admin_type: string) {
@@ -37,8 +37,8 @@ export class LoanService {
 
 
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number;}>(
-        API_URL + '/loanList' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/loanList', listData
       ).subscribe(responseData => {
         this.lists = responseData.lists;
 
@@ -54,7 +54,7 @@ export class LoanService {
     return this.listsUpdated.asObservable();
   }
 
-  getListsHelp2Pay(listsPerPage: number, currentPage: number, userId: string, groupId: string, admin_type: string, loan_type : string) {
+  getListsHelp2Pay(listsPerPage: number, currentPage: number, userId: string, groupId: string, admin_type: string, loan_type: string) {
 
     const listData = new FormData();
 
@@ -71,8 +71,8 @@ export class LoanService {
 
 
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number;}>(
-        API_URL + '/loanList_Help2pay' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/loanList_Help2pay', listData
       ).subscribe(responseData => {
         this.listsHelp2Pay = responseData.lists;
 
@@ -93,7 +93,7 @@ export class LoanService {
     user_id: string,
     group_id: string,
     loan_id: string
-  ): any { 
+  ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
     instituteData.append('group_id', group_id);
@@ -108,10 +108,10 @@ export class LoanService {
       interest_rate: number;
       interest_payable: number;
       loanAmount_initital: number;
-      provident:number;
+      provident: number;
     }>(
-        API_URL + '/loanPaymentList', instituteData
-      );
+      API_URL + '/loanPaymentList', instituteData
+    );
   }
 
 
@@ -129,8 +129,8 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/sendgrentorMail', instituteData
-      );
+      API_URL + '/sendgrentorMail', instituteData
+    );
   }
 
 
@@ -165,8 +165,8 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addLoanPayment', instituteData
-      );
+      API_URL + '/addLoanPayment', instituteData
+    );
   }
 
 
@@ -181,8 +181,8 @@ export class LoanService {
       message: string;
       paymentDetail: any;
     }>(
-        API_URL + '/loanPaymentDetail', instituteData
-      );
+      API_URL + '/loanPaymentDetail', instituteData
+    );
   }
 
 
@@ -198,8 +198,8 @@ export class LoanService {
       message: string;
       loanDetail: any;
     }>(
-        API_URL + '/loanDetail', instituteData
-      );
+      API_URL + '/loanDetail', instituteData
+    );
   }
 
 
@@ -231,8 +231,8 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/editLoanPayment', instituteData
-      );
+      API_URL + '/editLoanPayment', instituteData
+    );
   }
 
 
@@ -271,8 +271,8 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/add_loan', instituteData
-      );
+      API_URL + '/add_loan', instituteData
+    );
   }
 
   editLoan(
@@ -286,7 +286,9 @@ export class LoanService {
     noteTitle: string,
     noteDescp: string,
     status: string,
-    created_at: string
+    created_at: string,
+    ref_no: any,
+    loan_emi: any
   ): any {
     const instituteData = new FormData();
     let admin_id = this.authService.getUserId();
@@ -302,15 +304,15 @@ export class LoanService {
     instituteData.append('note_description', noteDescp);
     instituteData.append('status', status);
     instituteData.append('created_at', created_at);
-
+    instituteData.append('reference_no', ref_no);
+    //instituteData.append('loan_emi', loan_emi);
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/editLoan', instituteData
-      );
+      API_URL + '/editLoan', instituteData
+    );
   }
-
 
 
   editLoanStatus(
@@ -325,39 +327,39 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/editLoan', instituteData
-      );
+      API_URL + '/editLoan', instituteData
+    );
   }
 
   welfareList(
     group_id: string,
     user_id: string,
-    groupLifeCycleId : string
+    groupLifeCycleId: string
   ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
     instituteData.append('group_id', group_id);
-    instituteData.append('groupLifecycle_id',groupLifeCycleId);
+    instituteData.append('groupLifecycle_id', groupLifeCycleId);
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/welfareList', instituteData
-      );
+      API_URL + '/welfareList', instituteData
+    );
   }
 
   editWelfare(
-    id : string,
+    id: string,
     user_id: string,
-    admin_id :string,
+    admin_id: string,
     group_id: string,
     loan_amount: string,
     tenure: string,
-    note_title : string,
-    note_description : string,
-    status : string,
-    startDate : string,
-    paymentMethod : string,
+    note_title: string,
+    note_description: string,
+    status: string,
+    startDate: string,
+    paymentMethod: string,
     is_completed: any,
     welfare_uuid: any
   ): any {
@@ -372,15 +374,15 @@ export class LoanService {
     instituteData.append('note_description', note_description);
     instituteData.append('status', status);
     instituteData.append('created_at', startDate);
-    instituteData.append('payment_method',paymentMethod);
-    instituteData.append('is_completed',is_completed ? is_completed : '');
-    instituteData.append('welfare_uuid',welfare_uuid ? welfare_uuid : '');
+    instituteData.append('payment_method', paymentMethod);
+    instituteData.append('is_completed', is_completed ? is_completed : '');
+    instituteData.append('welfare_uuid', welfare_uuid ? welfare_uuid : '');
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/editwelfareCycle', instituteData
-      );
+      API_URL + '/editwelfareCycle', instituteData
+    );
   }
 
 
@@ -389,12 +391,12 @@ export class LoanService {
     group_id: string,
     loan_amount: string,
     tenure: string,
-    total40month : string,
-    provident : string,
-    admin_risk : string,
-    loan_emi : string,
-    startDate : string,
-    groupLifeCycleId : string
+    total40month: string,
+    provident: string,
+    admin_risk: string,
+    loan_emi: string,
+    startDate: string,
+    groupLifeCycleId: string
   ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
@@ -412,18 +414,18 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addWelfareCycle', instituteData
-      );
+      API_URL + '/addWelfareCycle', instituteData
+    );
   }
 
 
 
   addSafeKeeping(
     user_id: string,
-    admin_id :string,
+    admin_id: string,
     group_id: string,
-    note : string,
-    groupLifeCycleId : string
+    note: string,
+    groupLifeCycleId: string
   ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
@@ -436,16 +438,16 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addSafeKeeping', instituteData
-      );
+      API_URL + '/addSafeKeeping', instituteData
+    );
   }
 
   addPayoutwelfareCycle(
     user_id: string,
-    admin_id :string,
+    admin_id: string,
     group_id: string,
-    note : string,
-    groupLifeCycleId : string
+    note: string,
+    groupLifeCycleId: string
   ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
@@ -458,8 +460,8 @@ export class LoanService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addPayoutwelfareCycle', instituteData
-      );
+      API_URL + '/addPayoutwelfareCycle', instituteData
+    );
   }
 
   loanStatusHistoryDetail(
@@ -473,8 +475,8 @@ export class LoanService {
       message: string;
       loanDetail: any;
     }>(
-        API_URL + '/loanStatusHistoryDetail', instituteData
-      );
+      API_URL + '/loanStatusHistoryDetail', instituteData
+    );
   }
 
 
@@ -489,8 +491,8 @@ export class LoanService {
       message: string;
       loanDetail: any;
     }>(
-        API_URL + '/emergencyLoanStatusHistoryDetail', instituteData
-      );
+      API_URL + '/emergencyLoanStatusHistoryDetail', instituteData
+    );
   }
 
 
@@ -500,7 +502,7 @@ export class LoanService {
       message: string;
       loanList: any;
     }>(
-        API_URL + '/all_loan_list',
-      );
+      API_URL + '/all_loan_list',
+    );
   }
 }

@@ -27,6 +27,7 @@ export class AddLoanComponent implements OnInit {
   @Input() add: string;
   @Input() userId: string;
   @Input() groupId: string;
+  @Input() loan_emi: string;
 
 
   @Output() valueChange = new EventEmitter();
@@ -54,7 +55,8 @@ export class AddLoanComponent implements OnInit {
       note_title	: new FormControl(null, { validators: [Validators.required] }),
       note_description	: new FormControl(null, { validators: [Validators.required] }),
       status	: new FormControl(null, { validators: [Validators.required] }),
-      created_at : new FormControl(null, { validators: [Validators.required] })
+      created_at : new FormControl(null, { validators: [Validators.required] }),
+      ref_no : new FormControl(null, { validators: [Validators.required] })
     });
 
 
@@ -152,7 +154,9 @@ export class AddLoanComponent implements OnInit {
         this.form.value.note_title,
         this.form.value.note_description,
         this.form.value.status,
-        this.form.value.created_at
+        this.form.value.created_at,
+        this.form.value.ref_no,
+        this.loan_emi
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();

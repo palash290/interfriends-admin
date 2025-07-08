@@ -40,6 +40,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
   loan: any;
   modalData: any;
   request_status: string;
+  group_ids: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -49,6 +50,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.group_ids = localStorage.getItem('group_ids');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
@@ -56,7 +58,8 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
         this.listsPerPage,
         this.currentPage,
         this.userId,
-        this.groupId
+        this.groupId,
+        this.group_ids
       );
       this.listsSub = this.safekeepingwithdralService
         .getListUpdateListener()

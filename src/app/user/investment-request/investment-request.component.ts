@@ -26,6 +26,7 @@ export class InvestmentRequestComponent implements OnInit {
   userId: string;
   groupId: string;
   display : string  ="none"
+  group_ids: any;
 
   constructor(
     public investmentRequestService: InvestmentRequestService,
@@ -34,10 +35,11 @@ export class InvestmentRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+     this.group_ids = localStorage.getItem('group_ids');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
-      this.investmentRequestService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
+      this.investmentRequestService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.group_ids);
       this.listsSub = this.investmentRequestService.getListUpdateListener().subscribe(
         (listData: { lists: InvestmentRequest[]; listCount: number }) => {
         this.lists = listData.lists;

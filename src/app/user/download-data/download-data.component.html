@@ -1,0 +1,180 @@
+<div class="hold-transition sidebar-mini"
+    [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+
+        <app-header></app-header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Download Data
+                </h1>
+
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-4 px-3 mt-3"
+                                style="gap:10px">
+
+                                <div class="d-flex align-items-center" style="gap:10px">
+                                    <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
+                                        <!-- <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Select</label> -->
+                                        <select class="form-control py-2 h-auto ct_input"
+                                            [(ngModel)]="selectedGroupType"
+                                            (ngModelChange)="getAdminNotifications(usersPerPage, currentPage, search)">
+                                            <option value="" disabled>Select Category</option>
+                                            <option value="payout">Payout</option>
+                                            <option value="investment">Investment</option>
+                                            <option value="property">Property</option>
+                                            <option value="pf_user">Provident</option>
+                                            <option value="emergency_loan_completed">Emergency Loan Completed</option>
+                                            <option value="emergency_loan_active">Emergency Loan Active</option>
+                                            <option value="loan_completed">Loan Completed</option>
+                                            <option value="loan_paid">Loan Paid</option>
+                                            <option value="active_loan">Active Loan</option>
+                                            <option value="help_to_buy_car">Help To Buy Car</option>
+                                            <option value="help_to_pay_car_insurance">Help To Pay Car Insurance</option>
+                                            <option value="help_to_pay_cc">Help To Pay CC and</option>
+                                            <option value="help_to_buy_house">Help To Buy House</option>
+                                            <option value="dividend">Dividend</option>
+                                            <option value="miscellaneous">Miscellaneous</option>
+                                            <option value="welfare_cycle">Welfare</option>
+                                            <option value="jnr_saving">Saving JNR</option>
+                                            <option value="saving_pending">Pending Savings</option>
+                                            <option value="saving">Savings Paid</option>
+                                            <option value="safekeeping_add">Safekeeping Credit</option>
+                                            <option value="safekeeping_remove">Safekeeping Debit</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
+                                        <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Loan Type</label>
+                                        <select class="form-control py-2 h-auto ct_input "
+                                            style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedLoanType"
+                                            name="loan_type">
+                                            <option value="">All</option>
+                                            <option value="1">Loan</option>
+                                            <option value="2">Help2 Pay(Car Insurance)</option>
+                                            <option value="3">Help2 Buy Car</option>
+                                            <option value="4">Help2 Pay(credit card)</option>
+                                            <option value="5">Help2 Pay(other)</option>
+                                            <option value="8">Emergency Loan</option>
+                                            <option value="9">Miscellaneous</option>
+                                        </select>
+                                    </div> -->
+
+                                    <!-- <div>
+                                        <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
+                                            <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Status</label>
+                                            <select class="form-control py-2 h-auto ct_input "
+                                                style="border-radius: 5px;width: 100px;" [(ngModel)]="changedStatus"
+                                                name="loan_type">
+                                                <option value="">All</option>
+                                                <option value="1">Pending</option>
+                                                <option value="2">Paid On Time</option>
+                                                <option value="3">Missed Payment Deadline</option>
+                                                <option value="4">Paid Late</option>
+                                            </select>
+                                        </div>
+                                    </div> -->
+
+                                    <!-- From Date -->
+                                    <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
+                                        style="gap:10px">
+                                        <label class="ct_fs_18 ct_fw_500 mb-0">From<span
+                                                class="ct_text_red">*</span></label>
+                                        <div class="position-relative">
+                                            <input type="date" class="form-control ct_input ct_fs_18"
+                                                [(ngModel)]="startDate" [disabled]="!selectedGroupType">
+                                        </div>
+                                    </div>
+
+                                    <!-- To Date -->
+                                    <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
+                                        style="gap:10px">
+                                        <label class="ct_fs_18 ct_fw_500 mb-0">To<span
+                                                class="ct_text_red">*</span></label>
+                                        <div class="position-relative">
+                                            <input type="date" class="form-control ct_input ct_fs_18"
+                                                [(ngModel)]="endDate" [disabled]="!startDate"
+                                                (ngModelChange)="getAdminNotifications(usersPerPage, currentPage, search)">
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
+
+                                        <button class="btn btn-primary" style="height:37px"
+                                            (click)="reset()">Reset</button>
+
+                                    </div>
+
+                                </div>
+                                <div class="d-flex align-items-center " style="gap: 10px;">
+                                    <input type="text" class="form-control rounded " *ngIf="!isLoading"
+                                        placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+                                    <button class="btn btn-primary" (click)="downloadCSV()">Download CSV</button>
+                                </div>
+                            </div>
+
+                            <!-- /.box-header -->
+                            <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                            <div class="box-body" *ngIf="isLoading">
+                                <mat-spinner class="mx-auto"></mat-spinner>
+                            </div>
+                            <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Amount</th>
+                                            <th>Type</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let list of lists; let i = index">
+                                            <td>{{list.sno}}</td>
+                                            <!-- <td>{{list.amount| number:'1.0-0'}}</td> -->
+                                            <td>{{list.first_name}}</td>
+                                            <td>{{list.last_name }}</td>
+                                            <td>{{list.email}}</td>
+                                            <td>£{{list.amount | number:'1.0-0'}}</td>
+                                            <td>{{ typeLabels[list.type] || list.type }}</td>
+                                            <td>{{list.created_at | date:'dd-MM-yyyy'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"
+                                (page)="onChangedPage($event)" *ngIf="lists.length > 0"></mat-paginator>
+                            <div class="box-body text-center py-4" *ngIf="lists.length <= 0 && !isLoading">
+                                No data found
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <app-footer></app-footer>
+    </div>
+</div>
+<!-- ./wrapper -->

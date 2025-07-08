@@ -117,6 +117,8 @@ import { OutstandingPaymentsComponent } from './outstanding-payments/outstanding
 import { DefaultUserComponent } from './default-user/default-user.component';
 import { PayoutRequestComponent } from './payout-request/payout-request.component';
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
+import { DownloadDataComponent } from './download-data/download-data.component';
+import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/safekeeping-cycle-request.component';
 
 @NgModule({
   imports: [
@@ -234,7 +236,9 @@ import { WaitingListComponent } from './waiting-list/waiting-list.component';
   OutstandingPaymentsComponent,
   DefaultUserComponent,
   PayoutRequestComponent,
-  WaitingListComponent
+  WaitingListComponent,
+  DownloadDataComponent,
+  SafekeepingCycleRequestComponent
   ],
   providers: [],
   exports: [],

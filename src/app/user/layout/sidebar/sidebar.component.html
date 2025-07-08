@@ -30,25 +30,25 @@
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/userList">
-          <i class="fa fa-users fa-th-list"></i> <span>User</span>
+          <i class="fa fa-users fa-th-list"></i> <span>All members</span>
         </a>
       </li>
 
-      <li routerLinkActive="active">
+      <!-- <li routerLinkActive="active">
         <a routerLink="/user/my-circle">
           <i class="fa fa-users fa-th-list"></i> <span>My Circle</span>
         </a>
-      </li>
+      </li> -->
 
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/blockUser">
-          <i class="fa fa-users fa-th-list"></i> <span>Block User</span>
+          <i class="fa fa-users fa-th-list"></i> <span>Blocked members</span>
         </a>
       </li>
 
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/defaultUser">
-          <i class="fa fa-users fa-th-list"></i> <span>Default User</span>
+          <i class="fa fa-users fa-th-list"></i> <span>Defaulted members</span>
         </a>
       </li>
 
@@ -69,12 +69,12 @@
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/user-credit-score">
-          <i class="fa fa-fw fa-th-list"></i> <span>user credit score</span>
+          <i class="fa fa-fw fa-th-list"></i> <span>Member Trust Scores</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/recommendUserList">
-          <i class="fa fa-fw fa-th-list"></i> <span>Recommend User List</span>
+          <i class="fa fa-fw fa-th-list"></i> <span>Recommended members</span>
         </a>
       </li>
       <li routerLinkActive="active">
@@ -90,10 +90,23 @@
       </li>
 
       <li routerLinkActive="active">
+        <a routerLink="/user/safekeeping-cycle-request">
+          <i class="fa fa-fw fa-th-list"></i> <span>Safe Keeping Cycle Request</span>
+        </a>
+      </li>
+
+      <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/adminNotifications">
           <i class="fa fa-fw fa-th-list"></i> <span>Notifications</span>
         </a>
       </li>
+
+      <li routerLinkActive="active" *ngIf="adminType === '2'">
+        <a routerLink="/user/download-data">
+          <i class="fa fa-fw fa-th-list"></i> <span>Download</span>
+        </a>
+      </li>
+
       <li routerLinkActive="active">
         <a routerLink="/user/investmentRequest">
           <i class="fa fa-fw fa-th-list"></i> <span>Investment Proposal</span>
@@ -101,7 +114,7 @@
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/propertyList">
-          <i class="fa fa-fw fa-th-list"></i> <span>Property</span>
+          <i class="fa fa-fw fa-th-list"></i> <span>Available investments</span>
         </a>
       </li>
 
@@ -146,7 +159,7 @@
 
       <li routerLinkActive="active">
         <a routerLink="/user/intrested-users">
-          <i class="fa fa-fw fa-file"></i> <span>All Intrested Users</span>
+          <i class="fa fa-fw fa-file"></i> <span>All intrested members</span>
         </a>
       </li>
 

@@ -61,14 +61,14 @@ export class CircleUsersComponent implements OnInit {
       localStorage.setItem('groupId_interFriendAdmin', this.groupId);
       this.groupName = localStorage.getItem('GroupnameForUserList');
       //this.getUsers(this.usersPerPage, this.currentPage, this.search)
-      this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+      this.singleUserGroupList.getCircleUsers(this.usersPerPage, this.currentPage, this.search, this.groupId, this.circleId);
       this.usersSub = this.singleUserGroupList.getUserUpdateListener().subscribe(
         (userData: { users: UsergroupList[]; userCount: number }) => {
-        this.users = userData.users;
-        this.totalUsers =  userData.userCount;
-        this.isLoading = false;
-        this.isLoadingPage = false;
-      });
+          this.users = userData.users;
+          this.totalUsers = userData.userCount;
+          this.isLoading = false;
+          this.isLoadingPage = false;
+        });
 
       this.userService.chekgroupLifeCycleExist(this.groupId)
         .subscribe((response: any) => {
@@ -81,37 +81,37 @@ export class CircleUsersComponent implements OnInit {
 
 
 
-  getUsers(usersPerPage: number, currentPage: number, search: string) {
+  // getUsers(usersPerPage: number, currentPage: number, search: string) {
 
-    const userData = new FormData();
+  //   const userData = new FormData();
 
-    if (currentPage) {
-      const totalPage = usersPerPage * currentPage;
-      userData.append('start', totalPage.toString());
-    }
+  //   if (currentPage) {
+  //     const totalPage = usersPerPage * currentPage;
+  //     userData.append('start', totalPage.toString());
+  //   }
 
-    userData.append('group_id', this.groupId);
-    userData.append('circle_id', this.circleId);
-    // userData.append('group_id_not', group_id_not);
-    userData.append('search_keyword', search);
+  //   userData.append('group_id', this.groupId);
+  //   userData.append('circle_id', this.circleId);
+  //   // userData.append('group_id_not', group_id_not);
+  //   userData.append('search_keyword', search);
 
-    this.groupService
-      .postAPI(
-        '/circleUser_list', userData
-      ).subscribe(responseData => {
-        this.circleName = responseData.circle_name;
-        // this.users = responseData.userList;
+  //   this.groupService
+  //     .postAPI(
+  //       '/circleUser_list', userData
+  //     ).subscribe(responseData => {
+  //       this.circleName = responseData.circle_name;
+  //       // this.users = responseData.userList;
 
-        this.users = responseData.userList
-          .filter((user: any) => user.user_id !== this.userId)
-          .sort((a: any, b: any) => a.first_name.localeCompare(b.first_name));
+  //       this.users = responseData.userList
+  //         .filter((user: any) => user.user_id !== this.userId)
+  //         .sort((a: any, b: any) => a.first_name.localeCompare(b.first_name));
 
-        this.totalUsers = responseData.userCount;
-        this.isLoading = false;
-        this.isLoadingPage = false;
+  //       this.totalUsers = responseData.userCount;
+  //       this.isLoading = false;
+  //       this.isLoadingPage = false;
 
-      });
-  };
+  //     });
+  // };
 
   submitMove() {
 
@@ -129,7 +129,7 @@ export class CircleUsersComponent implements OnInit {
         '/moveCircle', userData
       ).subscribe(responseData => {
         this.closeModal.nativeElement.click()
-        this.getUsers(this.usersPerPage, this.currentPage, this.search);
+        this.singleUserGroupList.getCircleUsers(this.usersPerPage, this.currentPage, this.search, this.groupId, this.circleId);
 
         // this.usersUpdated.next({
         //   users: [...this.users],
@@ -141,9 +141,12 @@ export class CircleUsersComponent implements OnInit {
 
   onChangedPage(pageData: PageEvent): any {
     //this.isLoadingPage = true;
+    console.log(pageData.pageIndex, 'pageData.pageIndex');
+    console.log(pageData.pageSize, 'pageData.pageSize');
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
-    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+    // this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+    this.singleUserGroupList.getCircleUsers(this.usersPerPage, this.currentPage, this.search, this.groupId, this.circleId);
   }
 
 
@@ -191,7 +194,8 @@ export class CircleUsersComponent implements OnInit {
   }
 
   onReload(): any {
-    this.getUsers(this.usersPerPage, this.currentPage, this.search);
+    // this.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.singleUserGroupList.getCircleUsers(this.usersPerPage, this.currentPage, this.search, this.groupId, this.circleId);
   }
 
 
@@ -236,7 +240,8 @@ export class CircleUsersComponent implements OnInit {
       this.paginator.pageIndex = 0;
     }
     this.currentPage = 0;
-    this.getUsers(this.usersPerPage, this.currentPage, this.search);
+    // this.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.singleUserGroupList.getCircleUsers(this.usersPerPage, this.currentPage, this.search, this.groupId, this.circleId);
   }
 
   checkAdminType() {
@@ -270,7 +275,8 @@ export class CircleUsersComponent implements OnInit {
         if (res.success == 1) {
           this.isLoading = false;
           this.isLoadingPage = false;
-          this.getUsers(this.usersPerPage, this.currentPage, this.search)
+          // this.getUsers(this.usersPerPage, this.currentPage, this.search)
+          this.singleUserGroupList.getCircleUsers(this.usersPerPage, this.currentPage, this.search, this.groupId, this.circleId);
         } else {
           this.isLoading = false;
           this.isLoadingPage = false;

@@ -351,6 +351,7 @@ export class GroupCycleService {
     userData.append('group_cycle_id', group_cycle_id);
     userData.append('group_id', group_id);
     userData.append('admin_id', admin_id);
+     userData.append('requested_by', 'admin');
     userData.append('note', sfNote);
 
     return this.http.post<{

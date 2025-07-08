@@ -39,7 +39,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Cycle saving</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.cycle| currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.cycle | currency:'GBP': 'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount2">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -56,7 +56,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Cycle savings pending</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.cycle_pending| currency:'GBP': 'symbol'
+                <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.cycle_pending| currency:'GBP':
+                  'symbol'
                   :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount2">
@@ -105,7 +106,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Loans paidout</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_active| currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_active| currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount3">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -122,7 +124,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Loan repaid</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_paid_user| currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_paid_user| currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount3">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -140,7 +143,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Complete/closed loans</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_completed| currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_completed| currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount3">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -190,7 +194,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Safe Keeping</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.safeKeeping| currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.safeKeeping| currency:'GBP': 'symbol'
+                  :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount2">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -206,7 +211,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Investment</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.investment | currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.investment | currency:'GBP': 'symbol'
+                  :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount1">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -241,7 +247,8 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Help 2 Buy Car</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycar | currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycar | currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount3">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -258,10 +265,11 @@
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Help 2 Buy HSC</span>
+                <span class="info-box-text">Help 2 Buy House</span>
                 <!-- <span class="info-box-number" *ngIf="!isLoadingCount">{{hepToBuyHsc| currency:'GBP': 'symbol' :
                   '1.0-0'}}</span> -->
-                  <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.help_to_buyHSc | currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.help_to_buyHSc | currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount4">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -280,7 +288,8 @@
                 <span class="info-box-text">Total Saving JNR</span>
                 <!-- <span class="info-box-number" *ngIf="!isLoadingCount">{{totalSavingJnr| currency:'GBP': 'symbol' :
                   '1.0-0'}}</span> -->
-                    <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.savingJnrTotal| currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.savingJnrTotal| currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount4">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -314,7 +323,8 @@
                 <span class="info-box-text">Welfare</span>
                 <!-- <span class="info-box-number" *ngIf="!isLoadingCount">{{totalWelfare | currency:'GBP': 'symbol' :
                   '1.0-0'}}</span> -->
-                  <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.totalwelfare | currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.totalwelfare | currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount4">
                   <i class="fa fa-refresh fa-spin"></i>
@@ -333,7 +343,8 @@
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Miscellaneous</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.totalMiscellaneousAmount | currency:'GBP':
+                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.totalMiscellaneousAmount |
+                  currency:'GBP':
                   'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount4">
@@ -350,9 +361,62 @@
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Dividend</span>
-                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.totalDividendAmount | currency:'GBP': 'symbol' :
+                <span class="info-box-number" *ngIf="!isLoadingCount4">{{row_four?.totalDividendAmount | currency:'GBP':
+                  'symbol' :
                   '1.0-0'}}</span>
                 <div class="overlay" *ngIf="isLoadingCount4">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Help to Pay Credit Card</span>
+                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycc| currency:'GBP':
+                  'symbol' :
+                  '1.0-0'}}</span>
+                <div class="overlay" *ngIf="isLoadingCount3">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Help to Pay Car Insurance</span>
+                <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycarInsurance|
+                  currency:'GBP': 'symbol' :
+                  '1.0-0'}}</span>
+                <div class="overlay" *ngIf="isLoadingCount3">
+                  <i class="fa fa-refresh fa-spin"></i>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Property Paidout</span>
+                <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.paid_for_property}}</span>
+                <div class="overlay" *ngIf="isLoadingCount1">
                   <i class="fa fa-refresh fa-spin"></i>
                 </div>
               </div>

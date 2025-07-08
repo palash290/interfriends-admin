@@ -17,7 +17,7 @@ export class InvestmentRequestService {
   constructor(private http: HttpClient, private router: Router) {}
 
 
-  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string) {
+  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string, group_ids?: any) {
 
     const listData = new FormData();
 
@@ -27,7 +27,9 @@ export class InvestmentRequestService {
       listData.append('start', totalPage.toString());
     }
 
-
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
+    }
 
     this.http
       .post<{ success: string; message: string; lists: any;  listCount: number;}>(

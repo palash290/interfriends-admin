@@ -105,9 +105,14 @@ export class UserListService {
     );
   }
 
-  userBlockRequestList(search_keyword: any): any {
+  userBlockRequestList(usersPerPage: number, currentPage: number): any {
     const instituteData = new FormData();
-    instituteData.append('search_keyword', search_keyword);
+
+    if (currentPage) {
+      const totalPage = usersPerPage * currentPage;
+      instituteData.append('start', totalPage.toString());
+    }
+    // instituteData.append('search_keyword', search_keyword);
 
     return this.http.post<{
       success: string;

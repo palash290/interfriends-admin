@@ -17,7 +17,7 @@
           <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
             Add
           </button>
-          
+
         </span>
       </section>
 
@@ -84,6 +84,18 @@
                           (click)="getcircleUsers(list.id)">
                           Send email
                         </button>
+
+                        <button *ngIf="list.circle_lead_name" type="button" class="btn btn-danger margin"
+                          data-toggle="modal" ngbTooltip="Assign Lead" data-target="#removeLeaderModal"
+                          (click)="getCircleId(list.id)">
+                          Remove Lead
+                        </button>
+                        <button *ngIf="list.deputy_lead_name" type="button" class="btn btn-danger margin"
+                          data-toggle="modal" ngbTooltip="Assign deputy" data-target="#reomveDeputyModal"
+                          (click)="getCircleId(list.id)">
+                          Remove Deputy Lead
+                        </button>
+
                         <!-- <button type="button margin" class="btn btn-danger" data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetId(list.id)" *ngIf="adminType === '2'">
                               <i class="fa fa-ban" aria-hidden="true"></i>
                             </button>
@@ -210,6 +222,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="deputyModal" tabindex="-1" role="dialog" aria-labelledby="leaderModalLabel"
   aria-hidden="true" [ngStyle]="{'display':display}">
   <div class="modal-dialog" role="document">
@@ -335,4 +348,58 @@
       </div>
     </div>
   </form>
+</div>
+
+
+
+
+
+<!-- remove leader popup start -->
+<div class="modal fade" id="removeLeaderModal" tabindex="-1" role="dialog" aria-labelledby="leaderModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Remove Lead</h1>
+        <!--       
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+              <span aria-hidden="true">&times;</span>
+          </button> -->
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do you realy want to remove this circle lead?</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onRemoveLead()">Remove lead</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock11"
+          #closeBlock>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- remove deputy leader popup start -->
+<div class="modal fade" id="reomveDeputyModal" tabindex="-1" role="dialog" aria-labelledby="leaderModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title mb-0 pl-2">Assign Deputy</h1>
+        <!--       
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
+              <span aria-hidden="true">&times;</span>
+          </button> -->
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do you realy want to remove this deputy circle lead?</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onRemoveDeputy()">Remove deputy</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock12"
+          #closeBlock>Close</button>
+      </div>
+    </div>
+  </div>
 </div>

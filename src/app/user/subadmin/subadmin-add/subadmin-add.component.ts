@@ -96,14 +96,17 @@ export class SubadminAddComponent implements OnInit {
             this.isLoadingUpdate = false;
 
             // this.imagePreview = this.user.profile_image;
-const groupIds = response.userinfo?.group_ids
-  ?.split(',')
-  .filter((id: string) => id.trim() !== '');
+            const groupIds = response.userinfo?.group_ids
+              ?.split(',')
+              .filter((id: string) => id.trim() !== '');
 
-this.selectedSeats = this.lists
-  .filter(seat => groupIds.includes(seat.id.toString()))
-  .map(seat => seat.group_cycle_name);
+            this.selectedSeats = this.lists
+              .filter(seat => groupIds.includes(seat.id.toString()))
+              .map(seat => seat.group_cycle_name);
 
+            this.selectedCircleIds = this.lists
+              .filter(seat => groupIds.includes(seat.id.toString()))
+              .map(seat => seat.id);
 
           });
 
@@ -155,11 +158,10 @@ this.selectedSeats = this.lists
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
-
-
         if (response.success === '1') {
           this.valueChange.emit('add');
           this.toastr.success(response.message);
+          this.selectedCircleIds = []
         } else {
           this.toastr.error(response.message);
         }
@@ -183,6 +185,7 @@ this.selectedSeats = this.lists
         if (response.success === '1') {
           this.valueChange.emit('update');
           this.toastr.success(response.message);
+          this.selectedCircleIds = []
         } else {
           this.toastr.error(response.message);
         }
@@ -200,7 +203,7 @@ this.selectedSeats = this.lists
 
   dropdownOpen = false;
   selectedSeats: any[] = [];
-  selectedCircleIds: number[] = [];
+  selectedCircleIds: any[] = [];
   seatOptions: number[] = [];
 
   toggleDropdown() {
@@ -219,19 +222,49 @@ this.selectedSeats = this.lists
       this.selectedCircleIds.push(id);
       // Sort in ascending order
       this.selectedSeats.sort((a, b) => a - b);
+      this.selectedCircleIds.sort((a, b) => a - b);
     }
+    console.log("object", this.selectedCircleIds);
+    console.log("object", this.selectedSeats);
   }
 
-  removeSeat(event: Event, seat: number) {
+  // removeSeat(event: Event, seat: number) {
+
+  //   event.stopPropagation(); // Prevents dropdown toggle
+  //   this.selectedSeats = this.selectedSeats.filter(s => s !== seat);
+
+  //   // Check if the seat is already in seatOptions before pushing
+  //   if (!this.seatOptions.includes(seat)) {
+  //     this.seatOptions.push(seat);
+  //     this.seatOptions.sort((a, b) => a - b); // Optional: Sort if needed
+  //   }
+  // }
+
+  removeSeat(event: Event, seat: any): void {
     event.stopPropagation(); // Prevents dropdown toggle
+debugger
+    // Remove from selectedSeats
     this.selectedSeats = this.selectedSeats.filter(s => s !== seat);
 
-    // Check if the seat is already in seatOptions before pushing
+    // Remove corresponding ID from selectedCircleIds
+    const seatIdMap: { [key: string]: number } = {
+      'INTERFRIENDS (ELITE)': 35,
+      'INTERFRIENDS (GHANA)': 34,
+      'INTERFRIENDS (UK)': 22
+    };
+
+    const idToRemove = seatIdMap[seat];
+    if (idToRemove !== undefined) {
+      this.selectedCircleIds = this.selectedCircleIds.filter(id => id != idToRemove);
+    }
+
+    // Add seat back to seatOptions if not already present
     if (!this.seatOptions.includes(seat)) {
       this.seatOptions.push(seat);
-      this.seatOptions.sort((a, b) => a - b); // Optional: Sort if needed
+      this.seatOptions.sort(); // Assumes seat names are strings and you want alphabetical order
     }
   }
+
 
   // for close seat dropdown
   @ViewChild('dropdown') dropdownRef!: ElementRef;

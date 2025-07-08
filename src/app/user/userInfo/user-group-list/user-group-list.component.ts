@@ -42,6 +42,8 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
   display: string = "none"
   display4: string = "none"
   display5: string = "none"
+  startDate: any = '';
+  endDate: any = '';
 
   constructor(
     public singleUserGroupList: SingleUserGroupList,
@@ -56,7 +58,7 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
       this.groupId = paramMap.get('groupId');
       localStorage.setItem('groupId_interFriendAdmin', this.groupId);
       this.groupName = localStorage.getItem('GroupnameForUserList')
-      this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+      this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search, this.startDate, this.endDate);
       this.usersSub = this.singleUserGroupList.getUserUpdateListener().subscribe(
         (userData: { users: UsergroupList[]; userCount: number }) => {
           this.users = userData.users;
@@ -79,7 +81,7 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
-    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search, this.startDate, this.endDate);
   }
 
 
@@ -114,7 +116,7 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
   }
 
   onReload(): any {
-    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search, this.startDate, this.endDate);
   }
 
 
@@ -130,7 +132,16 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
       this.paginator.pageIndex = 0;
     }
     this.currentPage = 0;
-    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search);
+    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search, this.startDate, this.endDate);
+  }
+
+    // search start
+  dateFilter(): any {
+    if (this.users.length > 0) {
+      this.paginator.pageIndex = 0;
+    }
+    this.currentPage = 0;
+    this.singleUserGroupList.getUsers(this.usersPerPage, this.currentPage, this.groupId, '', this.search, this.startDate, this.endDate);
   }
 
   checkAdminType() {

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SubadminListService } from 'src/app/service/subadminList.service';
 import { Subadmin } from 'src/app/model/subadmin.model';
@@ -14,7 +14,7 @@ import { Subadmin } from 'src/app/model/subadmin.model';
 })
 export class SubadminListComponent implements OnInit {
 
-  @ViewChild(MatPaginator, { static : false} ) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   users: Subadmin[] = [];
   totalUsers = 0;
   usersPerPage = 10;
@@ -26,11 +26,11 @@ export class SubadminListComponent implements OnInit {
   selectPlanId: string;
   search = '';
 
- // view detail
+  // view detail
   updateId: string;
   eachChange: string;
   add: string;
-  display : string = 'none';
+  display: string = 'none';
 
   constructor(
     public userService: SubadminListService,
@@ -39,18 +39,18 @@ export class SubadminListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
-      this.usersSub = this.userService.getUserUpdateListener().subscribe(
-        (userData: { users: Subadmin[]; userCount: number }) => {
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.usersSub = this.userService.getUserUpdateListener().subscribe(
+      (userData: { users: Subadmin[]; userCount: number }) => {
         this.users = userData.users;
-        this.totalUsers =  userData.userCount;
+        this.totalUsers = userData.userCount;
         this.isLoading = false;
         this.isLoadingPage = false;
       });
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -66,9 +66,9 @@ export class SubadminListComponent implements OnInit {
   }
 
 
-   // add edit code start
+  // add edit code start
 
-   onUpdate(id: string): void {
+  onUpdate(id: string): void {
     this.updateId = id;
     this.eachChange = Math.random().toString();
     this.display = "block";
@@ -99,15 +99,15 @@ export class SubadminListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-      this.userService.blockUnblock(this.selectPlanId , status).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
-        this.toastr.success(response.message);
-      });
+    this.userService.blockUnblock(this.selectPlanId, status).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+      this.toastr.success(response.message);
+    });
   }
 
 
@@ -117,7 +117,7 @@ export class SubadminListComponent implements OnInit {
       this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
       this.toastr.success(response.message);
     });
-}
+  }
 
 
 
@@ -136,9 +136,9 @@ export class SubadminListComponent implements OnInit {
   }
 
 
-closeModalF(event : any) {
-  this.display = event;
-}
+  closeModalF(event: any) {
+    this.display = event;
+  }
   ngOnDestroy(): void {
     this.usersSub.unsubscribe();
   }

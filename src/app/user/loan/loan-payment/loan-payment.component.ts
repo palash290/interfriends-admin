@@ -102,9 +102,9 @@ export class LoanPaymentComponent implements OnInit {
     // localStorage.setItem('headerName', this.headerName)
   }
 
-  ngOnDestroy() {
-    localStorage.removeItem('headerName');
-  }
+  // ngOnDestroy() {
+  //   localStorage.removeItem('headerName');
+  // }
 
   sendMail(user_id: string, guarantor: string, loanAmount: string) {
 

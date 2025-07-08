@@ -1,7 +1,8 @@
-<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
 
-      <app-header></app-header>
+    <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
     <!-- Content Wrapper. Contains page content -->
@@ -12,12 +13,13 @@
           Users
         </h1>
 
-      <h3>{{groupName}}</h3>
+        <h3>{{groupName}}</h3>
         <span class="breadcrumb">
-          <button type="button" class="btn bg-maroon mr-2" [routerLink]="['/user/UserGroupAddList', groupId]"  >
+          <button type="button" class="btn bg-maroon mr-2" [routerLink]="['/user/UserGroupAddList', groupId]">
             Add
           </button>
-          <button type="button"  style="margin-right: 8px;" data-toggle="modal" data-target="#sendMailALl"  class="btn bg-maroon">
+          <button type="button" style="margin-right: 8px;" data-toggle="modal" data-target="#sendMailALl"
+            class="btn bg-maroon">
             Send mail to all
           </button>
         </span>
@@ -29,56 +31,75 @@
           <div class="col-md-12">
             <div class="box">
               <div class="box-header d-flex align-items-center">
-                <h3 class="box-title">User List</h3>
-                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+                <!-- <h3 class="box-title">User List</h3> -->
+                <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center" style="gap:10px">
+                  <label class="ct_fs_18 ct_fw_500 mb-0">From<span class="ct_text_red">*</span></label>
+                  <div class="position-relative">
+                    <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="startDate">
+                  </div>
+                </div>
+                     <!-- To Date -->
+                  <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center" style="gap:10px">
+                    <label class="ct_fs_18 ct_fw_500 mb-0">To<span class="ct_text_red">*</span></label>
+                    <div class="position-relative">
+                      <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="endDate"
+                        [disabled]="!startDate" (ngModelChange)="dateFilter()">
+                    </div>
+                  </div>
+                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
+                  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
               </div>
               <!-- /.box-header -->
               <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
-              <div class="box-body"  *ngIf="isLoading">
-                <mat-spinner  class="mx-auto"></mat-spinner>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
               </div>
               <div class="box-body" *ngIf="users.length > 0 && !isLoading">
-                  <table id="example2" class="table table-bordered table-hover">
-                      <thead>
-                      <tr>
-                        <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Email</th>
-                          <th>Profile Image</th>
-                          <th>Amount</th>
-                          <th>JNR Amount</th>
-                          <th>Payout Due Date</th>
-                          <th>Action</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let user of users">
-                          <td>{{user.sno}}</td>
-                          <td>{{user.first_name}}</td>
-                          <td>{{user.last_name}}</td>
-                          <td>{{user.email}}</td>
-                          <td>
-                            <img [src]="user.profile_image_thumb" class="direct-chat-img">
-                          </td>
-                          <td>{{user.amount}}</td>
-                          <td>{{user.jnr_amount}}</td>
-                          <td><span *ngIf="user.expected_date !== '0000-00-00'">{{user.expected_date| date: 'dd MMM yyyy'}}</span></td>
-                          <td>
-                              <button type="button" class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate(user.id)">
-                                <i class="fa fa-edit"></i>
-                              </button>
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Profile Image</th>
+                      <th>Amount</th>
+                      <th>JNR Amount</th>
+                      <th>Payout Due Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of users">
+                      <td>{{user.sno}}</td>
+                      <td>{{user.first_name}}</td>
+                      <td>{{user.last_name}}</td>
+                      <td>{{user.email}}</td>
+                      <td>
+                        <img [src]="user.profile_image_thumb" class="direct-chat-img">
+                      </td>
+                      <td>{{user.amount}}</td>
+                      <td>{{user.jnr_amount}}</td>
+                      <td><span *ngIf="user.expected_date !== '0000-00-00'">{{user.expected_date| date: 'dd MMM
+                          yyyy'}}</span></td>
+                      <td>
+                        <button type="button" class="btn btn-primary margin" data-toggle="modal"
+                          data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate(user.id)">
+                          <i class="fa fa-edit"></i>
+                        </button>
 
-                              <a  class="btn btn-dark margin" ngbTooltip="User Detail" [routerLink]="['/user/singleUserDetail', user.user_id, groupId]">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                              </a>
+                        <a class="btn btn-dark margin" ngbTooltip="User Detail"
+                          [routerLink]="['/user/singleUserDetail', user.user_id, groupId]">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
 
-                               <button type="button" class="btn btn-dark margin" ngbTooltip="send mail" data-toggle="modal" data-target="#sendMail" (click)="onOpenMailModel(user.id,user.user_id)">
-                                <i class="fa fa-envelope"></i>
-                              </button> 
-                              <!-- <a  class="btn btn-info margin" ngbTooltip="Pf" [routerLink]="['/user/pfList', groupId, user.user_id]">
+                        <button type="button" class="btn btn-dark margin" ngbTooltip="send mail" data-toggle="modal"
+                          data-target="#sendMail" (click)="onOpenMailModel(user.id,user.user_id)">
+                          <i class="fa fa-envelope"></i>
+                        </button>
+                        <!-- <a  class="btn btn-info margin" ngbTooltip="Pf" [routerLink]="['/user/pfList', groupId, user.user_id]">
                                 <i class="fa fa-file-text" aria-hidden="true"></i>
                               </a>
 
@@ -99,14 +120,14 @@
                               <a  class="btn btn-success margin" ngbTooltip="Loan" [routerLink]="['/user/loanList', groupId, user.user_id]">
                                 <i class="fa fa-money" aria-hidden="true"></i>
                               </a>  -->
-                          </td>
-                      </tr>
-                      </tbody>
-                  </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"  (page)="onChangedPage($event)"
+              <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" (page)="onChangedPage($event)"
                 *ngIf="users.length > 0"></mat-paginator>
-              <div class="box-body"  *ngIf="users.length <= 0 && !isLoading">
+              <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
                 You have'nt had any user yet!
               </div>
               <!-- /.box-body -->
@@ -122,57 +143,58 @@
     <!-- /.content-wrapper -->
     <app-footer></app-footer>
   </div>
+</div>
+<!-- ./wrapper -->
+
+
+<div class="modal fade" id="viewModal">
+  <div class="modal-dialog">
+    <app-user-detail [uniqueId]="updateId" [eachChange]="eachChange"></app-user-detail>
+    <!-- /.modal-content -->
   </div>
-  <!-- ./wrapper -->
+  <!-- /.modal-dialog -->
+</div>
 
 
-    <div class="modal fade" id="viewModal">
-      <div class="modal-dialog">
-        <app-user-detail [uniqueId]= "updateId" [eachChange]= "eachChange"></app-user-detail>
-        <!-- /.modal-content -->
+<div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display}">
+  <div class="modal-dialog">
+    <app-edit-group-user-info [uniqueId]="updateId" [eachChange]="eachChange" [add]="add"
+      (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-edit-group-user-info>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade show" id="sendMail" [ngStyle]="{'display':display4}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
-      <!-- /.modal-dialog -->
-    </div>
-
-
-    <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display}">
-      <div class="modal-dialog">
-        <app-edit-group-user-info [uniqueId]= "updateId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-edit-group-user-info>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-
-
-    <div class="modal fade show" id="sendMail"  [ngStyle]="{'display':display4}">
-      <div class="modal-dialog" >
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">New Savings Cycle Decision</div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" (click)="onSendMail()">Send mail</button> 
-            <button class="btn btn-secondary" type="button" data-dismiss="modal" #closeModal  >Close</button>
-          </div>
-        </div>
+      <div class="modal-body">New Savings Cycle Decision</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onSendMail()">Send mail</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" #closeModal>Close</button>
       </div>
     </div>
-    <div class="modal fade show" id="sendMailALl"  [ngStyle]="{'display':display5}">
-      <div class="modal-dialog" >
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">New Savings Cycle Decision</div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" (click)="onSendMailToAll()">Send mail</button> 
-            <button class="btn btn-secondary" type="button" data-dismiss="modal" #closeModal2  >Close</button>
-          </div>
-        </div>
+  </div>
+</div>
+<div class="modal fade show" id="sendMailALl" [ngStyle]="{'display':display5}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onCLose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">New Savings Cycle Decision</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onSendMailToAll()">Send mail</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" #closeModal2>Close</button>
       </div>
     </div>
+  </div>
+</div>

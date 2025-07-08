@@ -105,4 +105,26 @@ export class SafeKeepingService {
     );
   }
 
+  acceptRejectSafekeepingRequest(
+    payout_id: string,
+    request_status: string,
+    group_id: any,
+    user_id: string
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('safekeeping_id', payout_id);
+    instituteData.append('request_status', request_status);
+    // instituteData.append('grour_id', group_id);
+    instituteData.append('admin_id', '1');
+    // instituteData.append('user_id', user_id);
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/acceptRejectSafekeepingRequest', instituteData
+    );
+  }
+
+
 }

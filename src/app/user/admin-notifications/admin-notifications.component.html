@@ -23,13 +23,13 @@
               <div class="box-header d-flex align-items-center ">
                 <h3 class="box-title">User payments status</h3>
                 <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
-                    <input type="text" class="form-control rounded " *ngIf="!isLoading"
-                  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
-                   <button class="btn btn-primary" style="height:37px"
+                  <input type="text" class="form-control rounded " *ngIf="!isLoading" placeholder="Search.."
+                    [(ngModel)]="search" (keyup)="keyPress()">
+                  <button class="btn btn-primary" style="height:37px"
                     (click)="getAdminNotifications(this.usersPerPage, this.currentPage, this.search)">Apply</button>
 
                   <button class="btn btn-primary" style="height:37px" (click)="reset()">Reset</button>
-              
+
                 </div>
               </div>
               <div class="d-flex gap-3 align-items-center justify-content-between px-3 mt-3" style="gap:10px">
@@ -66,16 +66,16 @@
                   <div>
 
                     <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
-                    <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Status</label>
-                    <select class="form-control py-2 h-auto ct_input " style="border-radius: 5px;width: 100px;"
-                      [(ngModel)]="changedStatus" name="loan_type">
-                      <option value="">All</option>
-                      <option value="1">Pending</option>
-                      <option value="2">Paid On Time</option>
-                      <option value="3">Missed Payment Deadline</option>
-                      <option value="4">Paid Late</option>
-                    </select>
-                  </div>
+                      <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Status</label>
+                      <select class="form-control py-2 h-auto ct_input " style="border-radius: 5px;width: 100px;"
+                        [(ngModel)]="changedStatus" name="loan_type">
+                        <option value="">All</option>
+                        <option value="1">Pending</option>
+                        <option value="2">Paid On Time</option>
+                        <option value="3">Missed Payment Deadline</option>
+                        <option value="4">Paid Late</option>
+                      </select>
+                    </div>
                   </div>
 
                   <!-- From Date -->
@@ -94,13 +94,10 @@
                         [disabled]="!startDate">
                     </div>
                   </div>
-
-
-
                 </div>
-                
-                 
+                <button class="btn btn-primary" (click)="downloadCSV()">Download CSV</button>
               </div>
+
               <!-- /.box-header -->
               <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                 <i class="fa fa-refresh fa-spin"></i>

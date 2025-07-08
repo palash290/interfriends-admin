@@ -18,14 +18,14 @@ import { UserListService } from 'src/app/service/userList.service';
 })
 export class AdminNotificationsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  lists: SafeKeeping[] = [];
+  lists: any[] = [];
   users: any[] = [];
   totalUsers = 0;
-  usersPerPage = 10;
+  usersPerPage = 200;
   currentPage = 0;
   pageSizeOptions = [1, 2, 5, 10];
   totalLists = 0;
-  listsPerPage = 10;
+  listsPerPage = 200;
   safeKeepingAmount = 0;
   private listsSub: Subscription;
   isLoading = true;
@@ -183,4 +183,79 @@ export class AdminNotificationsComponent implements OnInit {
     this.currentPage = 0;
     this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
   }
+
+
+  downloadCSV(): void {
+    const rows = this.lists.map((list, index) => {
+      return {
+        '#': index + 1,
+        'Paid Amount': list.amount,
+        'Name': `${list.first_name} ${list.last_name}`,
+        'Email': list.email,
+        'Loan Type': this.getLoanType(list.loan_type),
+        'Status': this.getStatus(list.status),
+        'Group Type': this.getGroupType(list.group_type_id),
+        'Created On': new Date(list.created_at).toLocaleDateString()
+      };
+    });
+
+    const csvContent = this.convertToCSV(rows);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'interfriends_notifications.csv');
+    link.click();
+  }
+
+  getLoanType(type: number): string {
+    const map: any = {
+      1: 'Loan',
+      2: 'Help2 Pay (Car Insurance)',
+      3: 'Help2 Buy Car',
+      4: 'Help2 Pay (Credit Card)',
+      5: 'Help2 Pay (Other)',
+      6: '',
+      8: 'Emergency Loan',
+      9: 'Miscellaneous',
+      null: '-',
+      0: '-'
+    };
+    return map[type] ?? '-';
+  }
+
+  getStatus(status: number): string {
+    const map: any = {
+      1: 'Pending',
+      2: 'Paid On Time',
+      3: 'Missed Payment Deadline',
+      4: 'Paid Late',
+      null: '-'
+    };
+    return map[status] ?? '-';
+  }
+
+  getGroupType(id: number): string {
+    const map: any = {
+      1: 'Simple Saving',
+      2: 'JNR Savings',
+      4: 'Welfare',
+      null: '-',
+      0: '-'
+    };
+    return map[id] ?? '-';
+  }
+
+  convertToCSV(objArray: any[]): string {
+    const header = Object.keys(objArray[0]).join(',');
+    const rows = objArray.map(row =>
+      Object.values(row)
+        .map(value => `"${(value ?? '').toString().replace(/"/g, '""')}"`) // Escape quotes
+        .join(',')
+    );
+    return [header, ...rows].join('\r\n');
+  }
+
+
 }

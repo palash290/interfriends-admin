@@ -94,7 +94,7 @@
                         </a>
 
                         <button class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal"
-                          (click)="onUpdate(list.id)" ngbTooltip="Edit">
+                          (click)="onUpdate(list.id, list.loan_emi)" ngbTooltip="Edit">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
 
@@ -170,7 +170,7 @@
 
 <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display1}">
   <div class="modal-dialog">
-    <app-add-loan [uniqueId]="updateId" [userId]="userId" [groupId]="groupId" [eachChange]="eachChange" [add]="add"
+    <app-add-loan [uniqueId]="updateId" [userId]="userId" [groupId]="groupId" [eachChange]="eachChange" [loan_emi]="loan_emi" [add]="add"
       (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-add-loan>
     <!-- /.modal-content -->
   </div>

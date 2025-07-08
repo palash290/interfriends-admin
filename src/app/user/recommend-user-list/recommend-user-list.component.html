@@ -140,6 +140,7 @@
               <a class="pull-right" *ngIf="listDetail.employement_type == '2'">Part Time</a>
               <a class="pull-right" *ngIf="listDetail.employement_type == '3'">Self-employed</a>
               <a class="pull-right" *ngIf="listDetail.employement_type == '4'">Other</a>
+              <a class="pull-right" *ngIf="listDetail.employement_type == '0'">Self-employed</a>
             </li>
             <li class="list-group-item">
               <b>Known This Person</b>
@@ -319,6 +320,7 @@
               <a class="pull-right" *ngIf="recommendUser.employement_type == '2'">Part Time</a>
               <a class="pull-right" *ngIf="recommendUser.employement_type == '3'">Self-employed</a>
               <a class="pull-right" *ngIf="recommendUser.employement_type == '4'">Other</a>
+              <a class="pull-right" *ngIf="recommendUser.employement_type == '0'">Other</a>
             </li>
 
             <!-- <li class="list-group-item">
@@ -332,7 +334,8 @@
             <li class="list-group-item">
               <b>Id Proof
               </b>
-              <figure class="position-relative overflow-hidden main-img-profile m-0 my-0"
+              <figure class="position-relative overflow-hidden main-img-profile m-0 my-0" data-toggle="modal"
+                data-target="#img22" (click)="showImg(recommendUser.id_proof_image)"
                 style="width: auto !important; height: auto !important;" (click)="filePickerId.click()">
                 <img [src]="recommendUser.id_proof_image ? recommendUser.id_proof_image : '/assets/img/blank.webp'"
                   width="100" height="100" />
@@ -349,7 +352,8 @@
         <button *ngIf="listDetail.admin_status != '1'" type="button" class="btn btn-danger ml-2" id="rejectBtn"
           (click)="userAccptReject('reject')">Reject</button> -->
 
-        <button *ngIf="btn_status == 0" type="button" class="btn btn-primary" id="acceptBtn" (click)="userAccptReject('accept')">
+        <button *ngIf="btn_status == 0" type="button" class="btn btn-primary" id="acceptBtn"
+          (click)="userAccptReject('accept')">
           <span *ngIf="!isLoadingBtn">Accept</span>
           <span *ngIf="isLoadingBtn"><i class="fa fa-refresh fa-spin"></i></span>
         </button>
@@ -360,6 +364,20 @@
 
       <!-- Modal Footer -->
 
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Img -->
+<div class="modal fade" id="img22">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <img [src]="userImg1  ? userImg1 : 'assets/img/np_pro.png'" alt="img">
     </div>
   </div>
 </div>

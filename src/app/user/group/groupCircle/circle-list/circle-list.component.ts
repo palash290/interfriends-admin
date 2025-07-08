@@ -121,7 +121,7 @@ export class CircleListComponent implements OnInit {
         '/circleUser_list', userData
       ).subscribe(responseData => {
         this.circleUsersList = responseData.userList;
-        
+
         // this.totalUsers =  responseData.userCount;
         this.isLoading = false;
         this.isLoadingPage = false;
@@ -145,8 +145,8 @@ export class CircleListComponent implements OnInit {
       .postAPI(
         '/assignLeadcircle', userData
       ).subscribe(responseData => {
-        
-       
+
+
         // this.totalUsers =  responseData.userCount;
         this.isLoading = false;
         this.isLoadingPage = false;
@@ -158,6 +158,7 @@ export class CircleListComponent implements OnInit {
         // });
       });
   };
+
   onAssignDeputy() {
     const userData = new FormData();
 
@@ -170,8 +171,8 @@ export class CircleListComponent implements OnInit {
       .postAPI(
         '/assigndeputyleadcircle', userData
       ).subscribe(responseData => {
-        
-       
+
+
         // this.totalUsers =  responseData.userCount;
         this.isLoading = false;
         this.isLoadingPage = false;
@@ -184,9 +185,9 @@ export class CircleListComponent implements OnInit {
       });
   };
 
-  sendEmail(data:NgForm){
+  sendEmail(data: NgForm) {
     data.control.markAllAsTouched()
-    if(data.invalid){
+    if (data.invalid) {
       return
     }
     const userData = new FormData();
@@ -198,24 +199,24 @@ export class CircleListComponent implements OnInit {
       .postAPI(
         '/sendEmailtoAllmembersinCircle', userData
       ).subscribe(responseData => {
-        if(responseData.success == 0){
+        if (responseData.success == 0) {
           this.toastr.warning(responseData.message);
           this.mailForm.reset();
-        }else{
+        } else {
           this.toastr.success(responseData.message);
           // this.totalUsers =  responseData.userCount;
           this.isLoading = false;
           this.isLoadingPage = false;
         }
         document.getElementById('closeBlock2').click();
-    
-       
+
+
       });
   };
 
-  sendLeadsEmail(data:NgForm){
+  sendLeadsEmail(data: NgForm) {
     data.control.markAllAsTouched()
-    if(data.invalid){
+    if (data.invalid) {
       return
     }
     const userData = new FormData();
@@ -228,17 +229,17 @@ export class CircleListComponent implements OnInit {
         '/sendEmailtoAllCirclelead', userData
       ).subscribe(responseData => {
         this.mailForm.reset();
-        if(responseData.success == 0){
+        if (responseData.success == 0) {
           this.toastr.warning(responseData.message);
-        }else{
+        } else {
           this.toastr.success(responseData.message);
           // this.totalUsers =  responseData.userCount;
           this.isLoading = false;
           this.isLoadingPage = false;
         }
         document.getElementById('closeBlock2').click();
-    
-       
+
+
       });
   };
 
@@ -365,5 +366,63 @@ export class CircleListComponent implements OnInit {
     this.listsPerPage = pageData.pageSize;
     this.groupService.getLists(this.listsPerPage, this.currentPage);
   }
+
+
+  removeCircleId: any;
+
+  getCircleId(id: any){
+    this.removeCircleId = id;
+  }
+
+  onRemoveLead() {
+    const userData = new FormData();
+
+    userData.append('group_id', this.groupID);
+    userData.append('circle_id', this.removeCircleId);
+    //userData.append('user_id', this.selecteduser);
+
+    this.groupService
+      .postAPI(
+        '/removeLeadCircle', userData
+      ).subscribe(responseData => {
+
+
+        // this.totalUsers =  responseData.userCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+        document.getElementById('closeBlock11').click();
+        this.getCircleList();
+        // this.usersUpdated.next({
+        //   users: [...this.users],
+        //   userCount: responseData.userCount,
+        // });
+      });
+  };
+
+  onRemoveDeputy() {
+    const userData = new FormData();
+
+    userData.append('group_id', this.groupID);
+    userData.append('circle_id', this.removeCircleId);
+    //userData.append('user_id', this.selecteduser);
+
+    this.groupService
+      .postAPI(
+        '/removeDeputyLeadCircle', userData
+      ).subscribe(responseData => {
+
+
+        // this.totalUsers =  responseData.userCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+        document.getElementById('closeBlock12').click();
+        this.getCircleList();
+        // this.usersUpdated.next({
+        //   users: [...this.users],
+        //   userCount: responseData.userCount,
+        // });
+      });
+  };
+
 
 }

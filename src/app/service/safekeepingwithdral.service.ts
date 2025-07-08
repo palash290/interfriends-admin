@@ -18,7 +18,7 @@ export class SafekeepingwithdralService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string) {
+  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string, group_ids?: any) {
 
     const listData = new FormData();
 
@@ -28,7 +28,9 @@ export class SafekeepingwithdralService {
       listData.append('start', totalPage.toString());
     }
 
-
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
+    }
 
     this.http
       .post<{ success: string; message: string; lists: any; listCount: number; }>(
@@ -49,7 +51,7 @@ export class SafekeepingwithdralService {
   }
 
 
-  getPayoutLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string) {
+  getPayoutLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any) {
 
     const listData = new FormData();
 
@@ -59,6 +61,9 @@ export class SafekeepingwithdralService {
       listData.append('start', totalPage.toString());
     }
 
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
+    }
 
 
     this.http
@@ -77,6 +82,34 @@ export class SafekeepingwithdralService {
 
   getListUpdateListenerPayout() {
     return this.listsUpdated.asObservable();
+  }
+
+
+
+  getSafekeepingLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any) {
+
+    const listData = new FormData();
+
+
+    if (currentPage) {
+      const totalPage = listsPerPage * currentPage;
+      listData.append('start', totalPage.toString());
+    }
+
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
+    }
+
+    this.http
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/safekeeping_request_list', listData
+      ).subscribe(responseData => {
+        this.lists = responseData.lists;
+        this.listsUpdated.next({
+          lists: [...this.lists],
+          listCount: responseData.listCount,
+        });
+      });
   }
 
 

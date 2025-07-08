@@ -4,16 +4,15 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Safekeepingwithdral } from 'src/app/model/safekeepingwithdral.model';
 import { SafeKeepingService } from 'src/app/service/safeKeeping.service';
 import { SafekeepingwithdralService } from 'src/app/service/safekeepingwithdral.service';
 
 @Component({
-  selector: 'app-payout-request',
-  templateUrl: './payout-request.component.html',
-  styleUrls: ['./payout-request.component.css']
+  selector: 'app-safekeeping-cycle-request',
+  templateUrl: './safekeeping-cycle-request.component.html',
+  styleUrls: ['./safekeeping-cycle-request.component.css']
 })
-export class PayoutRequestComponent implements OnInit {
+export class SafekeepingCycleRequestComponent implements OnInit {
 
   lists: any[] = [];
 
@@ -66,24 +65,42 @@ export class PayoutRequestComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
-      this.safekeepingwithdralService.getPayoutLists(
+
+      this.safekeepingwithdralService.getSafekeepingLists(
         this.listsPerPage,
         this.currentPage,
         this.userId,
         this.groupId,
         this.group_ids
       );
+
       this.listsSub = this.safekeepingwithdralService
         .getListUpdateListenerPayout()
-        .subscribe(
-          (listData: { lists: any[]; listCount: number }) => {
-            this.lists = listData.lists;
-            this.totalLists = listData.listCount;
+        .subscribe({
+          next: (listData: { lists: any[]; listCount: number }) => {
+            if (listData.lists) {
+              this.lists = listData.lists;
+              this.totalLists = listData.listCount;
+              this.isLoading = false;
+              this.isLoadingPage = false;
+              console.log(this.lists, 'listDetail');
+            } else {
+              this.isLoading = false;
+              this.isLoadingPage = false;
+            }
+
+          },
+          error: (err) => {
             this.isLoading = false;
             this.isLoadingPage = false;
-            console.log(this.lists, 'listDetail');
+            this.lists = [];
+            this.totalLists = 0;
+            console.error('Error fetching safekeeping list:', err);
+
+            // Optional: Show user-friendly error notification
+            // this.notificationService.showError('Failed to load data');
           }
-        );
+        });
     });
   }
 
@@ -110,7 +127,7 @@ export class PayoutRequestComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    this.safekeepingwithdralService.getPayoutLists(
+    this.safekeepingwithdralService.getLists(
       this.listsPerPage,
       this.currentPage,
       this.userId,
@@ -147,7 +164,7 @@ export class PayoutRequestComponent implements OnInit {
   onAccept() {
     this.isLoading = true;
     this.safeKeepingService
-      .acceptRejectPayout(
+      .acceptRejectSafekeepingRequest(
         this.acceptId,
         '1',
         this.acceptGroupId,
@@ -174,7 +191,7 @@ export class PayoutRequestComponent implements OnInit {
   onReject() {
     this.isLoading = true;
     this.safeKeepingService
-      .acceptRejectPayout(
+      .acceptRejectSafekeepingRequest(
         this.rejectId,
         '0',
         this.rejectGroupId,

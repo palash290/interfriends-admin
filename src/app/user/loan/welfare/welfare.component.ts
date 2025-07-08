@@ -183,7 +183,7 @@ export class WelfareComponent implements OnInit {
     this.add = Math.random().toString();
   }
 
-  welfare_uuid: any;
+  welfare_uuid: any = '';
 
   //selectedItem: any;
 isLastIndexClicked: boolean = false;

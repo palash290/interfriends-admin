@@ -73,6 +73,8 @@ import { OutstandingPaymentsComponent } from './outstanding-payments/outstanding
 import { DefaultUserComponent } from './default-user/default-user.component';
 import { PayoutRequestComponent } from './payout-request/payout-request.component';
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
+import { DownloadDataComponent } from './download-data/download-data.component';
+import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/safekeeping-cycle-request.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -114,7 +116,7 @@ const routes: Routes = [
             component: CircleUsersAddComponent,
             canActivate: [AuthUserGuard]
          },
-                  {
+         {
             path: 'waiting-list/:groupId/:circleId',
             component: WaitingListComponent,
             canActivate: [AuthUserGuard]
@@ -247,6 +249,11 @@ const routes: Routes = [
          {
             path: 'adminNotifications',
             component: AdminNotificationsComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'download-data',
+            component: DownloadDataComponent,
             canActivate: [AuthUserGuard]
          },
          {
@@ -430,6 +437,11 @@ const routes: Routes = [
          {
             path: 'payout-request',
             component: PayoutRequestComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'safekeeping-cycle-request',
+            component: SafekeepingCycleRequestComponent,
             canActivate: [AuthUserGuard]
          },
       ]

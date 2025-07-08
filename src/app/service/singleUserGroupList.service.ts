@@ -7,17 +7,17 @@ import { UsergroupList } from '../model/usergroupList.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class SingleUserGroupList {
 
   private users: UsergroupList[] = [];
-  private usersUpdated = new Subject<{ users: UsergroupList[]; userCount: number;}>();
+  private usersUpdated = new Subject<{ users: UsergroupList[]; userCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
-  getUsers(usersPerPage: number, currentPage: number, groupId: string, group_id_not: string, search: string ) {
+  getUsers(usersPerPage: number, currentPage: number, groupId: string, group_id_not: string, search: string, startDate: any, endDate: any) {
 
     const userData = new FormData();
 
@@ -29,10 +29,13 @@ export class SingleUserGroupList {
     userData.append('group_id', groupId);
     userData.append('group_id_not', group_id_not);
     userData.append('search_keyword', search);
+    if (startDate && endDate) {
+      userData.append('date_range', `${startDate}, ${endDate}`);
+    }
 
     this.http
-      .post<{ success: string; message: string; userList: any;  userCount: number;}>(
-        API_URL + '/groupUser_list' , userData
+      .post<{ success: string; message: string; userList: any; userCount: number; }>(
+        API_URL + '/groupUser_list', userData
       ).subscribe(responseData => {
         this.users = responseData.userList;
 
@@ -42,6 +45,7 @@ export class SingleUserGroupList {
         });
       });
   }
+
 
   getUserUpdateListener() {
     return this.usersUpdated.asObservable();
@@ -60,8 +64,8 @@ export class SingleUserGroupList {
       message: string;
       groupDetail: any
     }>(
-        API_URL + '/userGroup_detail', userData
-      );
+      API_URL + '/userGroup_detail', userData
+    );
   }
 
 
@@ -81,8 +85,41 @@ export class SingleUserGroupList {
       success: string;
       message: string;
     }>(
-        API_URL + '/editUserGroup', userData
-      );
+      API_URL + '/editUserGroup', userData
+    );
   }
+
+
+
+
+
+
+  getCircleUsers(usersPerPage: number, currentPage: number, search: string, groupId: any, circleId: any) {
+
+    const userData = new FormData();
+
+    if (currentPage) {
+      const totalPage = usersPerPage * currentPage;
+      userData.append('start', totalPage.toString());
+    }
+
+    userData.append('group_id', groupId);
+    userData.append('circle_id', circleId);
+    // userData.append('group_id_not', group_id_not);
+    userData.append('search_keyword', search);
+
+    this.http
+      .post<{ success: string; message: string; userList: any; userCount: number; }>(
+        API_URL + '/circleUser_list', userData
+      ).subscribe(responseData => {
+        this.users = responseData.userList;
+
+        this.usersUpdated.next({
+          users: [...this.users],
+          userCount: responseData.userCount,
+        });
+      });
+  }
+
 
 }

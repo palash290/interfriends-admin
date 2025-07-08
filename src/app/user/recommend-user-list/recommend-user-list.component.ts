@@ -146,5 +146,11 @@ export class RecommendUserListComponent implements OnInit {
     );
   }
 
+  userImg1: any;
+
+  showImg(url: any) {
+    this.userImg1 = url;
+  }
+
 
 }

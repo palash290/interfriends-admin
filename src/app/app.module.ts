@@ -49,7 +49,7 @@ import * as $ from 'jquery';
     AngularFireMessagingModule,
     AngularFireModule.initializeApp(environment.firebase),
   ],
-  providers: [MessagingService, AsyncPipe, { provide: LocationStrategy, useClass: PathLocationStrategy }],
+  providers: [MessagingService, AsyncPipe],
   //, { provide: LocationStrategy, useClass: PathLocationStrategy }
   bootstrap: [AppComponent]
 })
