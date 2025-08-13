@@ -99,7 +99,6 @@ export class GroupCycleListComponent implements OnInit {
   // add edit code end
 
 
-
   // block and unblock code start
   onSetId(id: string): void {
     this.selectListId = id;

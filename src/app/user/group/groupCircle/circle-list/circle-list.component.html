@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -13,11 +12,9 @@
           Groups Circle
         </h1>
         <span class="breadcrumb">
-
           <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
             Add
           </button>
-
         </span>
       </section>
 
@@ -84,7 +81,6 @@
                           (click)="getcircleUsers(list.id)">
                           Send email
                         </button>
-
                         <button *ngIf="list.circle_lead_name" type="button" class="btn btn-danger margin"
                           data-toggle="modal" ngbTooltip="Assign Lead" data-target="#removeLeaderModal"
                           (click)="getCircleId(list.id)">
@@ -95,7 +91,6 @@
                           (click)="getCircleId(list.id)">
                           Remove Deputy Lead
                         </button>
-
                         <!-- <button type="button margin" class="btn btn-danger" data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetId(list.id)" *ngIf="adminType === '2'">
                               <i class="fa fa-ban" aria-hidden="true"></i>
                             </button>

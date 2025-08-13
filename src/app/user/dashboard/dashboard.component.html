@@ -4,7 +4,6 @@
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -53,7 +52,6 @@
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-bicycle" aria-hidden="true"></i>
               </span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Cycle savings pending</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.cycle_pending| currency:'GBP':
@@ -71,7 +69,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Cycle payout</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.payout| currency:'GBP': 'symbol' :
@@ -103,7 +100,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Loans paidout</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_active| currency:'GBP':
@@ -117,11 +113,9 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Loan repaid</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_paid_user| currency:'GBP':
@@ -135,8 +129,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -154,7 +146,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -191,7 +182,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-floppy-o" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Safe Keeping</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.safeKeeping| currency:'GBP': 'symbol'
@@ -208,7 +198,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-bar-chart" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Investment</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.investment | currency:'GBP': 'symbol'
@@ -223,11 +212,9 @@
             <!-- /.info-box -->
           </div>
 
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Provident Fund Interest</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.pfInterest| currency:'GBP': 'symbol' :
@@ -244,7 +231,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Help 2 Buy Car</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycar | currency:'GBP':
@@ -259,11 +245,9 @@
             <!-- /.info-box -->
           </div>
 
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Help 2 Buy House</span>
                 <!-- <span class="info-box-number" *ngIf="!isLoadingCount">{{hepToBuyHsc| currency:'GBP': 'symbol' :
@@ -283,7 +267,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Total Saving JNR</span>
                 <!-- <span class="info-box-number" *ngIf="!isLoadingCount">{{totalSavingJnr| currency:'GBP': 'symbol' :
@@ -314,8 +297,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>

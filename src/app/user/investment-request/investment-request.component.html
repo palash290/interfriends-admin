@@ -1,4 +1,5 @@
-<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
@@ -9,7 +10,6 @@
       <section class="content-header">
         <h1>Investment Proposal</h1>
       </section>
-
       <!-- Main content -->
       <section class="content">
         <div class="row">
@@ -45,14 +45,8 @@
                       <td>{{ list.message }}</td>
                       <td>{{ list.created_at | date: 'dd MMM yyyy'}}</td>
                       <td>
-                        <button
-                          type="button"
-                          class="btn btn-dark margin"
-                          data-toggle="modal"
-                          data-target="#viewModal"
-                          ngbTooltip="View"
-                          (click)="onview(list.id, i)"
-                        >
+                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
+                          ngbTooltip="View" (click)="onview(list.id, i)">
                           <i class="fa fa-eye"></i>
                         </button>
                       </td>
@@ -60,12 +54,8 @@
                   </tbody>
                 </table>
               </div>
-              <mat-paginator
-                [length]="totalLists"
-                [pageSize]="listsPerPage"
-                (page)="onChangedPage($event)"
-                *ngIf="lists.length > 0"
-              ></mat-paginator>
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
                 You have'nt had any investment request yet!
               </div>
@@ -92,13 +82,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Investment Request</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          id="closePopup" (click)="onClose()"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup" (click)="onClose()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -111,7 +95,7 @@
               <b>Mobile Number</b>
               <a class="pull-right">{{ listDetail.phone_number }}</a>
             </li>
-             <li class="list-group-item">
+            <li class="list-group-item">
               <b>Amount</b>
               <a class="pull-right">{{ listDetail.amount }}</a>
             </li>
@@ -131,17 +115,13 @@
               <b>Created On</b>
               <a class="pull-right">{{
                 listDetail.created_at | date: "dd/MM/yyyy"
-              }}</a>
+                }}</a>
             </li>
           </ul>
         </div>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary pull-left"
-          data-dismiss="modal" (click)="onClose()"
-        >
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="onClose()">
           Close
         </button>
       </div>
@@ -150,4 +130,3 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-

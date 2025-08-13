@@ -1,7 +1,7 @@
-<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
-      <app-header></app-header>
+    <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
     <!-- Content Wrapper. Contains page content -->
@@ -36,33 +36,33 @@
               <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
-              <div class="box-body"  *ngIf="isLoading">
-                <mat-spinner  class="mx-auto"></mat-spinner>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
               </div>
               <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
-                  <table id="example2" class="table table-bordered table-hover">
-                      <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Month Date</th>
-                        <th>Type</th>
-                        <!-- <th>Action</th> -->
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let list of lists">
-                          <td>{{list.sno}}</td>
-                          <td>{{list.start_date}}</td>
-                          <td>{{list.end_date}}</td>
-                          <td>{{list.month_count}}</td>
-                          <td>
-                            <span class="badge badge-secondary" *ngIf="list.group_type_id === '1'">User Saving</span>
-                            <span class="badge badge-success" *ngIf="list.group_type_id === '2'">Saving JNR</span>
-                            <span class="badge badge-warning" *ngIf="list.group_type_id === '3'">Help To Buy</span>
-                          </td>
-                          <!-- <td>
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Month Date</th>
+                      <th>Type</th>
+                      <!-- <th>Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists">
+                      <td>{{list.sno}}</td>
+                      <td>{{list.start_date}}</td>
+                      <td>{{list.end_date}}</td>
+                      <td>{{list.month_count}}</td>
+                      <td>
+                        <span class="badge badge-secondary" *ngIf="list.group_type_id === '1'">User Saving</span>
+                        <span class="badge badge-success" *ngIf="list.group_type_id === '2'">Saving JNR</span>
+                        <span class="badge badge-warning" *ngIf="list.group_type_id === '3'">Help To Buy</span>
+                      </td>
+                      <!-- <td>
                             <button  class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal" (click)="onUpdate(list.id)" ngbTooltip="Edit">
                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </button>
@@ -77,13 +77,13 @@
                           // previosly hide end
 
                           </td> -->
-                      </tr>
-                      </tbody>
-                  </table>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"  (page)="onChangedPage($event)"
+              <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
-              <div class="box-body"  *ngIf="lists.length <= 0 && !isLoading">
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
                 You have'nt had any group yet!
               </div>
               <!-- /.box-body -->
@@ -99,54 +99,55 @@
     <!-- /.content-wrapper -->
     <app-footer></app-footer>
   </div>
+</div>
+<!-- ./wrapper -->
+
+
+<!-- block model popup start -->
+<div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Block This Group</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
+      </div>
+    </div>
   </div>
-  <!-- ./wrapper -->
-
-
-
-  <!-- block model popup start -->
-  <div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Do You Realy Want To Block This Group</div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
-            <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
-          </div>
-        </div>
+</div>
+<!-- block model popup end -->
+<!-- unblock model popup start -->
+<div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Unblock This Group</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock">Close</button>
       </div>
     </div>
-    <!-- block model popup end -->
-    <!-- unblock model popup start -->
-    <div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Do You Realy Want To Unblock This Group</div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
-            <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- block model popup end -->
+  </div>
+</div>
+<!-- block model popup end -->
 
 
-    <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display}">
-      <div class="modal-dialog">
-        <app-group-cycle-add [uniqueId]= "updateId" [groupId]="groupId" [eachChange]= "eachChange" [add]= "add" (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-group-cycle-add>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-
+<div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display}">
+  <div class="modal-dialog">
+    <app-group-cycle-add [uniqueId]="updateId" [groupId]="groupId" [eachChange]="eachChange" [add]="add"
+      (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-group-cycle-add>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

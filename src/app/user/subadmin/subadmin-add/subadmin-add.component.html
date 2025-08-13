@@ -53,11 +53,9 @@
                   </div>
                </div>
 
-
                <div class="col-md-6">
                   <div class="form-group">
                      <label>Group List</label>
-
                      <div #dropdown class="custom-dropdown ct_multi_drop_custom_main mb-0" [class.open]="dropdownOpen">
                         <div class="dropdown-toggle position-relative" [ngClass]="{'py-2': selectedSeats.length > 0}"
                            (click)="toggleDropdown()">
@@ -77,13 +75,11 @@
                            </div>
                         </div>
                      </div>
-
                      <span class="help-block" *ngIf="selectedSeats.length == 0">
                         Please select group.
                      </span>
                   </div>
                </div>
-
             </div>
          </div>
       </div>

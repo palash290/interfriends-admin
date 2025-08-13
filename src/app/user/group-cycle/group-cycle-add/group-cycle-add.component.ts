@@ -44,8 +44,8 @@ export class GroupCycleAddComponent implements OnInit {
     this.mode = 'create';
     this.form = new FormGroup({
       start_date: new FormControl(null, { validators: [Validators.required] }),
-      month_count	: new FormControl(null, { validators: [Validators.required] }),
-      group_type_id: new FormControl(null, { validators: [Validators.required] }),
+      month_count	: new FormControl('', { validators: [Validators.required] }),
+      group_type_id: new FormControl('', { validators: [Validators.required] }),
     });
 
 

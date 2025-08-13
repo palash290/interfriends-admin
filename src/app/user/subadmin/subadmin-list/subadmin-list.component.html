@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -74,7 +73,6 @@
                           data-target="#deleteModal" ngbTooltip="Delete" (click)="onSetId(user.id)">
                           <i class="fa fa-trash"></i>
                         </button>
-
                         <!-- <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal" ngbTooltip="View" (click)="onUpdate(user.id)">
                                 <i class="fa fa-eye"></i>
                               </button> -->
@@ -102,7 +100,7 @@
 
 <!-- block model popup start -->
 <div class="modal fade show" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel"
-  aria-hidden="true" >
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -122,7 +120,7 @@
 
 <!-- unblock model popup start -->
 <div class="modal fade show" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
-  aria-hidden="true" >
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -142,7 +140,7 @@
 
 <!-- unblock model popup start -->
 <div class="modal fade show" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-  aria-hidden="true" >
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -172,8 +170,7 @@
   <!-- /.modal-dialog -->
 </div>
 
-<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true"
-  >
+<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <app-subadmin-add [uniqueId]="updateId" [eachChange]="eachChange" [add]="add" (valueChange)="hidePopup($event)"
       (closeModal)="closeModalF($event)"></app-subadmin-add>

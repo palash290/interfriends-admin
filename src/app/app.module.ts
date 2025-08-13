@@ -17,7 +17,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { MessagingService } from './service/messaging.service';
-import { AsyncPipe, LocationStrategy, PathLocationStrategy } from '../../node_modules/@angular/common';
+import { AsyncPipe } from '../../node_modules/@angular/common';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { environment } from '../environments/environment';

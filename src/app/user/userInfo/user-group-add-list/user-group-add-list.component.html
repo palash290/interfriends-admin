@@ -1,7 +1,7 @@
-<div class="hold-transition sidebar-mini" [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
-      <app-header></app-header>
+    <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
     <!-- Content Wrapper. Contains page content -->
@@ -11,7 +11,6 @@
         <h1>
           Users
         </h1>
-
       </section>
 
       <!-- Main content -->
@@ -21,47 +20,50 @@
             <div class="box">
               <div class="box-header d-flex align-items-center">
                 <h3 class="box-title">User List</h3>
-                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
+                  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
               </div>
               <!-- /.box-header -->
               <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
-              <div class="box-body"  *ngIf="isLoading">
-                <mat-spinner  class="mx-auto"></mat-spinner>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
               </div>
               <div class="box-body" *ngIf="users.length > 0 && !isLoading">
-                  <table id="example2" class="table table-bordered table-hover">
-                      <thead>
-                      <tr>
-                          <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Email</th>
-                          <th>Profile Image</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let user of users" [ngClass]="{'bg-light-c': checkUserExist(user.user_id)}">
-                          <td>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" [checked]="checkUserExist(user.user_id)" [value]="user.user_id" id="defaultCheck{{user.user_id}}" (change)="onCheck($event, user.user_id)">
-                              <label class="form-check-label" for="defaultCheck{{user.user_id}}"></label>
-                            </div>
-                          </td>
-                          <td>{{user.first_name}}</td>
-                          <td>{{user.last_name}}</td>
-                          <td>{{user.email}}</td>
-                          <td>
-                            <img [src]="user.profile_image_thumb" class="direct-chat-img">
-                          </td>
-                      </tr>
-                      </tbody>
-                  </table>
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Profile Image</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of users" [ngClass]="{'bg-light-c': checkUserExist(user.user_id)}">
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" [checked]="checkUserExist(user.user_id)"
+                            [value]="user.user_id" id="defaultCheck{{user.user_id}}"
+                            (change)="onCheck($event, user.user_id)">
+                          <label class="form-check-label" for="defaultCheck{{user.user_id}}"></label>
+                        </div>
+                      </td>
+                      <td>{{user.first_name}}</td>
+                      <td>{{user.last_name}}</td>
+                      <td>{{user.email}}</td>
+                      <td>
+                        <img [src]="user.profile_image_thumb" class="direct-chat-img">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"  (page)="onChangedPage($event)"
+              <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" (page)="onChangedPage($event)"
                 *ngIf="users.length > 0"></mat-paginator>
-              <div class="box-body"  *ngIf="users.length <= 0 && !isLoading">
+              <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
                 You have'nt had any user yet!
               </div>
               <!-- /.box-body -->
@@ -82,5 +84,5 @@
     <!-- /.content-wrapper -->
     <app-footer></app-footer>
   </div>
-  </div>
-  <!-- ./wrapper -->
+</div>
+<!-- ./wrapper -->

@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -12,7 +11,6 @@
         <h1>
           Users
         </h1>
-
         <h3>{{groupName}}</h3>
         <span class="breadcrumb">
           <button type="button" class="btn bg-maroon mr-2" [routerLink]="['/user/UserGroupAddList', groupId]">
@@ -24,7 +22,6 @@
           </button>
         </span>
       </section>
-
       <!-- Main content -->
       <section class="content">
         <div class="row">
@@ -38,14 +35,14 @@
                     <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="startDate">
                   </div>
                 </div>
-                     <!-- To Date -->
-                  <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center" style="gap:10px">
-                    <label class="ct_fs_18 ct_fw_500 mb-0">To<span class="ct_text_red">*</span></label>
-                    <div class="position-relative">
-                      <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="endDate"
-                        [disabled]="!startDate" (ngModelChange)="dateFilter()">
-                    </div>
+                <!-- To Date -->
+                <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center" style="gap:10px">
+                  <label class="ct_fs_18 ct_fw_500 mb-0">To<span class="ct_text_red">*</span></label>
+                  <div class="position-relative">
+                    <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="endDate"
+                      [disabled]="!startDate" (ngModelChange)="dateFilter()">
                   </div>
+                </div>
                 <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
                   placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
               </div>
@@ -89,12 +86,10 @@
                           data-target="#exampleModal" ngbTooltip="Edit" (click)="onUpdate(user.id)">
                           <i class="fa fa-edit"></i>
                         </button>
-
                         <a class="btn btn-dark margin" ngbTooltip="User Detail"
                           [routerLink]="['/user/singleUserDetail', user.user_id, groupId]">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
-
                         <button type="button" class="btn btn-dark margin" ngbTooltip="send mail" data-toggle="modal"
                           data-target="#sendMail" (click)="onOpenMailModel(user.id,user.user_id)">
                           <i class="fa fa-envelope"></i>
@@ -102,21 +97,15 @@
                         <!-- <a  class="btn btn-info margin" ngbTooltip="Pf" [routerLink]="['/user/pfList', groupId, user.user_id]">
                                 <i class="fa fa-file-text" aria-hidden="true"></i>
                               </a>
-
-
                               <a  class="btn btn-secondary margin" ngbTooltip="Payout" [routerLink]="['/user/payoutList', groupId, user.user_id]">
                                 <i class="fa fa-credit-card" aria-hidden="true"></i>
                               </a>
-
                               <a  class="btn btn-primary margin" ngbTooltip="User Cycle" [routerLink]="['/user/groupCycleUserList', groupId, user.user_id]">
                                 <i class="fa fa-repeat" aria-hidden="true"></i>
                               </a>
-
                               <a  class="btn btn-warning margin" ngbTooltip="Safe keeping" [routerLink]="['/user/safeKeepingList', groupId, user.user_id]">
                                 <i class="fa fa-shield" aria-hidden="true"></i>
                               </a>
-
-
                               <a  class="btn btn-success margin" ngbTooltip="Loan" [routerLink]="['/user/loanList', groupId, user.user_id]">
                                 <i class="fa fa-money" aria-hidden="true"></i>
                               </a>  -->

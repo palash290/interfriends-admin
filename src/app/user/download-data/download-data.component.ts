@@ -19,7 +19,7 @@ export class DownloadDataComponent implements OnInit {
   usersPerPage = 200;
   currentPage = 0;
   pageSizeOptions = [1, 2, 5, 10];
-  totalLists = 0;
+  totalLists: any = 0;
   listsPerPage = 200;
   isLoading = false;
   isLoadingPage = false;
@@ -58,13 +58,17 @@ export class DownloadDataComponent implements OnInit {
   getAdminNotifications(listsPerPage: any, currentPage: any, search_keyword: any) {
     const listData = new FormData();
 
+    // Set isLoading only if no search_keyword
+    if (!search_keyword) {
+      this.isLoading = true;
+    }
+
     if (currentPage) {
       const totalPage = listsPerPage * currentPage;
       listData.append('start', totalPage.toString());
     }
 
     listData.append('search', search_keyword);
-
     listData.append('product_category', this.selectedGroupType);
 
     if (this.startDate && this.endDate) {
@@ -77,8 +81,10 @@ export class DownloadDataComponent implements OnInit {
         this.totalLists = listData.resultCount;
         this.isLoading = false;
         this.isLoadingPage = false;
-      });
+      }
+    );
   }
+
 
   change() {
     this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);

@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -65,10 +64,26 @@
                       <td>{{list.total_payment| number:'1.0-0'}}</td>
                       <td>{{list.interest_payable | number:'1.0-0'}}</td>
                       <td>{{list.gurarantor_email}}</td>
-                      <td (click)="showImg(list.document_image)">
+                      <!-- <td (click)="showImg(list.document_image)">
                         <img [src]="list.document_image" alt="" class="ct_img_w_44" data-toggle="modal"
                           data-target="#full_view_img">
+                      </td> -->
+
+                      <td style="vertical-align: middle;">
+                        <!-- If it's a PDF -->
+                        <ng-container *ngIf="list.is_pdf; else imageBlock">
+                          <a [href]="list.document_image" target="_blank" download class="">
+                            <i class="fa fa-file-pdf text-danger ct_fs_28" title="Download PDF"></i>
+                          </a>
+                        </ng-container>
+
+                        <!-- If it's an image -->
+                        <ng-template #imageBlock>
+                          <img [src]="list.document_image" alt="" class="ct_img_w_44" data-toggle="modal"
+                            data-target="#full_view_img" (click)="showImg(list.document_image)" />
+                        </ng-template>
                       </td>
+
                       <td>
                         <span class="badge badge-primary" *ngIf="list.loan_type === '1'">Simple Loan</span>
                         <span class="badge badge-primary" *ngIf="list.loan_type === '2'">Car Insurance Loan</span>
@@ -143,6 +158,7 @@
                                    </div>
                                 </div>
                              </div> -->
+
                       </td>
                     </tr>
                   </tbody>
@@ -168,7 +184,6 @@
   </div>
 </div>
 <!-- ./wrapper -->
-
 
 
 <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display1}">

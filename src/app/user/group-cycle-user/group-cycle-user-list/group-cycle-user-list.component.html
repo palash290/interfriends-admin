@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -14,9 +13,7 @@
           <span *ngIf="lifeCycleType === '2'">Saving JNR</span>
           <span *ngIf="lifeCycleType === '3'">Help To Buy</span>
         </h1>
-
         <span class="breadcrumb">
-
           <!-- <div class="">
             <button class="">ddf sdfsd sdfd sfdd dd sd</button>
             <div class="">ddf sdfsd sdfd sfdd dd sd
@@ -40,11 +37,9 @@
               </button>
             </div>
           </div>
-
           <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
           </a>
-
         </span>
         <div class="callout callout-danger pr-3 mt-4" *ngIf="showAlertMessage && showPayoutButton && lists.length > 0">
           <h4 class="extra-hding d-flex">Note!
@@ -52,10 +47,8 @@
               <i class="fa fa-times text-white"></i>
             </button>
           </h4>
-
           <p>Bulk funds not released</p>
         </div>
-
         <div class="callout callout-info pr-3" *ngIf="showAlredyPayoutAlertMessage && lists.length > 0">
           <h4 class="extra-hding d-flex">Note!
             <button type="button" class="btn btn-box-tool ml-auto" (click)="onCloseAlreadyMessage()">
@@ -64,10 +57,7 @@
           </h4>
           <p>{{showPayoutMessage}}</p>
         </div>
-
-
       </section>
-
       <!-- Main content -->
       <section class="content">
         <div class="row">
@@ -87,7 +77,6 @@
                   <div class="fa fa-credit-card text-white mr-1"></div>
                   Payout
                 </button>
-
                 <button type="button" class="btn bg-primary float-right text-white ml-auto mr-3 px-5"
                   *ngIf="showPayoutButton && lists.length > 0" data-toggle="modal" data-target="#safekeepingModal"
                   (click)="showModal()">
@@ -181,7 +170,6 @@
                                  </div>
                               </div>
                            </div> -->
-
 
                       </td>
                     </tr>

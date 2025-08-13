@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <app-sidebar></app-sidebar>
     <div class="content-wrapper">
@@ -94,10 +93,9 @@
           </ul> -->
           <div class="et_para_verticle_scroll_240">
             <!-- <textarea class="w-100" name="" disabled id="" [value]="user?.message"></textarea> -->
-             <p>
-             {{user?.message}}
-
-             </p>
+            <p>
+              {{user?.message}}
+            </p>
           </div>
         </div>
       </div>
@@ -105,7 +103,6 @@
         <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
   <!-- /.modal-dialog -->
 </div>

@@ -34,9 +34,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   add: string;
   display = "none";
   display1 = 'none';
-  display2 = 'none'
-  display4 = 'none'
-  displayDefault = 'none'
+  display2 = 'none';
+  display4 = 'none';
+  displayDefault = 'none';
 
   group_ids: any;
 
@@ -126,7 +126,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.selectPlanId = id;
     this.display2 = 'block'
   }
-
 
 
   onBlockUnblock(status: string): void {

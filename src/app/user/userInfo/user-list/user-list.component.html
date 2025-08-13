@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -18,7 +17,6 @@
           </button>
         </span>
       </section>
-
       <!-- Main content -->
       <section class="content">
         <div class="row">
@@ -80,7 +78,6 @@
                             ngbTooltip="UnBlock" (click)="onSetUnblockId(user.user_id)" *ngIf="user.status === '2'">
                             <i class="fa fa-ban" aria-hidden="true"></i>
                           </button>
-
                           <!-- Default -  -->
                           <button type="button" class="btn btn-success " data-toggle="modal" data-target="#defaultModal"
                             ngbTooltip="Default" (click)="onSetDefaultId(user.user_id)"
@@ -90,12 +87,10 @@
                           <button type="button" class="btn btn-danger" *ngIf="user.is_default == '2'">
                             <i class="fa fa-times" aria-hidden="true"></i>
                           </button>
-
                           <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
                             ngbTooltip="View" (click)="onUpdateView(user.user_id)">
                             <i class="fa fa-eye"></i>
                           </button>
-
                           <a class="btn btn-info" ngbTooltip="Group"
                             [routerLink]="['/user/singleUserGroupList', user.user_id]">
                             <i class="fa fa-users" aria-hidden="true"></i>

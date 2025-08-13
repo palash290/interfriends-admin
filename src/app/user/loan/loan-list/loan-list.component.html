@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -98,7 +97,6 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
 
-
                         <!-- <div class="account-wrap display-inline-block">
                               <div class="account-item clearfix js-item-menu"  [ngClass]="{'show-dropdown': checkCycleStatus(list.id)}">
                                  <div class="content pt-0 pl-0 ml-0"> <span class="js-acc-btn" href="#">
@@ -170,8 +168,9 @@
 
 <div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display1}">
   <div class="modal-dialog">
-    <app-add-loan [uniqueId]="updateId" [userId]="userId" [groupId]="groupId" [eachChange]="eachChange" [loan_emi]="loan_emi" [add]="add"
-      (valueChange)="hidePopup($event)" (closeModal)="closeModalF($event)"></app-add-loan>
+    <app-add-loan [uniqueId]="updateId" [userId]="userId" [groupId]="groupId" [eachChange]="eachChange"
+      [loan_emi]="loan_emi" [add]="add" (valueChange)="hidePopup($event)"
+      (closeModal)="closeModalF($event)"></app-add-loan>
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->

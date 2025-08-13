@@ -10,7 +10,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group"
                                         [ngClass]="{'has-error': form.get('savings').invalid  && form.get('savings').touched}">
-                                        <label class="ct_fw_600">Savings Amount</label>
+                                        <label class="ct_fw_600">Monthly Savings Amount</label>
                                         <input type="text" class="form-control" placeholder="Enter Amount"
                                             formControlName="savings" />
                                         <span class="help-block"
@@ -19,7 +19,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group"
                                         [ngClass]="{'has-error': form.get('expected_date').invalid  && form.get('expected_date').touched}">
@@ -33,11 +32,10 @@
                                         </span>
                                     </div>
                                 </div>
-                                
                                 <div class="col-md-6">
                                     <div class="form-group"
                                         [ngClass]="{'has-error': form.get('jnr_amount').invalid  && form.get('jnr_amount').touched}">
-                                        <label class="ct_fw_600">JNR/Christmas Savings Amount</label>
+                                        <label class="ct_fw_600">JNR/Christmas Monthly Savings Amount</label>
                                         <input type="text" class="form-control" placeholder="Enter Amount"
                                             formControlName="jnr_amount" />
                                         <span class="help-block"
@@ -46,7 +44,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group"
                                         [ngClass]="{'has-error': form.get('christmas_date').invalid  && form.get('christmas_date').touched}">
@@ -60,9 +57,6 @@
                                         </span>
                                     </div>
                                 </div>
-
-
-
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-secondary pull-left">Submit</button>

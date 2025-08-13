@@ -1,12 +1,10 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { LoanService} from '../../../service/loan.service';
+import { AuthService } from '../../../service/auth.service';
 import { LoanPayment } from 'src/app/model/loanPayment.model';
 import { UserService } from 'src/app/service/user.service';
-import { AllUser } from 'src/app/model/allUser.model';
 import { MiscellaneousService } from 'src/app/service/miscellaneous.service';
 
 @Component({
@@ -28,7 +26,7 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
   @Input() userId: string;
   @Input() loanId: string;
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
   loan: LoanPayment;
 
   constructor(
@@ -45,8 +43,8 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
       amount: new FormControl(null, { validators: [Validators.required] }),
       status: new FormControl(null, { validators: [Validators.required] }),
       created_at: new FormControl(null, { validators: [Validators.required] }),
-      note_title	: new FormControl(null, { validators: [Validators.required] }),
-      note_description	: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, { validators: [Validators.required] }),
       payment_method: new FormControl(null, { validators: [Validators.required] }),
     });
   }
@@ -55,19 +53,19 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.loanService.miscellaneousPaymentDetail(this.mainId)
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+        this.loanService.miscellaneousPaymentDetail(this.mainId)
           .subscribe((response: any) => {
-            this.loan =  response.paymentDetail;
+            this.loan = response.paymentDetail;
             this.form.patchValue({
               amount: this.loan.amount,
               note_title: this.loan.note_title,
@@ -79,12 +77,10 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
       }
     }
 
-
-
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }

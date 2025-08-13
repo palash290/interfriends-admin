@@ -52,12 +52,15 @@
                       <td>{{ list.amount | number : "1.0-0" }}</td>
                       <td>{{list.amount_total | number : "1.0-0"}}</td>
                       <td *ngIf="list.request_status == 0">
-                        <span class="m-1 btn btn-danger btn-sm et_cstm_badge text-white" >Rejected</span>
+                        <span class="m-1 btn btn-danger btn-sm et_cstm_badge text-white">Rejected</span>
                       </td>
-                      <td *ngIf="list.request_status == 1" > <span class="m-1 btn btn-success btn-sm et_cstm_badge  text-white" style="border-radius: 15px;width: 100px;">Accepted</span></td>
-                      <td *ngIf="list.request_status == 2"><span class="m-1 btn btn-warning btn-sm et_cstm_badge  text-white">Pending</span></td>
+                      <td *ngIf="list.request_status == 1"> <span
+                          class="m-1 btn btn-success btn-sm et_cstm_badge  text-white"
+                          style="border-radius: 15px;width: 100px;">Accepted</span></td>
+                      <td *ngIf="list.request_status == 2"><span
+                          class="m-1 btn btn-warning btn-sm et_cstm_badge  text-white">Pending</span></td>
                       <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
-                      
+
                       <td *ngIf="list.request_status == 2">
                         <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
                           data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">Rejected

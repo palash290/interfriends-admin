@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../../service/user.service';
 import { GroupCycle } from '../../../model/groupCycle.model';
 import { Subject } from 'rxjs';
 import { GroupCycleService } from '../../../service/groupCycle.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { userCycle } from 'src/app/model/userCycle.model';
 import { CycleTotal } from 'src/app/model/cycleTotal.model';
 import { UserPaymentAmountCheckService } from 'src/app/service/userPaymentAmountCheck.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -78,6 +77,7 @@ export class WelfareComponent implements OnInit {
   display3: string = "none";
   month: string;
   minDate: any;
+  @ViewChild('closeBtn') closeBtn!: ElementRef<HTMLButtonElement>;
 
   constructor(
     public userService: UserService,
@@ -186,7 +186,7 @@ export class WelfareComponent implements OnInit {
   welfare_uuid: any = '';
 
   //selectedItem: any;
-isLastIndexClicked: boolean = false;
+  isLastIndexClicked: boolean = false;
 
   onUpdate(list: any, index: number): void {
     this.updateId = list.id;
@@ -208,8 +208,8 @@ isLastIndexClicked: boolean = false;
     this.welfare_uuid = list.welfare_uuid;
 
 
-      //this.selectedItem = list;
-  this.isLastIndexClicked = index === this.lists.length - 1;
+    //this.selectedItem = list;
+    this.isLastIndexClicked = index === this.lists.length - 1;
   }
 
   onClose() {
@@ -329,6 +329,7 @@ isLastIndexClicked: boolean = false;
         this.toastr.success(response.message);
         this.lists = [];
         this.display1 = "none";
+        this.closeBtn.nativeElement.click()
         this.loanService.welfareList(this.groupId, this.userId, this.groupLifecycle_id).subscribe((response: any) => {
           this.lists = response.lists;
           this.isLoading = false;

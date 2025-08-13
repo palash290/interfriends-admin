@@ -1,7 +1,6 @@
 <div class="hold-transition sidebar-mini"
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
-
     <app-header></app-header>
     <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
@@ -12,7 +11,6 @@
         <h1>
           Users
         </h1>
-
       </section>
 
       <!-- Main content -->
@@ -49,7 +47,6 @@
                       <td>{{user.last_name}}</td>
                       <td>{{user.email}}</td>
                       <td>
-
                         <button type="button" class="btn btn-success m-1" data-toggle="modal" data-target="#blockModal"
                           ngbTooltip="Accept" (click)="onSetId(user.user_id , '2')">
                           <i class="fa fa-ban" aria-hidden="true"></i>
@@ -59,9 +56,7 @@
                           <i class="fa fa-ban" aria-hidden="true"></i>
                         </button>
                       </td>
-
                       <td>
-
                       </td>
                     </tr>
                   </tbody>

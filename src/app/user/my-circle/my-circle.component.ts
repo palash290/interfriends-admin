@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
 import { Group } from 'src/app/model/group.model';
-import { UserList } from 'src/app/model/userList.model';
 import { AuthService } from 'src/app/service/auth.service';
 import { GroupService } from 'src/app/service/group.service';
 import { UserService } from 'src/app/service/user.service';
-import { UserListService } from 'src/app/service/userList.service';
 
 @Component({
   selector: 'app-my-circle',

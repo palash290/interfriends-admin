@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './service/auth.service';
 import { MessagingService } from './service/messaging.service';
 
@@ -8,13 +8,13 @@ import { MessagingService } from './service/messaging.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'myApp';
 
+  title = 'myApp';
 
   constructor(
     private authService: AuthService,
     public messagingService: MessagingService
-  ) {}
+  ) { }
 
 
   ngOnInit(): void {

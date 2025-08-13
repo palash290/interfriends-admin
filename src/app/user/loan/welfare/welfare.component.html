@@ -10,7 +10,6 @@
           <span>Welfare</span>
         </h1>
         <span class="breadcrumb"></span>
-
         <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#exampleModal"
           (click)="showModalAdd()">
           Add
@@ -23,7 +22,6 @@
           <div class="fa fa-credit-card text-white mr-1"></div>
           Payout
         </button>
-
         <button type="button" class="btn bg-primary float-right text-white ml-auto mr-3 px-5" *ngIf="lists.length > 0"
           data-toggle="modal" data-target="#safekeepingModal" (click)="showModalsafe()">
           <div class="fa fa-shield text-white mr-1"></div>
@@ -137,6 +135,7 @@
     <app-footer></app-footer>
   </div>
 </div>
+
 <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal"
   aria-hidden="true" [ngStyle]="{'display':display}">
   <div class="modal-dialog modal-lg modal-apply" role="document">
@@ -192,21 +191,15 @@
                   <label class="label-walfare">Tenure</label>
                   <div class="form-group">
                     <div class=" ct_language_euro">
-
-
                       <input type="text" formControlName="tenure" placeholder="40" class="form-control" readonly="" />
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12" disable>
-
-
                   <div class="form-group">
                     <label class="hidden-label">&nbsp;</label>
                     <label class="label-walfare">Total Over 40 months</label>
-
                     <div class=" ct_language_euro">
-
                       <div class="ct_euro_sign">
                         <p class="mb-0">£</p>
                       </div>
@@ -220,7 +213,6 @@
                   <label class="label-walfare">Provident</label>
                   <div class="form-group">
                     <div class=" ct_language_euro">
-
                       <div class="ct_euro_sign">
                         <div class="euro">
                           <p class="mb-0">£</p>
@@ -276,7 +268,6 @@
                 </div>
               </div>
               <!--Changes Interfriends Phase 2 Starts-->
-
             </div>
 
             <div class="modal-footer justify-content-center border-0">
@@ -419,7 +410,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal"
+            <button #closeBtn type="button" class="btn btn-secondary pull-left" data-dismiss="modal"
               (click)="onClose()">Close</button>
             <button type="submit" class="btn btn-primary">
               <span *ngIf="!isLoading">
