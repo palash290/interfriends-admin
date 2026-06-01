@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {GroupCycleService} from '../../../service/groupCycle.service';
+import { GroupCycleService } from '../../../service/groupCycle.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GroupCycleStatus } from 'src/app/model/groupCycleStatus.model';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -26,7 +26,7 @@ export class GroupCycleStatusHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.cycleId =paramMap.get('cycleId');
+      this.cycleId = paramMap.get('cycleId');
       // this.cycleId = '115';
       this.groupCycleService.userCycleStatusHistoryDetail(this.cycleId).subscribe((response: any) => {
         this.lists = response.cycleDetail;
@@ -36,7 +36,7 @@ export class GroupCycleStatusHistoryComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserRoutingModule } from './user-routing.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -119,6 +119,7 @@ import { PayoutRequestComponent } from './payout-request/payout-request.componen
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
 import { DownloadDataComponent } from './download-data/download-data.component';
 import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/safekeeping-cycle-request.component';
+import { DynamicCurrencyPipe } from '../pipe/dynamic-currency.pipe';
 
 @NgModule({
   imports: [
@@ -192,6 +193,7 @@ import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/sa
     ImageDragDirective,
     NotificationListComponent,
     DateAgoPipe,
+    DynamicCurrencyPipe,
     AgmDemoMapComponent,
     SafeKeepingWithdralRequestComponent,
     AgmDemoDirectionComponent,
@@ -240,7 +242,9 @@ import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/sa
     DownloadDataComponent,
     SafekeepingCycleRequestComponent
   ],
-  providers: [],
+  providers: [
+    CurrencyPipe
+  ],
   exports: [],
 })
 

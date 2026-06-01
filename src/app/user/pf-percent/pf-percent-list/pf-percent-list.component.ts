@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { PfpercentService} from '../../../service/pfpercent.service';
+import { PfpercentService } from '../../../service/pfpercent.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/service/auth.service';
 import { Pfpercent } from 'src/app/model/pfpercent.model';
@@ -24,7 +24,7 @@ export class PfPercentListComponent implements OnInit {
   isLoadingPage = true;
   selectListId: string;
   adminType: string;
-  display : string = 'none';
+  display: string = 'none';
 
 
 
@@ -47,18 +47,18 @@ export class PfPercentListComponent implements OnInit {
     this.pfpercentService.getLists(this.listsPerPage, this.currentPage);
     this.listsSub = this.pfpercentService.getListUpdateListener().subscribe(
       (listData: { lists: Pfpercent[]; listCount: number }) => {
-      this.lists = listData.lists;
-      this.totalLists =  listData.listCount;
-      this.isLoading = false;
-      this.isLoadingPage = false;
-    });
+        this.lists = listData.lists;
+        this.totalLists = listData.listCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+      });
   }
 
   // add edit code start
 
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -98,15 +98,15 @@ export class PfPercentListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-      this.pfpercentService.blockUnblock(this.selectListId , status).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.pfpercentService.getLists(this.listsPerPage, this.currentPage);
-        this.toastr.success(response.message);
-      });
+    this.pfpercentService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.pfpercentService.getLists(this.listsPerPage, this.currentPage);
+      this.toastr.success(response.message);
+    });
   }
 
 
@@ -119,7 +119,7 @@ export class PfPercentListComponent implements OnInit {
     this.pfpercentService.getLists(this.listsPerPage, this.currentPage);
   }
 
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   }
 

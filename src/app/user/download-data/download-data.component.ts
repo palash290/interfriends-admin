@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { GroupService } from 'src/app/service/group.service';
 import { SafeKeepingService } from 'src/app/service/safeKeeping.service';
 import { UserService } from 'src/app/service/user.service';

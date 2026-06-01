@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { GroupCycle } from '../../../model/groupCycle.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { GroupCycleService} from '../../../service/groupCycle.service';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { GroupCycleService } from '../../../service/groupCycle.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -26,7 +26,7 @@ export class GroupCycleListComponent implements OnInit {
   groupId: string;
   showStatus = false;
   showMessage = '';
-  display : string = 'none';
+  display: string = 'none';
 
 
   // add edit code start
@@ -49,24 +49,24 @@ export class GroupCycleListComponent implements OnInit {
       this.groupCycleService.getLists(this.listsPerPage, this.currentPage, this.groupId);
       this.listsSub = this.groupCycleService.getListUpdateListener().subscribe(
         (listData: { lists: GroupCycle[]; listCount: number }) => {
-        this.lists = listData.lists;
-        this.totalLists =  listData.listCount;
-        this.isLoading = false;
-        this.isLoadingPage = false;
-      });
+          this.lists = listData.lists;
+          this.totalLists = listData.listCount;
+          this.isLoading = false;
+          this.isLoadingPage = false;
+        });
 
       this.userService.chekgroupLifeCycleExist(this.groupId)
-      .subscribe((response: any) => {
-        this.showStatus = response.showStatus;
-        this.showMessage = response.showMessage;
-      });
+        .subscribe((response: any) => {
+          this.showStatus = response.showStatus;
+          this.showMessage = response.showMessage;
+        });
     });
   }
 
   // add edit code start
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -105,15 +105,15 @@ export class GroupCycleListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-      this.groupCycleService.blockUnblock(this.selectListId , status).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.groupCycleService.getLists(this.listsPerPage, this.currentPage, this.groupId);
-        this.toastr.success(response.message);
-      });
+    this.groupCycleService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.groupCycleService.getLists(this.listsPerPage, this.currentPage, this.groupId);
+      this.toastr.success(response.message);
+    });
   }
 
 
@@ -131,7 +131,7 @@ export class GroupCycleListComponent implements OnInit {
     this.toastr.error(this.showMessage);
   }
 
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   }
 

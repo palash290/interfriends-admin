@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -24,7 +24,7 @@ export class LoanPercentListComponent implements OnInit {
   isLoadingPage = true;
   selectListId: string;
   adminType: string;
-  display : string = 'none';
+  display: string = 'none';
 
 
   // add edit code start
@@ -46,18 +46,18 @@ export class LoanPercentListComponent implements OnInit {
     this.loanpercentService.getLists(this.listsPerPage, this.currentPage);
     this.listsSub = this.loanpercentService.getListUpdateListener().subscribe(
       (listData: { lists: Loanpercent[]; listCount: number }) => {
-      this.lists = listData.lists;
-      this.totalLists =  listData.listCount;
-      this.isLoading = false;
-      this.isLoadingPage = false;
-    });
+        this.lists = listData.lists;
+        this.totalLists = listData.listCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+      });
   }
 
   // add edit code start
 
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -97,15 +97,15 @@ export class LoanPercentListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-      this.loanpercentService.blockUnblock(this.selectListId , status).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.loanpercentService.getLists(this.listsPerPage, this.currentPage);
-        this.toastr.success(response.message);
-      });
+    this.loanpercentService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.loanpercentService.getLists(this.listsPerPage, this.currentPage);
+      this.toastr.success(response.message);
+    });
   }
 
 
@@ -118,7 +118,7 @@ export class LoanPercentListComponent implements OnInit {
     this.loanpercentService.getLists(this.listsPerPage, this.currentPage);
   }
 
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   }
 

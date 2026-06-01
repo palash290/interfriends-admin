@@ -39,6 +39,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   displayDefault = 'none';
 
   group_ids: any;
+  circle_ids: any;
 
   constructor(
     public userService: UserListService,
@@ -49,8 +50,9 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.adminType = this.authService.getAdminType();
-    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids);
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
     this.usersSub = this.userService.getUserUpdateListener().subscribe(
       (userData: { users: UserList[]; userCount: number }) => {
         this.users = userData.users;
@@ -73,7 +75,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
-    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
   }
 
 
@@ -105,7 +107,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   onReload(): any {
-    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
   }
 
 
@@ -135,7 +137,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       } else {
         document.getElementById('closeBlock').click();
       }
-      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
       this.toastr.success(response.message);
     });
   }
@@ -145,7 +147,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     
         document.getElementById('closeDefault').click();
       
-      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+      this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
       this.toastr.success(response.message);
     });
   }
@@ -156,7 +158,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.paginator.pageIndex = 0;
     }
     this.currentPage = 0;
-    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search);
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
   }
 
 

@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Loanpercent } from 'src/app/model/loanpercent.model';
-import { SafeKeeping } from 'src/app/model/safeKeeping.model';
 import { GroupService } from 'src/app/service/group.service';
-import { LoanpercentService } from 'src/app/service/loanpercent.service';
 import { SafeKeepingService } from 'src/app/service/safeKeeping.service';
 import { UserService } from 'src/app/service/user.service';
 import { UserListService } from 'src/app/service/userList.service';
@@ -73,7 +70,7 @@ export class AdminNotificationsComponent implements OnInit {
 
   getAdminNotifications(listsPerPage: any, currentPage: any, search_keyword: any) {
     const listData = new FormData();
-
+    this.isLoading = true;
     if (currentPage) {
       const totalPage = listsPerPage * currentPage;
       listData.append('start', totalPage.toString());
@@ -109,7 +106,36 @@ export class AdminNotificationsComponent implements OnInit {
     this.endDate = '';
     this.selectedLoanType = '';
     this.changedStatus = '';
-    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+    this.getAdminNotificationsReset(this.usersPerPage, this.currentPage, this.search);
+  }
+
+  getAdminNotificationsReset(listsPerPage: any, currentPage: any, search_keyword: any) {
+    const listData = new FormData();
+
+    if (currentPage) {
+      const totalPage = listsPerPage * currentPage;
+      listData.append('start', totalPage.toString());
+    }
+
+    listData.append('search_keyword', search_keyword);
+
+    listData.append('loan_type', this.selectedLoanType);
+
+    listData.append('group_type_id', this.selectedGroupType);
+
+    listData.append('status', this.changedStatus);
+
+    if (this.startDate && this.endDate) {
+      listData.append('date_range', `${this.startDate}, ${this.endDate}`);
+    }
+
+    this.userListService.postAPI('/paymentallNotification', listData).subscribe(
+      (listData: any) => {
+        this.lists = listData.userList;
+        this.totalLists = listData.userCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+      });
   }
 
   hidePopup(status: string): void {
@@ -209,43 +235,48 @@ export class AdminNotificationsComponent implements OnInit {
     link.click();
   }
 
-  getLoanType(type: number): string {
-    const map: any = {
+
+
+
+
+  getLoanType(type: number | null): string {
+    const types: any = {
       1: 'Loan',
-      2: 'Help2 Pay (Car Insurance)',
+      2: 'Help2 Pay(Car Insurance)',
       3: 'Help2 Buy Car',
-      4: 'Help2 Pay (Credit Card)',
-      5: 'Help2 Pay (Other)',
+      4: 'Help2 Pay(credit card)',
+      5: 'Help2 Pay(other)',
       6: '',
       8: 'Emergency Loan',
       9: 'Miscellaneous',
-      null: '-',
-      0: '-'
+      null: '-'
     };
-    return map[type] ?? '-';
+    return types[type] ?? '-';
   }
 
   getStatus(status: number): string {
-    const map: any = {
+    const statuses: any = {
+      0: '-',
       1: 'Pending',
       2: 'Paid On Time',
       3: 'Missed Payment Deadline',
       4: 'Paid Late',
-      null: '-'
+      5: 'Process to Super Admin'
     };
-    return map[status] ?? '-';
+    return statuses[status] ?? '-';
   }
 
-  getGroupType(id: number): string {
-    const map: any = {
+  getGroupType(group: number | null): string {
+    const groups: any = {
+      0: '-',
       1: 'Simple Saving',
       2: 'JNR Savings',
       4: 'Welfare',
-      null: '-',
-      0: '-'
+      null: '-'
     };
-    return map[id] ?? '-';
+    return groups[group] ?? '-';
   }
+
 
   convertToCSV(objArray: any[]): string {
     const header = Object.keys(objArray[0]).join(',');

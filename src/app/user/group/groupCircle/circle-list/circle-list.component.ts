@@ -41,6 +41,7 @@ export class CircleListComponent implements OnInit {
   updateId: string;
   eachChange: string;
   add: string;
+  circle_ids: any;
   // add edit code end
 
   constructor(
@@ -52,6 +53,7 @@ export class CircleListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.mode = 'create';
     this.form = new FormGroup({
       circle_name: new FormControl(null, { validators: [Validators.required] }),
@@ -79,6 +81,10 @@ export class CircleListComponent implements OnInit {
   getCircleList() {
     const formData = new FormData();
     formData.append('group_id', this.groupID);
+    if (this.circle_ids) {
+      formData.append('circle_ids', this.circle_ids);
+    }
+
     this.groupService.postAPI('/getCircleBygroupid', formData).subscribe({
       next: (res: any) => {
         if (res.success == 1) {
@@ -370,7 +376,7 @@ export class CircleListComponent implements OnInit {
 
   removeCircleId: any;
 
-  getCircleId(id: any){
+  getCircleId(id: any) {
     this.removeCircleId = id;
   }
 

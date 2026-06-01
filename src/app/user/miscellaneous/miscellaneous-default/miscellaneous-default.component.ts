@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { MiscellaneousService} from '../../../service/miscellaneous.service';
+import { AuthService } from '../../../service/auth.service';
+import { MiscellaneousService } from '../../../service/miscellaneous.service';
 import { UserService } from 'src/app/service/user.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -27,8 +27,8 @@ export class MiscellaneousDefaultComponent implements OnInit {
   @Input() eachChange: string;
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
-  dropdownSettings:IDropdownSettings = {
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
+  dropdownSettings: IDropdownSettings = {
     singleSelection: false,
     idField: 'item_id',
     textField: 'item_text',
@@ -51,12 +51,12 @@ export class MiscellaneousDefaultComponent implements OnInit {
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
       amount: new FormControl(null, { validators: [Validators.required] }),
-      start_date	: new FormControl(null, { validators: [Validators.required] }),
-      title	: new FormControl(null, { validators: [Validators.required] }),
-      description	: new FormControl(null, { validators: [Validators.required] }),
+      start_date: new FormControl(null, { validators: [Validators.required] }),
+      title: new FormControl(null, { validators: [Validators.required] }),
+      description: new FormControl(null, { validators: [Validators.required] }),
       tenure: new FormControl('', { validators: [Validators.required] }),
-      note_title	: new FormControl(null, { validators: [Validators.required] }),
-      note_description	: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, { validators: [Validators.required] }),
     });
   }
 
@@ -64,22 +64,22 @@ export class MiscellaneousDefaultComponent implements OnInit {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
       }
     }
 
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -153,11 +153,11 @@ export class MiscellaneousDefaultComponent implements OnInit {
 
 
 
-  onItemSelect(item:any){
+  onItemSelect(item: any) {
 
   }
 
-  OnItemDeSelect(item:any){
+  OnItemDeSelect(item: any) {
 
   }
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment'
 
@@ -123,6 +122,20 @@ export class SafeKeepingService {
       message: string;
     }>(
       API_URL + '/acceptRejectSafekeepingRequest', instituteData
+    );
+  }
+
+    removeSafekeepingRequest(
+    payout_id: string,
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('safekeeping_id', payout_id);
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/removeSafekeepingRequest', instituteData
     );
   }
 

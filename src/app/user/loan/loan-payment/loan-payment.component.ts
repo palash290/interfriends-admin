@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../service/user.service';
 import { LoanPayment } from '../../../model/loanPayment.model';
-import { Subscription } from 'rxjs';
 import { LoanService } from '../../../service/loan.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, ParamMap } from '@angular/router';

@@ -67,9 +67,9 @@
                             </div>
                             <!-- <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"  (page)="onChangedPage($event)"
                   *ngIf="users.length > 0"></mat-paginator> -->
-                            <!-- <div class="box-body"  *ngIf="users.length <= 0 && !isLoading">
-                  You have'nt had any user yet!
-                </div> -->
+                            <div class="box-body" *ngIf="users.length <= 0">
+                                You have'nt had any user yet!
+                            </div>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->

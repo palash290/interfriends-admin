@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { AuthService } from '../../../service/auth.service';
 import { LoanService } from '../../../service/loan.service';
 import { LoanPayment } from 'src/app/model/loanPayment.model';
 import { UserService } from 'src/app/service/user.service';
-import { AllUser } from 'src/app/model/allUser.model';
 
 @Component({
   selector: 'app-add-loan-payment',

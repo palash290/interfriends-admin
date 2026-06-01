@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { MiscellaneousPayment } from '../../../model/miscellaneousPayment.model';
-import { Subscription } from 'rxjs';
-import { LoanService} from '../../../service/loan.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MiscellaneousService } from 'src/app/service/miscellaneous.service';
 
 @Component({
@@ -22,7 +20,7 @@ export class MiscellaneousPaymentComponent implements OnInit {
   totalPaidAmount: number;
   loanAmount: number;
   loanAmount_initital: number;
-  display : string = 'none';
+  display: string = 'none';
 
   // add edit code start
   listId: string;
@@ -40,7 +38,7 @@ export class MiscellaneousPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.groupId =paramMap.get('groupId');
+      this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
       this.loanId = paramMap.get('loanId');;
 
@@ -55,7 +53,7 @@ export class MiscellaneousPaymentComponent implements OnInit {
         this.loanAmount_initital = response.loanAmount_initital;
         this.isLoading = false;
       });
-  });
+    });
   }
 
 
@@ -78,7 +76,7 @@ export class MiscellaneousPaymentComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -91,7 +89,7 @@ export class MiscellaneousPaymentComponent implements OnInit {
   }
 
   // add edit code end
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   }
 

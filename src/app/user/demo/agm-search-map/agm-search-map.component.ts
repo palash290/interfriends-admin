@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 
 @Component({

@@ -63,19 +63,19 @@
 
                       <td *ngIf="list.request_status == 2">
                         <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
-                          data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">Rejected
+                          data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">Reject
                         </button>
                         <button type="button" class="m-1 btn btn-success btn-sm" data-toggle="modal"
-                          data-target="#ct_accept_modal" ngbTooltip="accepted" (click)="getAcceptId(list)">Accepted
+                          data-target="#ct_accept_modal" ngbTooltip="accepted" (click)="getAcceptId(list)">Accept
                         </button>
                       </td>
 
                       <td *ngIf="list.request_status == 0 || list.request_status == 1">
                         <button type="button" class="m-1 btn btn-danger btn-sm" ngbTooltip="rejected"
-                          (click)="showMsg()">Rejected
+                          (click)="showMsg()">Reject
                         </button>
                         <button type="button" class="m-1 btn btn-success btn-sm" ngbTooltip="accepted"
-                          (click)="showMsg()">Accepted
+                          (click)="showMsg()">Accept
                         </button>
                       </td>
 

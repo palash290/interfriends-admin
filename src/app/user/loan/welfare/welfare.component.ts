@@ -237,7 +237,6 @@ export class WelfareComponent implements OnInit {
 
 
   onInputAmount(eventData: string): void {
-
     if (eventData) {
       console.log('hellowwwwww', eventData);
       let total_payment = eventData;

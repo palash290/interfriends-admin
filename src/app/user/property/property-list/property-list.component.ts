@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { Property } from '../../../model/property.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { PropertyService} from '../../../service/property.service';
+import { PropertyService } from '../../../service/property.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -23,8 +23,8 @@ export class PropertyListComponent implements OnInit {
   isLoading = true;
   isLoadingPage = true;
   selectListId: string;
-  display : string = 'none';
-  display1 : string = 'none';
+  display: string = 'none';
+  display1: string = 'none';
 
 
 
@@ -45,11 +45,11 @@ export class PropertyListComponent implements OnInit {
     this.propertyService.getLists(this.listsPerPage, this.currentPage);
     this.listsSub = this.propertyService.getListUpdateListener().subscribe(
       (listData: { lists: Property[]; listCount: number }) => {
-      this.lists = listData.lists;
-      this.totalLists =  listData.listCount;
-      this.isLoading = false;
-      this.isLoadingPage = false;
-    });
+        this.lists = listData.lists;
+        this.totalLists = listData.listCount;
+        this.isLoading = false;
+        this.isLoadingPage = false;
+      });
   }
 
 
@@ -60,15 +60,15 @@ export class PropertyListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-      this.propertyService.blockUnblock(this.selectListId , status).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.propertyService.getLists(this.listsPerPage, this.currentPage);
-        this.toastr.success(response.message);
-      });
+    this.propertyService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.propertyService.getLists(this.listsPerPage, this.currentPage);
+      this.toastr.success(response.message);
+    });
   }
 
   onview(id: string, index: number) {
@@ -87,7 +87,7 @@ export class PropertyListComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -96,8 +96,8 @@ export class PropertyListComponent implements OnInit {
 
 
   onClose(): void {
-     this.display = 'none';
-     this.display1 = 'none';
+    this.display = 'none';
+    this.display1 = 'none';
   }
 
 }

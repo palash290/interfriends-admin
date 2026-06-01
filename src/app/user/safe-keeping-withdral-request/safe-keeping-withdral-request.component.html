@@ -57,7 +57,6 @@
                       <td>
                         <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
                           data-target="#blockModal" ngbTooltip="rejected" *ngIf="list.request_status == '0'">Rejected
-
                         </button>
                         <button type="button" class="m-1 btn btn-success btn-sm" data-toggle="modal"
                           data-target="#blockModal" ngbTooltip="accepted" *ngIf="list.request_status == '1'">Accepted
@@ -65,8 +64,12 @@
                         <button type="button" class="m-1 btn btn-primary btn-sm" data-toggle="modal"
                           data-target="#blockModal" ngbTooltip="pending" *ngIf="list.request_status == '2'"
                           (click)="addsafekeepingPayment(list)">Pending
-
                         </button>
+
+                        <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal" (click)="getId(list.id)"
+                          data-target="#ct_reject_modal" ngbTooltip="rejected" *ngIf="list.request_status == '2'">Remove
+                        </button>
+
                       </td>
                     </tr>
                   </tbody>
@@ -175,3 +178,23 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+<!-- remove Modal S -->
+<div class="modal fade " id="ct_reject_modal" tabindex="-1" aria-labelledby="ct_reject_modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Remove This Request</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onReject()">Yes</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>
+        <button hidden type="button" class="btn btn-secondary" #closeModal1 data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- remove Modal E -->

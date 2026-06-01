@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { AuthService} from '../../../service/auth.service';
 import { EmergencyLoanService} from '../../../service/emergencyLoan.service';
 import { EmergencyLoan } from 'src/app/model/emergencyLoan.model';
 import { UserService } from 'src/app/service/user.service';
-import { AllUser } from 'src/app/model/allUser.model';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({

@@ -1,9 +1,7 @@
-import { Component, ElementRef, OnInit, SimpleChange, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Safekeepingwithdral } from '../../model/safekeepingwithdral.model';
-
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { RecommendUserService } from '../../service/recommendUser.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SafekeepingwithdralService } from 'src/app/service/safekeepingwithdral.service';
@@ -41,16 +39,32 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
   modalData: any;
   request_status: string;
   group_ids: any;
+  circle_ids: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
     private toastr: ToastrService,
     public route: ActivatedRoute,
     public safeKeepingService: SafeKeepingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
+    this.getList();
+
+    this.mode = 'update';
+    this.form = new FormGroup({
+      amount: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+    });
+  }
+
+
+  getList() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
@@ -59,7 +73,8 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
         this.currentPage,
         this.userId,
         this.groupId,
-        this.group_ids
+        this.group_ids,
+        this.circle_ids
       );
       this.listsSub = this.safekeepingwithdralService
         .getListUpdateListener()
@@ -72,15 +87,6 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
             console.log(this.lists, 'listDetail');
           }
         );
-    });
-
-    this.mode = 'update';
-    this.form = new FormGroup({
-      amount: new FormControl(null, { validators: [Validators.required] }),
-      note_title: new FormControl(null, { validators: [Validators.required] }),
-      note_description: new FormControl(null, {
-        validators: [Validators.required],
-      }),
     });
   }
 
@@ -113,7 +119,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
     //   data.id
     // ).subscribe((response: any) => {
     //   console.log(response, "response")
-    // /*  document.getElementById('closePopup').click();*/
+    //   document.getElementById('closePopup').click();
     //   this.isLoading = false;
 
     //   if (response.success === '1') {
@@ -133,7 +139,8 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
       this.listsPerPage,
       this.currentPage,
       this.userId,
-      this.groupId
+      this.groupId,
+      this.circle_ids
     );
   }
 
@@ -163,7 +170,6 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
         this.modalData.request_type
       )
       .subscribe((response: any) => {
-        console.log(response, 'response=====>>>>>>');
         this.onClose();
         if (response.success === '1') {
           this.toastr.success(response.message);
@@ -171,9 +177,41 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
           this.toastr.error(response.message);
         }
         this.isLoading = false;
-        setTimeout(function () {
-          window.location.reload();
-        }, 2000);
+        // setTimeout(function () {
+        //   window.location.reload();
+        // }, 2000);
+        this.getList();
+      });
+  }
+
+  id: any;
+
+  getId(id: any) {
+    this.id = id;
+  }
+
+  @ViewChild('closeModal1') closeModal1!: ElementRef;
+
+  onReject() {
+
+    this.isLoading = true;
+    this.safeKeepingService
+      .removeSafekeepingRequest(this.id)
+      .subscribe((response: any) => {
+        this.onClose();
+        if (response.success == '1') {
+          this.toastr.success(response.message);
+          this.closeModal1.nativeElement.click();
+          this.getList();
+        } else {
+          this.toastr.error(response.message);
+          this.closeModal1.nativeElement.click();
+          this.getList();
+        }
+        this.isLoading = false;
+        // setTimeout(function () {
+        //   window.location.reload();
+        // }, 2000);
       });
   }
 
@@ -181,4 +219,6 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
     this.form.reset();
     this.display = 'none';
   }
+
+
 }

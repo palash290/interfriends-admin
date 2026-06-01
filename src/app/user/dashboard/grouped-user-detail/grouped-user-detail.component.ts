@@ -36,14 +36,15 @@ export class GroupedUserDetailComponent implements OnInit {
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
-      /*localStorage.setItem('groupId_interFriendAdmin', this.groupId )*/ });
+      // localStorage.setItem('groupId_interFriendAdmin', this.groupId )
+    });
 
-     /*this.adminId = this.authService.getUserId();
-      this.userService.dashbaord(this.adminId).subscribe((response: any) => {
-        this.info = response.info;
-        this.group = response.info.groups
-        this.isLoadingCount = false;
-      });*/
+    //  this.adminId = this.authService.getUserId();
+    //   this.userService.dashbaord(this.adminId).subscribe((response: any) => {
+    //     this.info = response.info;
+    //     this.group = response.info.groups
+    //     this.isLoadingCount = false;
+    //   });
       this.groupService.group_detail(this.groupId)
       .subscribe((response: any) => {
         this.group =  response.groupDetail;

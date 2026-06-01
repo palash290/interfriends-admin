@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MiscellaneousStatusHistory } from 'src/app/model/miscellaneousStatusHistory.model';
 import { MiscellaneousService } from 'src/app/service/miscellaneous.service';
 
@@ -25,7 +25,7 @@ export class MiscellaneousStatusHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.miscellaneousId =paramMap.get('loanId');
+      this.miscellaneousId = paramMap.get('loanId');
       this.miscellaneousService.miscellaneousStatusHistoryDetail(this.miscellaneousId).subscribe((response: any) => {
         this.lists = response.miscellaneousDetail;
         this.isLoading = false;
@@ -35,7 +35,7 @@ export class MiscellaneousStatusHistoryComponent implements OnInit {
 
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;

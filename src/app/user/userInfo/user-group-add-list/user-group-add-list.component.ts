@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { UserList } from '../../../model/userList.model';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { ActivatedRoute, ParamMap, Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserGroupService } from 'src/app/service/userGroupList.service';

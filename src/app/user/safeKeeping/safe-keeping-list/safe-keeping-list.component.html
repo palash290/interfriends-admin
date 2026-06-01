@@ -77,12 +77,21 @@
                         <span class="badge badge-dark" *ngIf="list.payment_by == '6'">Provident Fund </span>
                         <span class="badge badge-primary" *ngIf="list.payment_by == '7'">Direct</span>
                       </td>
-                      <td>{{list.note_title}}</td>
+                      <td>{{list.note_title ? list.note_title : list.note}}</td>
                       <td>{{list.note_description}}</td>
-                      <td>
-                        <span class="badge badge-danger" *ngIf="list.pyment_type == '1'">Debit</span>
-                        <span class="badge badge-success" *ngIf="list.pyment_type == '2'">Credit</span>
+                      <!-- For admin -->
+                      <td *ngIf="list.requested_by === 'admin'">
+                        <span class="badge badge-danger" *ngIf="list.pyment_type === '1'">Debit</span>
+                        <span class="badge badge-success" *ngIf="list.pyment_type === '2'">Credit</span>
                       </td>
+
+                      <!-- For user -->
+                      <td *ngIf="list.requested_by === 'user'">
+                        <span class="badge badge-success" *ngIf="list.request_status === '1'">Accepted</span>
+                        <span class="badge badge-secondary" *ngIf="list.request_status === '2'">Pending</span>
+                        <span class="badge badge-danger" *ngIf="list.request_status === '0'">Rejected</span>
+                      </td>
+
                     </tr>
                   </tbody>
                 </table>

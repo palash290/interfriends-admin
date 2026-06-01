@@ -17,7 +17,7 @@ export class UserListService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  getUsers(usersPerPage: number, currentPage: number, search: string, group_ids?: any) {
+  getUsers(usersPerPage: number, currentPage: number, search: string, group_ids?: any, circle_ids?: any) {
 
     const userData = new FormData();
 
@@ -25,11 +25,14 @@ export class UserListService {
       const totalPage = usersPerPage * currentPage;
       userData.append('start', totalPage.toString());
     }
-    console.log({ group_ids })
+
     if (group_ids && group_ids != "") {
       userData.append('group_ids', group_ids.toString());
     }
 
+    if (circle_ids && circle_ids != "") {
+      userData.append('circle_ids', circle_ids.toString());
+    }
 
     userData.append('search_keyword', search);
 

@@ -94,12 +94,13 @@ export class SubadminListService {
     );
   }
 
-  addUser(name: string, email: string, phone: string, selectedCircle: any): any {
+  addUser(name: string, email: string, phone: string, groupId: any, circleIds: any): any {
     const userData = new FormData();
     userData.append('name', name);
     userData.append('email', email);
     userData.append('phone', phone);
-    userData.append('group_ids', selectedCircle);
+    userData.append('circle_ids', circleIds);
+    userData.append('group_ids', groupId);
 
     return this.http.post<{
       success: string;
@@ -114,14 +115,15 @@ export class SubadminListService {
     name: string,
     email: string,
     phone: string,
-    selectedCircle: any
+    groupId: any, circleIds: any
   ): any {
     const userData = new FormData();
     userData.append('id', id);
     userData.append('name', name);
     userData.append('email', email);
     userData.append('phone', phone);
-    userData.append('group_ids', selectedCircle);
+    userData.append('circle_ids', circleIds);
+    userData.append('group_ids', groupId);
 
     return this.http.post<{
       success: string;

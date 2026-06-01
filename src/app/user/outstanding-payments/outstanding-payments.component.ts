@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/service/shared.service';
 import { UserListService } from 'src/app/service/userList.service';
 
@@ -38,8 +37,9 @@ export class OutstandingPaymentsComponent implements OnInit {
       const totalPage = usersPerPage * currentPage;
       userData.append('start', totalPage.toString());
     }
-
+    this.isLoading = true;
     userData.append('search_keyword', this.search);
+    userData.append('type', this.selectedGroupType);
     this.sharedService.postAPI('/getAllMissedPayments', userData).subscribe({
       next: (resp) => {
         this.users = resp.lists;

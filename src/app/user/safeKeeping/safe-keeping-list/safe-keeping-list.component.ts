@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { SafeKeeping } from '../../../model/safeKeeping.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import {SafeKeepingService} from '../../../service/safeKeeping.service';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { SafeKeepingService } from '../../../service/safeKeeping.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -27,7 +27,7 @@ export class SafeKeepingListComponent implements OnInit {
   selectListId: string;
   userId: string;
   groupId: string;
-  display : string = 'none';
+  display: string = 'none';
 
 
   // add edit code start
@@ -51,13 +51,13 @@ export class SafeKeepingListComponent implements OnInit {
       this.safeKeepingService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
       this.listsSub = this.safeKeepingService.getListUpdateListener().subscribe(
         (listData: { lists: SafeKeeping[]; listCount: number; safeKeepingAmount: number }) => {
-        this.lists = listData.lists;
-        this.totalLists =  listData.listCount;
-        this.safeKeepingAmount = listData.safeKeepingAmount;
-        console.log(this.safeKeepingAmount, 'this.safeKeepingAmount');
-        this.isLoading = false;
-        this.isLoadingPage = false;
-      });
+          this.lists = listData.lists;
+          this.totalLists = listData.listCount;
+          this.safeKeepingAmount = listData.safeKeepingAmount;
+          console.log(this.safeKeepingAmount, 'this.safeKeepingAmount');
+          this.isLoading = false;
+          this.isLoadingPage = false;
+        });
     });
   }
 
@@ -82,7 +82,7 @@ export class SafeKeepingListComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -124,10 +124,10 @@ export class SafeKeepingListComponent implements OnInit {
     this.safeKeepingService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
   }
 
-  openModal(){
+  openModal() {
     this.display = "block";
   }
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   }
 }

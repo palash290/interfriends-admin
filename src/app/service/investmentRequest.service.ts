@@ -7,17 +7,17 @@ import { InvestmentRequest } from '../model/InvestmentRequest.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class InvestmentRequestService {
 
   private lists: InvestmentRequest[] = [];
-  private listsUpdated = new Subject<{ lists: InvestmentRequest[]; listCount: number;}>();
+  private listsUpdated = new Subject<{ lists: InvestmentRequest[]; listCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
-  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string, group_ids?: any) {
+  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string, group_ids?: any, circle_ids?: any) {
 
     const listData = new FormData();
 
@@ -31,12 +31,15 @@ export class InvestmentRequestService {
       listData.append('group_ids', group_ids.toString());
     }
 
+    if (circle_ids) {
+      listData.append('circle_ids', circle_ids.toString());
+    }
+
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number;}>(
-        API_URL + '/investment_request_list' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/investment_request_list', listData
       ).subscribe(responseData => {
         this.lists = responseData.lists;
-
 
         this.listsUpdated.next({
           lists: [...this.lists],

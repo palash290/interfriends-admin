@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -33,6 +33,7 @@ export class SubadminAddComponent implements OnInit {
   currentPage = 0;
   private listsSub: Subscription;
   totalLists = 0;
+  selectedGroupId: any = '0';
 
   constructor(
     public authService: AuthService,
@@ -58,21 +59,18 @@ export class SubadminAddComponent implements OnInit {
         this.isLoading = false;
       });
 
-
-    // this.userListService.getUserInfo(this.mainId)
-    //   .subscribe((response: any) => {
-    //     this.user = response.userinfo;
-    //     debugger
-    //     this.selectedSeats = response.userinfo.group_ids
-    //       .filter((p: { group_cycle_name: any }) => p.group_cycle_name !== null)
-    //       .map((p: { group_cycle_name: any }) => p.group_cycle_name);
-    //   });
-
   }
 
   //passengers: [{ circle_name: 'test' }, { circle_name: 'second circle' }]
 
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
+    this.selectedGroupId = '0';
+    this.selectedCircles = [];
+    this.form.patchValue({
+      name: '',
+      email: '',
+      phone: ''
+    });
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
         if (changes['uniqueId'] === undefined) {
@@ -85,34 +83,36 @@ export class SubadminAddComponent implements OnInit {
 
         this.isLoadingUpdate = true;
         this.mode = 'update';
-        this.userListService.getUserInfo(this.mainId)
-          .subscribe((response: any) => {
-            this.user = response.userinfo;
-            this.form.patchValue({
-              name: this.user.name,
-              email: this.user.email,
-              phone: this.user.phone
-            });
-            this.isLoadingUpdate = false;
+        this.userListService.getUserInfo(this.mainId).subscribe((response: any) => {
+          this.user = response.userinfo;
 
-            // this.imagePreview = this.user.profile_image;
-            const groupIds = response.userinfo?.group_ids
-              ?.split(',')
-              .filter((id: string) => id.trim() !== '');
-
-            this.selectedSeats = this.lists
-              .filter(seat => groupIds.includes(seat.id.toString()))
-              .map(seat => seat.group_cycle_name);
-
-            this.selectedCircleIds = this.lists
-              .filter(seat => groupIds.includes(seat.id.toString()))
-              .map(seat => seat.id);
-
+          this.form.patchValue({
+            name: this.user.name,
+            email: this.user.email,
+            phone: this.user.phone
           });
+          this.selectedGroupId = response.userinfo?.group_ids;
+          this.getCircleList();
+          this.isLoadingUpdate = false;
 
+          // ---- pre-populate selected circles
+          // response.userinfo.group_ids -> "5,12,22"
+          const circle_ids = response.userinfo?.circle_ids
+            ?.split(',')
+            .filter((id: string) => id.trim() !== '');
+
+          setTimeout(() => {
+            // ciecleLists contains the available circles (from your dropdown)
+            this.selectedCircles = this.ciecleLists
+              .filter((seat: { id: { toString: () => any; }; }) => circle_ids.includes(seat.id.toString()))
+              .map((seat: { id: any; circle_name: any; }) => ({
+                id: seat.id,
+                name: seat.circle_name
+              }));
+          }, 1000);
+        });
       }
     }
-
 
 
     if (changes['add'] !== undefined) {
@@ -138,54 +138,59 @@ export class SubadminAddComponent implements OnInit {
 
   onSave(): void {
     this.form.markAllAsTouched();
-    console.log(this.form.invalid);
-    console.log(this.form.value.dob, 'dob');
+
+    if (this.form.invalid) {
+      return;
+    }
+
+    // Collect circle ids from selectedCircles
+    const circleIds = this.selectedCircles.map(c => c.id);
+
+    this.isLoading = true;
 
     if (this.mode === 'create') {
-
-      if (this.form.invalid) {
-        return;
-      }
-      this.isLoading = true;
 
       this.userListService.addUser(
         this.form.value.name,
         this.form.value.email,
         this.form.value.phone,
-        this.selectedCircleIds
+        this.selectedGroupId,
+        circleIds
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
+
         if (response.success === '1') {
           this.valueChange.emit('add');
           this.toastr.success(response.message);
-          this.selectedCircleIds = []
+          this.selectedCircles = [];
         } else {
           this.toastr.error(response.message);
         }
       });
+
     } else {
-      if (this.form.invalid) {
-        return;
-      }
-      this.isLoading = true;
+      // update
       this.userListService.editUser(
         this.user.id,
         this.form.value.name,
         this.form.value.email,
         this.form.value.phone,
-        this.selectedCircleIds
+        this.selectedGroupId,
+        circleIds
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
-        if (response.success === '1') {
+
+        if (response.success == '1') {
           this.valueChange.emit('update');
           this.toastr.success(response.message);
-          this.selectedCircleIds = []
+          this.selectedCircles = [];
+          this.selectedGroupId = '0'
         } else {
           this.toastr.error(response.message);
         }
@@ -202,30 +207,27 @@ export class SubadminAddComponent implements OnInit {
 
 
   dropdownOpen = false;
-  selectedSeats: any[] = [];
+  //selectedSeats: any[] = [];
   selectedCircleIds: any[] = [];
   seatOptions: number[] = [];
+  selectedCircles: { id: string, name: string }[] = [];
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  toggleSeatSelection(seat: any, id: any) {
-    //debugger
-    if (this.selectedSeats.includes(seat)) {
-      // Remove the seat if it's already selected
-      this.selectedSeats = this.selectedSeats.filter(s => s !== seat);
-      this.selectedCircleIds = this.selectedSeats.filter(i => i !== id);
+  toggleSeatSelection(name: string, id: string): void {
+    const exists = this.selectedCircles.find(sc => sc.id === id);
+
+    if (exists) {
+      // remove
+      this.selectedCircles = this.selectedCircles.filter(sc => sc.id !== id);
     } else {
-      // Add the seat if it's not already selected and there's room
-      this.selectedSeats.push(seat);
-      this.selectedCircleIds.push(id);
-      // Sort in ascending order
-      this.selectedSeats.sort((a, b) => a - b);
-      this.selectedCircleIds.sort((a, b) => a - b);
+      // add
+      this.selectedCircles.push({ id, name });
     }
-    console.log("object", this.selectedCircleIds);
-    console.log("object", this.selectedSeats);
+
+    console.log('Selected Circles:', this.selectedCircles);
   }
 
   // removeSeat(event: Event, seat: number) {
@@ -240,31 +242,11 @@ export class SubadminAddComponent implements OnInit {
   //   }
   // }
 
-  removeSeat(event: Event, seat: any): void {
-    event.stopPropagation(); // Prevents dropdown toggle
-debugger
-    // Remove from selectedSeats
-    this.selectedSeats = this.selectedSeats.filter(s => s !== seat);
+  removeSeat(event: Event, circle: { id: string, name: string }): void {
+    event.stopPropagation();
 
-    // Remove corresponding ID from selectedCircleIds
-    const seatIdMap: { [key: string]: number } = {
-      'INTERFRIENDS (ELITE)': 35,
-      'INTERFRIENDS (GHANA)': 34,
-      'INTERFRIENDS (UK)': 22
-    };
-
-    const idToRemove = seatIdMap[seat];
-    if (idToRemove !== undefined) {
-      this.selectedCircleIds = this.selectedCircleIds.filter(id => id != idToRemove);
-    }
-
-    // Add seat back to seatOptions if not already present
-    if (!this.seatOptions.includes(seat)) {
-      this.seatOptions.push(seat);
-      this.seatOptions.sort(); // Assumes seat names are strings and you want alphabetical order
-    }
+    this.selectedCircles = this.selectedCircles.filter(sc => sc.id !== circle.id);
   }
-
 
   // for close seat dropdown
   @ViewChild('dropdown') dropdownRef!: ElementRef;
@@ -277,6 +259,33 @@ debugger
     }
   }
   // end //
+
+  onGroupChange(id: string): void {
+    this.selectedGroupId = id;        // or remove this line and use selectedGroupId directly
+    this.getCircleList();
+  }
+
+  ciecleLists: any;
+
+  getCircleList() {
+    const formData = new FormData();
+    formData.append('group_id', this.selectedGroupId);   // <– you could also use this.selectedGroupId
+
+    this.groupService.postAPI('/getCircleBygroupid', formData).subscribe({
+      next: (res: any) => {
+        if (res.success == 1) {
+          this.isLoading = false;
+          this.ciecleLists = res.data;
+        } else {
+          this.isLoading = false;
+        }
+      }
+    });
+  }
+
+  isSelected(id: string): boolean {
+    return this.selectedCircles.some(sc => sc.id === id);
+  }
 
 
 }

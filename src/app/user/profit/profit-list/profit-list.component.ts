@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { InvestmentService} from '../../../service/investment.service';
+import { InvestmentService } from '../../../service/investment.service';
 import { ToastrService } from 'ngx-toastr';
 import { Investment } from 'src/app/model/investment.model';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-profit-list',
@@ -27,7 +27,7 @@ export class ProfitListComponent implements OnInit {
   userId: string;
   groupId: string;
   payment_status = '1';
-  totalAmount : number = 0;
+  totalAmount: number = 0;
 
 
   // add edit code start
@@ -35,8 +35,8 @@ export class ProfitListComponent implements OnInit {
   updateId: string;
   eachChange: string;
   add: string;
-  display : string = 'none';
-  displayadd : string = 'none';
+  display: string = 'none';
+  displayadd: string = 'none';
   // add edit code end
 
   constructor(
@@ -53,16 +53,16 @@ export class ProfitListComponent implements OnInit {
       this.investmentService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.payment_status);
       this.listsSub = this.investmentService.getListUpdateListener().subscribe(
         (listData: { lists: Investment[]; listCount: number }) => {
-        this.lists = listData.lists;
-        this.totalLists =  listData.listCount;
-        this.lists.forEach(elem=>{
-          this.totalAmount = this.totalAmount + parseInt(elem.amount);
-        });
-        this.isLoading = false;
-        this.isLoadingPage = false;
+          this.lists = listData.lists;
+          this.totalLists = listData.listCount;
+          this.lists.forEach(elem => {
+            this.totalAmount = this.totalAmount + parseInt(elem.amount);
+          });
+          this.isLoading = false;
+          this.isLoadingPage = false;
 
-      });
-  });
+        });
+    });
   }
 
   // add edit code start
@@ -102,7 +102,7 @@ export class ProfitListComponent implements OnInit {
 
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -115,15 +115,15 @@ export class ProfitListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-      this.investmentService.blockUnblock(this.selectListId , status).subscribe((response: any) => {
-        if (response.status === '1') {
-          document.getElementById('closeUnblock').click();
-        } else {
-          document.getElementById('closeBlock').click();
-        }
-        this.investmentService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.payment_status);
-        this.toastr.success(response.message);
-      });
+    this.investmentService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+      if (response.status === '1') {
+        document.getElementById('closeUnblock').click();
+      } else {
+        document.getElementById('closeBlock').click();
+      }
+      this.investmentService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.payment_status);
+      this.toastr.success(response.message);
+    });
   }
 
   onview(id: string, index: number) {
@@ -141,7 +141,7 @@ export class ProfitListComponent implements OnInit {
     this.investmentService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.payment_status);
   }
 
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
     this.displayadd = event
   }

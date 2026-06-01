@@ -4,7 +4,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Safekeepingwithdral } from 'src/app/model/safekeepingwithdral.model';
 import { SafeKeepingService } from 'src/app/service/safeKeeping.service';
 import { SafekeepingwithdralService } from 'src/app/service/safekeepingwithdral.service';
 
@@ -40,6 +39,7 @@ export class PayoutRequestComponent implements OnInit {
   modalData: any;
   request_status: string;
   group_ids: any;
+  circle_ids: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -50,6 +50,7 @@ export class PayoutRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.getList();
 
     this.mode = 'update';
@@ -71,7 +72,8 @@ export class PayoutRequestComponent implements OnInit {
         this.currentPage,
         this.userId,
         this.groupId,
-        this.group_ids
+        this.group_ids,
+        this.circle_ids
       );
       this.listsSub = this.safekeepingwithdralService
         .getListUpdateListenerPayout()
@@ -114,7 +116,8 @@ export class PayoutRequestComponent implements OnInit {
       this.listsPerPage,
       this.currentPage,
       this.userId,
-      this.groupId
+      this.groupId,
+      this.circle_ids
     );
   }
 

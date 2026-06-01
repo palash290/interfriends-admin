@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { bannersAndmessagesService } from 'src/app/service/bannersAndmessages.service';
@@ -199,4 +199,6 @@ export class AddbannerMessagesComponent implements OnInit {
     }
 
   }
+
+  
 }

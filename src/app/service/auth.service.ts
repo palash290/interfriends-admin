@@ -86,8 +86,9 @@ export class AuthService {
           this.isUserAuthenticated = true;
           this.userId = response.user_id;
           this.email = response.email;
-          
-          localStorage.setItem('group_ids', response?.group_ids)
+          //debugger
+          localStorage.setItem('group_ids', response?.group_ids);
+          localStorage.setItem('circle_ids', response?.circle_ids);
           this.admin_type = response.admin_type;
           this.name = response.name;
           this.authUserStatusListner.next(true);
@@ -102,7 +103,7 @@ export class AuthService {
         } else {
           this.authUserStatusListner.next(false);
           this.toastr.error(response.message);
-          location.reload();
+          //location.reload();
         }
       }, error => {
         this.authUserStatusListner.next(false);

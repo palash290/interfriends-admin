@@ -1,12 +1,11 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService} from '../../../service/auth.service';
 import { GroupService} from '../../../service/group.service';
 import { Group } from 'src/app/model/group.model';
 import { UserService } from 'src/app/service/user.service';
-import { AllUser } from 'src/app/model/allUser.model';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({

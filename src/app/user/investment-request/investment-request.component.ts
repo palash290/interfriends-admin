@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { InvestmentRequest } from 'src/app/model/InvestmentRequest.model';
 import { InvestmentRequestService } from 'src/app/service/investmentRequest.service';
@@ -25,8 +25,9 @@ export class InvestmentRequestComponent implements OnInit {
   selectListId: string;
   userId: string;
   groupId: string;
-  display : string  ="none"
+  display: string = "none"
   group_ids: any;
+  circle_ids: any;
 
   constructor(
     public investmentRequestService: InvestmentRequestService,
@@ -35,24 +36,25 @@ export class InvestmentRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-     this.group_ids = localStorage.getItem('group_ids');
+    this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
-      this.investmentRequestService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.group_ids);
+      this.investmentRequestService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.group_ids, this.circle_ids);
       this.listsSub = this.investmentRequestService.getListUpdateListener().subscribe(
         (listData: { lists: InvestmentRequest[]; listCount: number }) => {
-        this.lists = listData.lists;
-        this.totalLists =  listData.listCount;
-        this.isLoading = false;
-        this.isLoadingPage = false;
-        console.log(this.listDetail, 'listDetail');
-      });
+          this.lists = listData.lists;
+          this.totalLists = listData.listCount;
+          this.isLoading = false;
+          this.isLoadingPage = false;
+          console.log(this.listDetail, 'listDetail');
+        });
     });
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -63,7 +65,7 @@ export class InvestmentRequestComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    this.investmentRequestService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
+    this.investmentRequestService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.circle_ids);
   }
 
   onview(id: string, index: number) {
@@ -71,8 +73,7 @@ export class InvestmentRequestComponent implements OnInit {
     this.display = 'block';
   }
 
-  onClose()
-  {
+  onClose() {
     this.display = 'none';
   }
 }

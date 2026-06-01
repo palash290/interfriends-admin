@@ -18,7 +18,7 @@ export class SafekeepingwithdralService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string, group_ids?: any) {
+  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string, group_ids?: any, circle_ids?: any) {
 
     const listData = new FormData();
 
@@ -30,6 +30,10 @@ export class SafekeepingwithdralService {
 
     if (group_ids) {
       listData.append('group_ids', group_ids.toString());
+    }
+
+    if (circle_ids) {
+      listData.append('circle_ids', circle_ids.toString());
     }
 
     this.http
@@ -51,7 +55,7 @@ export class SafekeepingwithdralService {
   }
 
 
-  getPayoutLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any) {
+  getPayoutLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any, circle_ids?: any) {
 
     const listData = new FormData();
 
@@ -63,6 +67,10 @@ export class SafekeepingwithdralService {
 
     if (group_ids) {
       listData.append('group_ids', group_ids.toString());
+    }
+
+    if (circle_ids) {
+      listData.append('circle_ids', circle_ids.toString());
     }
 
 
@@ -86,7 +94,7 @@ export class SafekeepingwithdralService {
 
 
 
-  getSafekeepingLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any) {
+  getSafekeepingLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any, circle_ids?: any) {
 
     const listData = new FormData();
 
@@ -98,6 +106,10 @@ export class SafekeepingwithdralService {
 
     if (group_ids) {
       listData.append('group_ids', group_ids.toString());
+    }
+
+    if (circle_ids) {
+      listData.append('circle_ids', circle_ids.toString());
     }
 
     this.http

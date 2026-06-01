@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
-import { LoanService} from '../../../service/loan.service';
+import { UserService } from '../../../service/user.service';
+import { LoanService } from '../../../service/loan.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { LoanStatusHistory } from 'src/app/model/loanStatusHistory.model';
 
 
@@ -26,7 +26,7 @@ export class EmergencyLoanStatusHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.loanId =paramMap.get('loanId');
+      this.loanId = paramMap.get('loanId');
       this.loanService.emergencyLoanStatusHistoryDetail(this.loanId).subscribe((response: any) => {
         this.lists = response.loanDetail;
         this.isLoading = false;
@@ -36,7 +36,7 @@ export class EmergencyLoanStatusHistoryComponent implements OnInit {
 
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;

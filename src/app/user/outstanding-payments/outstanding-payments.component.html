@@ -27,20 +27,20 @@
                             <div class="box-header d-flex align-items-center">
                                 <h3 class="box-title">Outstanding Payment List</h3>
 
-                                <!-- <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
+                                <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
                                     <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Group Type</label>
                                     <select class="form-control py-2 h-auto ct_input"
                                         style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedGroupType"
-                                        name="loan_type">
+                                        name="loan_type" (ngModelChange)="getUsers(usersPerPage, currentPage, search)">
                                         <option value="">All</option>
-                                        <option value="1">Loan</option>
-                                        <option value="2">Saving</option>
-                                        <option value="3">Mis</option>
+                                        <option value="loan">Loan</option>
+                                        <option value="saving">Saving</option>
+                                        <option value="miscellaneous">Miscellaneous</option>
                                     </select>
-                                </div> -->
+                                </div>
 
                                 <input type="text" class="form-control w-25 rounded float-right ml-auto"
-                                    *ngIf="!isLoading" placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+                                    placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
                             </div>
                             <!-- /.box-header -->
                             <div class="overlay" *ngIf="isLoadingPage && !isLoading">

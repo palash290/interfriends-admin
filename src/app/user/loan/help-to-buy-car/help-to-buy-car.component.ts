@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { Loan } from '../../../model/loan.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { LoanService} from '../../../service/loan.service';
+import { LoanService } from '../../../service/loan.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
@@ -28,15 +28,15 @@ export class HelpToBuyCarComponent implements OnInit {
   groupId: string;
   selectListStatusId: string;
   adminType: string;
-  display : string = 'none';
-  display1 : string = 'none'
+  display: string = 'none';
+  display1: string = 'none'
 
-    // add edit code start
-    listId: string;
-    updateId: string;
-    eachChange: string;
-    add: string;
-    // add edit code end
+  // add edit code start
+  listId: string;
+  updateId: string;
+  eachChange: string;
+  add: string;
+  // add edit code end
 
 
   constructor(
@@ -49,19 +49,19 @@ export class HelpToBuyCarComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.groupId =paramMap.get('groupId');
-      this.userId =paramMap.get('userId');
+      this.groupId = paramMap.get('groupId');
+      this.userId = paramMap.get('userId');
       this.adminType = this.authService.getAdminType();
-      const loan_type ="3";
+      const loan_type = "3";
 
       this.loanService.getListsHelp2Pay(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.adminType, loan_type);
       this.listsSub = this.loanService.getListHelp2PayUpdateListener().subscribe(
         (listData: { lists: Loan[]; listCount: number }) => {
-        this.lists = listData.lists;
-        this.totalLists =  listData.listCount;
-        this.isLoading = false;
-        this.isLoadingPage = false;
-      });
+          this.lists = listData.lists;
+          this.totalLists = listData.listCount;
+          this.isLoading = false;
+          this.isLoadingPage = false;
+        });
     });
   }
 
@@ -72,24 +72,24 @@ export class HelpToBuyCarComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    const loan_type ="3";
+    const loan_type = "3";
     this.loanService.getListsHelp2Pay(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.adminType, loan_type);
   }
 
   updateStatus(id: string, status: string, index: number) {
     this.loanService.editLoanStatus(id, status)
-    .subscribe((response: any) => {
-      this.toastr.success(response.message);
-      this.selectListStatusId = '';
-      this.lists[index]['status'] = status;
-    });
+      .subscribe((response: any) => {
+        this.toastr.success(response.message);
+        this.selectListStatusId = '';
+        this.lists[index]['status'] = status;
+      });
   }
 
 
   checkCycleStatus(id: string) {
     // console.log(this.selectListStatusId, 'this.selectListId111');
     // console.log(id, 'this.selectListId2222');
-    if(id === this.selectListStatusId) {
+    if (id === this.selectListStatusId) {
       return true;
     } else {
       return false;
@@ -97,7 +97,7 @@ export class HelpToBuyCarComponent implements OnInit {
   }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -106,7 +106,7 @@ export class HelpToBuyCarComponent implements OnInit {
 
 
   onSetStatusId(id: string): void {
-    if(this.selectListStatusId === id) {
+    if (this.selectListStatusId === id) {
       this.selectListStatusId = '';
     } else {
       this.selectListStatusId = id;
@@ -139,13 +139,13 @@ export class HelpToBuyCarComponent implements OnInit {
   }
 
   // add edit code end
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
     this.display1 = event;
   }
 
-  sendHeader(name:string){
-    console.log(name,"name")
+  sendHeader(name: string) {
+    console.log(name, "name")
     this.userService.sendheaderName(name)
   }
 

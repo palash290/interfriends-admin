@@ -45,14 +45,14 @@ export class bannersAndmessagesService {
   ): any {
     const userData = new FormData();
 
-    /*const multipleBanner = data.banner;
-    console.log(multipleBanner)
-    if(multipleBanner != undefined ){
-      for (const key in Object.keys(multipleBanner)) {
-        // console.log(multipleBanner[key], "PPPooooooooooooooooooP************")
-        userData.append("image[]", multipleBanner[key]);
-      }
-    }*/
+    // const multipleBanner = data.banner;
+    // console.log(multipleBanner)
+    // if(multipleBanner != undefined ){
+    //   for (const key in Object.keys(multipleBanner)) {
+    //     // console.log(multipleBanner[key], "PPPooooooooooooooooooP************")
+    //     userData.append("image[]", multipleBanner[key]);
+    //   }
+    // }
     userData.append("image", data.banner[0]);
     userData.append('id', id);
     userData.append('title', data.title);

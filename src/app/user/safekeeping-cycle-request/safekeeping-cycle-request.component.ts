@@ -39,6 +39,7 @@ export class SafekeepingCycleRequestComponent implements OnInit {
   modalData: any;
   request_status: string;
   group_ids: any;
+  circle_ids: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -49,6 +50,7 @@ export class SafekeepingCycleRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.getList();
 
     this.mode = 'update';
@@ -71,7 +73,8 @@ export class SafekeepingCycleRequestComponent implements OnInit {
         this.currentPage,
         this.userId,
         this.groupId,
-        this.group_ids
+        this.group_ids,
+        this.circle_ids
       );
 
       this.listsSub = this.safekeepingwithdralService
@@ -127,11 +130,13 @@ export class SafekeepingCycleRequestComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    this.safekeepingwithdralService.getLists(
+    this.safekeepingwithdralService.getSafekeepingLists(
       this.listsPerPage,
       this.currentPage,
       this.userId,
-      this.groupId
+      this.groupId,
+      this.circle_ids,
+      this.circle_ids
     );
   }
 

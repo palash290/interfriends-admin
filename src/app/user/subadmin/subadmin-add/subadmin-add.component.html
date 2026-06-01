@@ -41,6 +41,7 @@
                      </span>
                   </div>
                </div>
+
                <div class="col-md-6">
                   <div class="form-group"
                      [ngClass]="{'has-error': form.get('phone').invalid  && form.get('phone').touched}">
@@ -55,31 +56,46 @@
 
                <div class="col-md-6">
                   <div class="form-group">
+                     <label class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Group List</label>
+                     <select class="form-control" [(ngModel)]="selectedGroupId"
+                        (change)="onGroupChange($event.target.value)" [ngModelOptions]="{standalone: true}">
+                        <option value="0" disabled>Select</option>
+                        <option *ngFor="let group of lists" [value]="group.id">
+                           {{ group.group_cycle_name }}
+                        </option>
+                     </select>
+                  </div>
+               </div>
+
+
+               <div class="col-md-6">
+                  <div class="form-group">
                      <label>Group List</label>
                      <div #dropdown class="custom-dropdown ct_multi_drop_custom_main mb-0" [class.open]="dropdownOpen">
-                        <div class="dropdown-toggle position-relative" [ngClass]="{'py-2': selectedSeats.length > 0}"
+                        <div class="dropdown-toggle position-relative" [ngClass]="{'py-2': selectedCircles?.length > 0}"
                            (click)="toggleDropdown()">
-                           <span *ngIf="selectedSeats.length; else placeholder">
-                              <span *ngFor="let seat of selectedSeats" class="selected-seat">
-                                 {{ seat }}
-                                 <span class="remove-seat" (click)="removeSeat($event, seat)">&times;</span>
+                           <span *ngIf="selectedCircles?.length; else placeholder">
+                              <span *ngFor="let circle of selectedCircles" class="selected-seat">
+                                 {{ circle.name }}
+                                 <span class="remove-seat" (click)="removeSeat($event, circle)">&times;</span>
                               </span>
                            </span>
-                           <ng-template #placeholder>Select seats</ng-template>
+                           <ng-template #placeholder>Select Group</ng-template>
                         </div>
                         <div class="ct_multi_drop_custom_scroll" *ngIf="dropdownOpen">
-                           <div class="dropdown-item" *ngFor="let seat of lists"
-                              (click)="toggleSeatSelection(seat.group_cycle_name, seat.id)"
-                              [class.selected]="selectedSeats.includes(seat.group_cycle_name)">
-                              {{ seat.group_cycle_name }}
+                           <div class="dropdown-item" *ngFor="let seat of ciecleLists"
+                              (click)="toggleSeatSelection(seat.circle_name, seat.id)"
+                              [class.selected]="isSelected(seat.id)">
+                              {{ seat.circle_name }}
                            </div>
                         </div>
                      </div>
-                     <span class="help-block" *ngIf="selectedSeats.length == 0">
+                     <span class="help-block" *ngIf="selectedCircles?.length == 0">
                         Please select group.
                      </span>
                   </div>
                </div>
+
             </div>
          </div>
       </div>

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment'
 
@@ -29,8 +28,8 @@ export class GroupService {
       listData.append('start', totalPage.toString());
     }
 
-    if(group_ids){
-    listData.append('group_ids', group_ids.toString());
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
     }
 
     this.http

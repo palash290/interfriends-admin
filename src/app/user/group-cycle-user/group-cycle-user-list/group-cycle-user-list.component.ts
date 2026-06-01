@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../../service/user.service';
 import { GroupCycle } from '../../../model/groupCycle.model';
-import { PageEvent } from '@angular/material/paginator';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { GroupCycleService } from '../../../service/groupCycle.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { userCycle } from 'src/app/model/userCycle.model';
 import { CycleTotal } from 'src/app/model/cycleTotal.model';
-import { UserGroupService } from 'src/app/service/userGroupList.service';
 import { UserPaymentAmountCheckService } from 'src/app/service/userPaymentAmountCheck.service';
 
 @Component({
@@ -220,8 +218,6 @@ export class GroupCycleUserListComponent implements OnInit {
   }
 
   checkCycleStatus(id: string) {
-    // console.log(this.selectListStatusId, 'this.selectListId111');
-    // console.log(id, 'this.selectListId2222');
     if (id === this.selectListStatusId) {
       return true;
     } else {
@@ -279,4 +275,6 @@ export class GroupCycleUserListComponent implements OnInit {
     this.display1 = "none";
     this.display2 = "none";
   }
+
+
 }

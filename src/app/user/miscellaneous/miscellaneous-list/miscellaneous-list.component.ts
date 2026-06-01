@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../service/user.service';
+import { UserService } from '../../../service/user.service';
 import { Miscellaneous } from '../../../model/miscellaneous.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
-import { MiscellaneousService} from '../../../service/miscellaneous.service';
-import { ActivatedRoute, ParamMap} from '@angular/router';
+import { MiscellaneousService } from '../../../service/miscellaneous.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -25,8 +25,8 @@ export class MiscellaneousListComponent implements OnInit {
   selectListId: string;
   userId: string;
   groupId: string;
-  display : string = 'none';
-  display1 : string = 'none';
+  display: string = 'none';
+  display1: string = 'none';
 
   // add edit code start
   listId: string;
@@ -49,11 +49,11 @@ export class MiscellaneousListComponent implements OnInit {
       this.miscellaneousService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
       this.listsSub = this.miscellaneousService.getListUpdateListener().subscribe(
         (listData: { lists: Miscellaneous[]; listCount: number }) => {
-        this.lists = listData.lists;
-        this.totalLists =  listData.listCount;
-        this.isLoading = false;
-        this.isLoadingPage = false;
-      });
+          this.lists = listData.lists;
+          this.totalLists = listData.listCount;
+          this.isLoading = false;
+          this.isLoadingPage = false;
+        });
     });
   }
 
@@ -105,7 +105,7 @@ export class MiscellaneousListComponent implements OnInit {
   // }
 
   checkAdminType() {
-    if(localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
     } else {
       return false;
@@ -122,11 +122,11 @@ export class MiscellaneousListComponent implements OnInit {
     this.miscellaneousService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
   }
 
-  closeModalF(event : any) {
+  closeModalF(event: any) {
     this.display = event;
   }
 
-  closeModalF1(event : any){
+  closeModalF1(event: any) {
     this.display1 = event;
   }
 
