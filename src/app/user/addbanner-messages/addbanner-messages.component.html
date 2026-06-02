@@ -29,11 +29,19 @@
                   </tr>
                   <tr *ngFor="let banner of allbannerAndmsg, let i = index">
                     <td>{{i+1}}</td>
-                    <td *ngIf="banner.image != ''">
-                      <div class="ct_bnr_img">
-                        <img src="{{banner.image}}" alt="">
+                    <td *ngIf="banner.image">
 
+                      <div class="ct_bnr_img" *ngIf="!isVideo(banner.image)">
+                        <img [src]="banner.image" alt="Banner Image">
                       </div>
+
+                      <div class="ct_bnr_img" *ngIf="isVideo(banner.image)">
+                        <video width="150" controls>
+                          <source [src]="banner.image">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+
                     </td>
                     <td *ngIf="banner.title != ''">{{banner.title}}</td>
                     <td class="ct_buton_grp text-right">
@@ -79,14 +87,18 @@
                 <div class="ct_img_upload file-input box-header">
                   <div class="form-group">
                     <label for="file">Banner Image:</label>
-                    <input id="file" type="file" class="form-control" (change)="onFileChange($event)">
+                    <input id="file" type="file" class="form-control" accept="image/*,video/*"
+                      (change)="onFileChange($event)">
                     <!-- <div *ngIf="f['file'].touched && f['file'].invalid" class="alert alert-danger">
                           <div *ngIf="f['file'].errors && f['file'].errors['required']">File is required.</div>
                       </div> -->
                   </div>
                   <!-- <div class="img"></div> -->
-                  <div class="ct_img_grid" *ngFor="let url of imageUrls">
-                    <img [src]="sanitizer.bypassSecurityTrustUrl(url)" style="height: 300px; width:500px">
+                  <div class="ct_img_grid" *ngFor="let file of imageUrls">
+                    <img *ngIf="file.type.startsWith('image/')" [src]="sanitizer.bypassSecurityTrustUrl(file.url)"
+                      style="height: 300px; width:500px">
+                    <video *ngIf="file.type.startsWith('video/')" [src]="sanitizer.bypassSecurityTrustUrl(file.url)"
+                      style="height: 300px; width:500px" controls></video>
                   </div>
 
                   <div class="ct_img_grid" *ngIf="editStatus==true && imageUrls.length ==0">

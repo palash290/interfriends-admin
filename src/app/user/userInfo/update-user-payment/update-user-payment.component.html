@@ -12,10 +12,11 @@
                                         [ngClass]="{'has-error': form.get('savings').invalid  && form.get('savings').touched}">
                                         <label class="ct_fw_600">Monthly Savings Amount</label>
                                         <input type="text" class="form-control" placeholder="Enter Amount"
-                                            formControlName="savings" />
+                                            formControlName="savings" inputmode="decimal" (keypress)="allowPositiveAmount($event)"
+                                            (input)="sanitizePositiveAmount('savings')" />
                                         <span class="help-block"
                                             *ngIf="form.get('savings').invalid  && form.get('savings').touched">
-                                            Please enter a first name.
+                                            Please enter a positive amount.
                                         </span>
                                     </div>
                                 </div>
@@ -37,10 +38,11 @@
                                         [ngClass]="{'has-error': form.get('jnr_amount').invalid  && form.get('jnr_amount').touched}">
                                         <label class="ct_fw_600">JNR/Christmas Monthly Savings Amount</label>
                                         <input type="text" class="form-control" placeholder="Enter Amount"
-                                            formControlName="jnr_amount" />
+                                            formControlName="jnr_amount" inputmode="decimal" (keypress)="allowPositiveAmount($event)"
+                                            (input)="sanitizePositiveAmount('jnr_amount')" />
                                         <span class="help-block"
                                             *ngIf="form.get('jnr_amount').invalid  && form.get('jnr_amount').touched">
-                                            Please enter a last name.
+                                            Please enter a positive amount.
                                         </span>
                                     </div>
                                 </div>

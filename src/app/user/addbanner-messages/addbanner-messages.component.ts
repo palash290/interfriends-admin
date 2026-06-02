@@ -67,9 +67,23 @@ export class AddbannerMessagesComponent implements OnInit {
     this.imageUrls = [];
 
     for (let i = 0; i < files.length; i++) {
+      if (!this.isImageOrVideo(files[i])) {
+        this.toastr.error("Only image and video files are allowed");
+        event.target.value = '';
+        this.item_image = [];
+        this.imageUrls = [];
+        return;
+      }
       this.item_image.push(files[i]);
-      this.imageUrls.push(URL.createObjectURL(files[i]));
+      this.imageUrls.push({
+        url: URL.createObjectURL(files[i]),
+        type: files[i].type
+      });
     }
+  }
+
+  isImageOrVideo(file: File) {
+    return file.type.startsWith('image/') || file.type.startsWith('video/');
   }
 
 
@@ -154,6 +168,13 @@ export class AddbannerMessagesComponent implements OnInit {
 
   }
 
+  isVideo(url: string): boolean {
+    if (!url) return false;
+
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+    return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+  }
+
   submit() {
     // const currPassword = this.myForm.controls.title.value?.trim();
 
@@ -179,6 +200,8 @@ export class AddbannerMessagesComponent implements OnInit {
         // this.myForm.reset();
         this.getAllbannerAndmessage();
         this.isLoading = false;
+      }, (error: any) => {
+        this.isLoading = false;
       })
     }
     else if (this.editStatus) {
@@ -190,6 +213,8 @@ export class AddbannerMessagesComponent implements OnInit {
         // this.myForm.reset();
         this.getAllbannerAndmessage();
         this.isLoading = false;
+      }, (error: any) => {
+        this.isLoading = false;
       });
       console.log("Write the code of API of Edit Here")
     }
@@ -200,5 +225,5 @@ export class AddbannerMessagesComponent implements OnInit {
 
   }
 
-  
+
 }

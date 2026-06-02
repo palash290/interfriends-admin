@@ -57,11 +57,11 @@
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-success margin" data-toggle="modal" ngbTooltip="Block"
-                          data-target="#blockModal" (click)="onSetId(list.id)" *ngIf="list.status === '1'">
+                          data-target="#blockModal" (click)="onSetId(list.id, 'block')" *ngIf="list.status === '1'">
                           <i class="fa fa-ban" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-danger margin" data-toggle="modal" ngbTooltip="UnBlock"
-                          data-target="#unblockModal" (click)="onSetId(list.id)" *ngIf="list.status === '2'">
+                          data-target="#unblockModal" (click)="onSetId(list.id, 'unblock')" *ngIf="list.status === '2'">
                           <i class="fa fa-ban" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
@@ -99,14 +99,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">Do You Realy Want To Block This Group</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
-        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock"
+          (click)="onClose()">Close</button>
       </div>
     </div>
   </div>
@@ -114,7 +115,7 @@
 <!-- block model popup end -->
 <!-- unblock model popup start -->
 <div class="modal fade show" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
-  aria-hidden="true" [ngStyle]="{'display':display}">
+  aria-hidden="true" [ngStyle]="{'display':display2}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

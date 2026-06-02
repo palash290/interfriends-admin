@@ -25,6 +25,7 @@ export class PropertyListComponent implements OnInit {
   selectListId: string;
   display: string = 'none';
   display1: string = 'none';
+  display2: string = 'none';
 
 
 
@@ -54,13 +55,18 @@ export class PropertyListComponent implements OnInit {
 
 
   // block and unblock code start
-  onSetId(id: string): void {
+  onSetId(id: string, action: string): void {
     this.selectListId = id;
-    this.display = "block";
+    if (action === 'block') {
+      this.display = "block";
+    } else {
+      this.display2 = "block";
+    }
   }
 
   onBlockUnblock(status: string): void {
     this.propertyService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+      this.onClose();
       if (response.status === '1') {
         document.getElementById('closeUnblock').click();
       } else {
@@ -98,6 +104,7 @@ export class PropertyListComponent implements OnInit {
   onClose(): void {
     this.display = 'none';
     this.display1 = 'none';
+    this.display2 = 'none';
   }
 
 }

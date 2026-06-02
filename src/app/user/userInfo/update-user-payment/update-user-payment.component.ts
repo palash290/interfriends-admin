@@ -17,6 +17,7 @@ export class UpdateUserPaymentComponent implements OnInit {
   form: FormGroup;
   mode = 'create';
   ID: string;
+  private readonly positiveAmountPattern = /^(?=.*[1-9])(?:\d+|\d*\.\d+)$/;
   constructor(
     public authService: AuthService,
     public userService: UserService,
@@ -31,12 +32,47 @@ export class UpdateUserPaymentComponent implements OnInit {
       this.ID = paramMap.get('id');
     });
     this.form = new FormGroup({
-      savings: new FormControl(null),
-      jnr_amount: new FormControl(null),
+      savings: new FormControl(null, { validators: [Validators.pattern(this.positiveAmountPattern)] }),
+      jnr_amount: new FormControl(null, { validators: [Validators.pattern(this.positiveAmountPattern)] }),
       expected_date: new FormControl(null, { validators: [Validators.required] }),
       christmas_date: new FormControl(null, { validators: [Validators.required] }),
     });
   };
+
+  allowPositiveAmount(event: KeyboardEvent): void {
+    if (event.key.length !== 1) {
+      return;
+    }
+
+    const input = event.target as HTMLInputElement;
+    const nextValue = `${input.value.slice(0, input.selectionStart || 0)}${event.key}${input.value.slice(input.selectionEnd || 0)}`;
+
+    if (!/^\d*\.?\d*$/.test(nextValue)) {
+      event.preventDefault();
+    }
+  }
+
+  sanitizePositiveAmount(controlName: string): void {
+    const control = this.form.get(controlName);
+
+    if (!control) {
+      return;
+    }
+
+    const value = control.value;
+
+    if (value === null || value === undefined || value === '') {
+      return;
+    }
+
+    const sanitizedValue = String(value)
+      .replace(/[^\d.]/g, '')
+      .replace(/(\..*)\./g, '$1');
+
+    if (sanitizedValue !== value) {
+      control.setValue(sanitizedValue);
+    }
+  }
 
 
   onSave(): void {

@@ -14,9 +14,7 @@ export class bannersAndmessagesService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  addbannersAndmessages(
-    data: any
-  ): any {
+  addbannersAndmessages(data: any): any {
     const userData = new FormData();
 
     const multipleBanner = data.banner;
@@ -33,9 +31,7 @@ export class bannersAndmessagesService {
       success: string;
       message: string;
       banners: any
-    }>(
-      API_URL + '/addBanner', userData
-    );
+    }>(API_URL + '/addBanner', userData);
   }
 
 
