@@ -8,14 +8,14 @@ import { RecommendUserList } from '../model/recommendUserList.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class RecommendUserService {
 
   private lists: RecommendUserList[] = [];
-  private listsUpdated = new Subject<{ lists: RecommendUserList[]; listCount: number;}>();
+  private listsUpdated = new Subject<{ lists: RecommendUserList[]; listCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
   getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string) {
@@ -30,8 +30,8 @@ export class RecommendUserService {
 
 
     this.http
-      .post<{ success: string; message: string; lists: any;  listCount: number;}>(
-        API_URL + '/recommendUser_list' , listData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/recommendUser_list', listData
       ).subscribe(responseData => {
         this.lists = responseData.lists;
 
@@ -52,5 +52,9 @@ export class RecommendUserService {
   viewRecommnedUserForm(data: any): Observable<any> {
     return this.http.post<any>(API_URL + '/userDetailInfo', data);
   }
-  
+
+  viewRecommnedTracking(data: any): Observable<any> {
+    return this.http.post<any>(API_URL + '/recommendUserApprovalTracking', data);
+  }
+
 }

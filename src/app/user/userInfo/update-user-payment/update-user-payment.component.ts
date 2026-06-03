@@ -39,42 +39,6 @@ export class UpdateUserPaymentComponent implements OnInit {
     });
   };
 
-  allowPositiveAmount(event: KeyboardEvent): void {
-    if (event.key.length !== 1) {
-      return;
-    }
-
-    const input = event.target as HTMLInputElement;
-    const nextValue = `${input.value.slice(0, input.selectionStart || 0)}${event.key}${input.value.slice(input.selectionEnd || 0)}`;
-
-    if (!/^\d*\.?\d*$/.test(nextValue)) {
-      event.preventDefault();
-    }
-  }
-
-  sanitizePositiveAmount(controlName: string): void {
-    const control = this.form.get(controlName);
-
-    if (!control) {
-      return;
-    }
-
-    const value = control.value;
-
-    if (value === null || value === undefined || value === '') {
-      return;
-    }
-
-    const sanitizedValue = String(value)
-      .replace(/[^\d.]/g, '')
-      .replace(/(\..*)\./g, '$1');
-
-    if (sanitizedValue !== value) {
-      control.setValue(sanitizedValue);
-    }
-  }
-
-
   onSave(): void {
     this.form.markAllAsTouched();
     console.log(this.form.invalid);

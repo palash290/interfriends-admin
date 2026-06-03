@@ -2,26 +2,19 @@
     [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
     <div class="wrapper">
         <app-header></app-header>
-        <!-- Left side column. contains the logo and sidebar -->
         <app-sidebar></app-sidebar>
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
                     Download Data
                 </h1>
             </section>
-
-            <!-- Main content -->
             <section class="content">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
-
                             <div class="d-flex gap-3 align-items-center justify-content-between pb-4 px-3 mt-3"
                                 style="gap:10px">
-
                                 <div class="d-flex align-items-center" style="gap:10px">
                                     <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
                                         <!-- <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Select</label> -->
@@ -29,13 +22,14 @@
                                             [(ngModel)]="selectedGroupType"
                                             (ngModelChange)="getAdminNotifications(usersPerPage, currentPage, search)">
                                             <option value="" disabled>Select Category</option>
-                                            <option value="payout">Payout</option>
+                                            <option value="payout">Saving Payout</option>
                                             <option value="investment">Investment</option>
                                             <option value="property">Property</option>
                                             <option value="pf_user">Provident</option>
                                             <option value="emergency_loan_completed">Emergency Loan Completed</option>
                                             <option value="emergency_loan_active">Emergency Loan Active</option>
                                             <option value="loan_completed">Loan Completed</option>
+                                            <option value="loan_approved">Loan Approved</option>
                                             <option value="loan_paid">Loan Paid</option>
                                             <option value="active_loan">Active Loan</option>
                                             <option value="help_to_buy_car">Help To Buy Car</option>
@@ -52,7 +46,6 @@
                                             <option value="safekeeping_remove">Safekeeping Debit</option>
                                         </select>
                                     </div>
-
                                     <!-- <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
                                         <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Loan Type</label>
                                         <select class="form-control py-2 h-auto ct_input "
@@ -68,7 +61,6 @@
                                             <option value="9">Miscellaneous</option>
                                         </select>
                                     </div> -->
-
                                     <!-- <div>
                                         <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
                                             <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Status</label>
@@ -83,7 +75,6 @@
                                             </select>
                                         </div>
                                     </div> -->
-
                                     <!-- From Date -->
                                     <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
                                         style="gap:10px">
@@ -94,7 +85,6 @@
                                                 [(ngModel)]="startDate" [disabled]="!selectedGroupType">
                                         </div>
                                     </div>
-
                                     <!-- To Date -->
                                     <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
                                         style="gap:10px">
@@ -106,13 +96,10 @@
                                                 (ngModelChange)="getAdminNotifications(usersPerPage, currentPage, search)">
                                         </div>
                                     </div>
-
-
                                     <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
                                         <button class="btn btn-primary" style="height:37px"
                                             (click)="reset()">Reset</button>
                                     </div>
-
                                 </div>
                                 <div class="d-flex align-items-center " style="gap: 10px;">
                                     <input type="text" class="form-control rounded " *ngIf="!isLoading"
@@ -120,7 +107,6 @@
                                     <button class="btn btn-primary" (click)="downloadCSV()">Download CSV</button>
                                 </div>
                             </div>
-
                             <!-- /.box-header -->
                             <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                                 <i class="fa fa-refresh fa-spin"></i>
@@ -160,19 +146,11 @@
                             <div class="box-body text-center py-4" *ngIf="lists.length <= 0 && !isLoading || totalLists=='0'">
                                 No data found
                             </div>
-                         
-                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box -->
                     </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
             </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
         <app-footer></app-footer>
     </div>
 </div>
-<!-- ./wrapper -->

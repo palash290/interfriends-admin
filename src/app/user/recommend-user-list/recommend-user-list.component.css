@@ -30,3 +30,80 @@
     height: 240px;
     object-fit: contain;
 }
+
+.ct_tracking_box {
+  margin-top: 20px;
+}
+
+.ct_tracking_title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.ct_tracking_empty {
+  color: #777;
+  padding: 10px 0;
+}
+
+.ct_tracking_steps {
+  border-left: 2px solid #d2d6de;
+  margin-left: 14px;
+}
+
+.ct_tracking_step {
+  display: flex;
+  gap: 12px;
+  padding: 0 0 16px 0;
+  position: relative;
+}
+
+.ct_tracking_step:last-child {
+  padding-bottom: 0;
+}
+
+.ct_tracking_number {
+  align-items: center;
+  background-color: #3c8dbc;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  flex: 0 0 28px;
+  font-size: 13px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  margin-left: -15px;
+}
+
+.ct_tracking_content {
+  flex: 1;
+  padding-bottom: 2px;
+}
+
+.ct_tracking_header {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.ct_tracking_badge {
+  border-radius: 100px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+}
+
+.ct_tracking_approved {
+  background-color: #29c074;
+}
+
+.ct_tracking_pending {
+  background-color: #f08c32;
+}
+
+.ct_tracking_rejected {
+  background-color: #c02929;
+}

@@ -72,7 +72,7 @@
 
                       <td>
                         <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#viewModal"
-                          ngbTooltip="View" (click)="onview(list.id, i)">
+                          ngbTooltip="View" (click)="onview(list.id, i); getTracking(list.id)">
                           <i class="fa fa-eye"></i>
                         </button>
                         <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#myModal"
@@ -163,7 +163,6 @@
                 '+listDetail.last_name_refer
                 }}</a>
             </li>
-
             <li class="list-group-item">
               <b>Created On</b>
               <a class="pull-right">{{
@@ -171,6 +170,31 @@
                 }}</a>
             </li>
           </ul>
+
+          <div class="ct_tracking_box">
+            <h4 class="ct_tracking_title">Approval Tracking</h4>
+            <div class="text-center" *ngIf="isTrackingLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+            <div class="ct_tracking_empty" *ngIf="!isTrackingLoading && (!trackingData || trackingData.length === 0)">
+              No approval tracking found.
+            </div>
+            <div class="ct_tracking_steps" *ngIf="!isTrackingLoading && trackingData && trackingData.length > 0">
+              <div class="ct_tracking_step" *ngFor="let step of trackingData; let stepIndex = index">
+                <div class="ct_tracking_number">{{ stepIndex + 1 }}</div>
+                <div class="ct_tracking_content">
+                  <div class="ct_tracking_header">
+                    <strong>{{ formatApproverRole(step.approver_role) | titlecase }}</strong>
+                    <span class="ct_tracking_badge" [ngClass]="getApprovalStatusClass(step.status_code)">
+                      {{ step.status | titlecase }}
+                    </span>
+                  </div>
+                  <div>{{ step.approver_name }}</div>
+                  <small>{{ step.approver_email }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -184,9 +208,7 @@
   <!-- /.modal-dialog -->
 </div>
 
-
 <!-- accept reject modal  -->
-
 <div class="modal fade show" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
   [ngStyle]="{'display':display1}">
   <div class="modal-dialog">
@@ -367,11 +389,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
 
 <!-- Img -->
 <div class="modal fade" id="img22">

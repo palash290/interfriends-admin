@@ -167,6 +167,7 @@ export class DownloadDataComponent implements OnInit {
     emergency_loan_completed: 'Emergency Loan Completed',
     emergency_loan_active: 'Emergency Loan Active',
     loan_completed: 'Loan Completed',
+    loan_approved: 'Loan Approved',
     loan_paid: 'Loan Paid',
     help_to_buy_car: 'Help To Buy Car',
     help_to_pay_car_insurance: 'Help To Pay Car Insurance',

@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./recommend-user-list.component.css']
 })
 export class RecommendUserListComponent implements OnInit {
+
   @ViewChild('closeBlock2') closeModal2: ElementRef;
   lists: RecommendUserList[] = [];
   recommendUser: any;
@@ -53,7 +54,6 @@ export class RecommendUserListComponent implements OnInit {
       return false;
     }
   };
-
 
   getLists() {
     this.recommendUserService.getListUpdateListener().subscribe(
@@ -105,9 +105,52 @@ export class RecommendUserListComponent implements OnInit {
     this.display1 = "block";
   }
 
+  trackingData: any;
+  isTrackingLoading = false;
+
+  getTracking(id: string) {
+    // this.btn_status = admin_status;
+    this.trackingData = [];
+    this.isTrackingLoading = true;
+    const formData = new FormData();
+    formData.append('id', id.toString())
+    this.recommendUserService.viewRecommnedTracking(formData).subscribe(
+      {
+        next: resp => {
+          this.trackingData = resp?.lists?.approval_steps || [];
+          this.isTrackingLoading = false;
+        },
+        error: error => {
+          this.isTrackingLoading = false;
+          this.toastr.warning('Something went wrong.');
+        }
+      }
+    );
+    // this.selectListId = id;
+    // this.listDetail = this.lists[index];
+    // this.display1 = "block";
+  }
+
   onClose() {
     this.display = 'none';
+    this.trackingData = [];
   };
+
+  formatApproverRole(role: string): string {
+    return role ? role.replace(/_/g, ' ') : '';
+  }
+
+  getApprovalStatusClass(statusCode: string): string {
+    if (statusCode === '1') {
+      return 'ct_tracking_approved';
+    }
+
+    if (statusCode === '2') {
+      return 'ct_tracking_rejected';
+    }
+
+    return 'ct_tracking_pending';
+  }
 
   onClose2() {
     this.display1 = 'none';

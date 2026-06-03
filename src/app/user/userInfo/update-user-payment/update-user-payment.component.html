@@ -9,13 +9,12 @@
                             <div class="row mt-5">
                                 <div class="col-md-6">
                                     <div class="form-group"
-                                        [ngClass]="{'has-error': form.get('savings').invalid  && form.get('savings').touched}">
+                                        [ngClass]="{'has-error': form.get('savings').invalid  && (form.get('savings').touched || form.get('savings').dirty)}">
                                         <label class="ct_fw_600">Monthly Savings Amount</label>
                                         <input type="text" class="form-control" placeholder="Enter Amount"
-                                            formControlName="savings" inputmode="decimal" (keypress)="allowPositiveAmount($event)"
-                                            (input)="sanitizePositiveAmount('savings')" />
+                                            formControlName="savings" />
                                         <span class="help-block"
-                                            *ngIf="form.get('savings').invalid  && form.get('savings').touched">
+                                            *ngIf="form.get('savings').invalid  && (form.get('savings').touched || form.get('savings').dirty)">
                                             Please enter a positive amount.
                                         </span>
                                     </div>
@@ -35,13 +34,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group"
-                                        [ngClass]="{'has-error': form.get('jnr_amount').invalid  && form.get('jnr_amount').touched}">
+                                        [ngClass]="{'has-error': form.get('jnr_amount').invalid  && (form.get('jnr_amount').touched || form.get('jnr_amount').dirty)}">
                                         <label class="ct_fw_600">JNR/Christmas Monthly Savings Amount</label>
                                         <input type="text" class="form-control" placeholder="Enter Amount"
-                                            formControlName="jnr_amount" inputmode="decimal" (keypress)="allowPositiveAmount($event)"
-                                            (input)="sanitizePositiveAmount('jnr_amount')" />
+                                            formControlName="jnr_amount" />
                                         <span class="help-block"
-                                            *ngIf="form.get('jnr_amount').invalid  && form.get('jnr_amount').touched">
+                                            *ngIf="form.get('jnr_amount').invalid  && (form.get('jnr_amount').touched || form.get('jnr_amount').dirty)">
                                             Please enter a positive amount.
                                         </span>
                                     </div>
