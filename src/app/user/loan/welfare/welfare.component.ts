@@ -65,11 +65,14 @@ export class WelfareComponent implements OnInit {
   loan_tenure: string;
   admin_id: string;
 
-  payOutElem: any = { 1: "975.00", 2: "1950.00" };
-  providentElem: any = { 1: "0", 2: "0" };
-  AdminriskElem: any = { 1: "25.00", 2: "50" };
-  totalPayElem: any = { 1: "1000.00", 2: "2000.00" };
-  monthlyPayElem: any = { 1: "25.00", 2: "50.00" };
+  // payOutElem: any = { 1: "975.00", 2: "1950.00" };
+  payOutElem: any = { 1: "500", 2: "1000", 3: "1500", 4: "2000" };
+  tenureElem: number[] = [12, 18, 24, 36];
+  providentElem: any = { 1: "0", 2: "0", 3: "0", 4: "0" };
+  AdminriskElem: any = { 1: "25.00", 2: "50", 3: "75.00", 4: "100.00" };
+  // totalPayElem: any = { 1: "1000.00", 2: "2000.00" };
+  totalPayElem: any = { 1: "525.00", 2: "1050.00", 3: "1575.00", 4: "2100.00" };
+  monthlyPayElem: any = { 1: "25.00", 2: "50.00", 3: "75.00", 4: "100.00" };
   payout: string;
   newStatus: string;
   myDate: string;
@@ -107,11 +110,12 @@ export class WelfareComponent implements OnInit {
           this.filterStartDate = this.cycleList[this.cycleList.length - 1].start_date;
           this.filterEndDate = this.cycleList[this.cycleList.length - 1].end_date;
           this.groupLifecycle_id = this.cycleList[this.cycleList.length - 1].id;
-          this.loanService.welfareList(this.groupId, this.userId, this.groupLifecycle_id).subscribe((response: any) => {
-            this.lists = response.lists;
-            this.isLoading = false;
-            this.isLoadingChangeCycle = false;
-          });
+          // this.loanService.welfareList(this.groupId, this.userId, this.groupLifecycle_id).subscribe((response: any) => {
+          //   this.lists = response.lists;
+          //   this.isLoading = false;
+          //   this.isLoadingChangeCycle = false;
+          // });
+          this.loadData();
           this.groupCycleService.showStatus(this.userId, this.groupLifecycle_id, this.groupId)
             .subscribe((response: any) => {
               this.showPayoutMessage = response.message;
@@ -153,6 +157,23 @@ export class WelfareComponent implements OnInit {
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
+  }
+
+  loadData() {
+    this.loanService.welfareList(this.groupId, this.userId, this.groupLifecycle_id).subscribe((response: any) => {
+      this.lists = response.lists;
+      this.isLoading = false;
+      this.isLoadingChangeCycle = false;
+    });
+  }
+
+  setCycle(cycleId: string, startDate: string, endDate: string) {
+    this.groupLifecycle_id = cycleId;
+    this.filterStartDate = startDate;
+    this.filterEndDate = endDate;
+    this.isLoadingChangeCycle = true;
+    // this.loadPayoutAmount();
+    this.loadData();
   }
 
   showModalAdd() {
@@ -207,7 +228,6 @@ export class WelfareComponent implements OnInit {
     this.month = list.month;
     this.welfare_uuid = list.welfare_uuid;
 
-
     //this.selectedItem = list;
     this.isLastIndexClicked = index === this.lists.length - 1;
   }
@@ -246,7 +266,6 @@ export class WelfareComponent implements OnInit {
       this.adminrisk = this.AdminriskElem[key]
       this.monthlypayment = this.monthlyPayElem[key];
       this.total40month = this.totalPayElem[key];
-      this.form.patchValue({ tenure: '40' });
     }
   }
 
@@ -405,4 +424,3 @@ export class WelfareComponent implements OnInit {
   }
 
 }
-

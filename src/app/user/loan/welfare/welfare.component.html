@@ -1,10 +1,8 @@
 <div class="hold-transition sidebar-mini" class="skin-blue">
   <div class="wrapper">
     <app-header></app-header>
-    <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
           <span>Welfare</span>
@@ -14,6 +12,19 @@
           (click)="showModalAdd()">
           Add
         </button>
+
+        <!-- <div ngbDropdown class="d-inline-block mr-2"
+          *ngIf="!isLoading && this.cycleList.length > 0 && lists.length > 0">
+          <button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{filterStartDate | date: 'dd MMM
+            yyyy'}} - {{filterEndDate | date: 'dd MMM yyyy'}}</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem *ngFor="let data of cycleList"
+              (click)="setCycle(data.id, data.start_date, data.end_date)">
+              <hr>{{data.start_date | date: 'dd MMM yyyy'}} - {{data.end_date | date: 'dd MMM yyyy'}}
+            </button>
+          </div>
+        </div> -->
+
         <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
           <i class="fa fa-arrow-left" aria-hidden="true"></i>
         </a>
@@ -30,7 +41,6 @@
           Safe Keeping
         </button>
       </section>
-      <!-- Main content -->
       <section class="content">
         <div class="row">
           <div class="col-md-12">
@@ -46,13 +56,11 @@
                 <button type="button" class="btn bg-success float-right text-white ml-auto mr-3 px-5" *ngIf=""
                   lists.length> 0"
                   data-toggle="modal"
-                  data-target="#payoutModal"
-                  >
+                  data-target="#payoutModal">
                   <div class="fa fa-credit-card text-white mr-1"></div>
                   Payout
                 </button>
               </div>
-              <!-- /.box-header -->
               <div class="overlay" *ngIf="isLoading">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
@@ -124,15 +132,10 @@
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
                 You have'nt had any group cycle yet!
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
       </section>
-      <!-- /.content -->
     </div>
     <app-footer></app-footer>
   </div>
@@ -193,7 +196,12 @@
                   <label class="label-walfare">Tenure</label>
                   <div class="form-group">
                     <div class=" ct_language_euro">
-                      <input type="text" formControlName="tenure" placeholder="40" class="form-control" readonly="" />
+                      <select class="form-control" formControlName="tenure">
+                        <option value="">Select Tenure</option>
+                        <option *ngFor="let item of tenureElem" [value]="item">
+                          {{ item }} months
+                        </option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -283,7 +291,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="modal fade show" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
   aria-hidden="true" [ngStyle]="{'display':display1}">
@@ -430,7 +437,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- payout model popup start -->
 <div class="modal fade show" id="payoutModal" tabindex="-1" role="dialog" aria-labelledby="payoutModalLabel"

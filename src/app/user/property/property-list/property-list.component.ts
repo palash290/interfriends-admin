@@ -27,7 +27,8 @@ export class PropertyListComponent implements OnInit {
   display1: string = 'none';
   display2: string = 'none';
 
-
+  displayClose: string = 'none';
+  display2Close: string = 'none';
 
   // add edit code start
   listId: string;
@@ -64,6 +65,15 @@ export class PropertyListComponent implements OnInit {
     }
   }
 
+  onSetIdClose(id: string, action: string): void {
+    this.selectListId = id;
+    if (action === '1') {
+      this.displayClose = "block";
+    } else {
+      this.display2Close = "block";
+    }
+  }
+
   onBlockUnblock(status: string): void {
     this.propertyService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
       this.onClose();
@@ -77,11 +87,23 @@ export class PropertyListComponent implements OnInit {
     });
   }
 
+  onCloseOpen(status: string): void {
+    this.propertyService.openCloseProperty(this.selectListId, status).subscribe((response: any) => {
+      this.onClose();
+      if (response.is_closed === '0') {
+        document.getElementById('closeUnblock1').click();
+      } else {
+        document.getElementById('closeBlock1').click();
+      }
+      this.propertyService.getLists(this.listsPerPage, this.currentPage);
+      this.toastr.success(response.message);
+    });
+  }
+
   onview(id: string, index: number) {
     this.listDetail = this.lists[index];
     this.display1 = "block";
   }
-
 
   onChangedPage(pageData: PageEvent): any {
     console.log(pageData.pageIndex, 'pageData.pageIndex');
@@ -100,11 +122,12 @@ export class PropertyListComponent implements OnInit {
     }
   }
 
-
   onClose(): void {
     this.display = 'none';
     this.display1 = 'none';
     this.display2 = 'none';
+    this.displayClose = 'none';
+    this.display2Close = 'none';
   }
 
 }

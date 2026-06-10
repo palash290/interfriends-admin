@@ -152,6 +152,22 @@ export class PropertyService {
       );
   }
 
+  openCloseProperty(
+    id: string,
+    status: string  ): any {
+    const userData = new FormData();
+    userData.append('id', id);
+    userData.append('is_closed', status);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+        API_URL + '/openCloseProperty', userData
+      );  
+    }
+
   deletePropertyImage(
     id: string,
   ): any {

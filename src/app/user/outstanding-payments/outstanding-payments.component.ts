@@ -22,6 +22,9 @@ export class OutstandingPaymentsComponent implements OnInit {
   pageSizeOptions = [1, 2, 5, 10];
   selectedGroupType: any = '';
 
+  startDate: any = '';
+  endDate: any = '';
+
   constructor(public userService: UserListService, public sharedService: SharedService) { }
 
   ngOnInit(): void {
@@ -40,6 +43,11 @@ export class OutstandingPaymentsComponent implements OnInit {
     this.isLoading = true;
     userData.append('search_keyword', this.search);
     userData.append('type', this.selectedGroupType);
+
+    if (this.startDate && this.endDate) {
+      userData.append('date_range', `${this.startDate}, ${this.endDate}`);
+    }
+
     this.sharedService.postAPI('/getAllMissedPayments', userData).subscribe({
       next: (resp) => {
         this.users = resp.lists;
@@ -76,6 +84,13 @@ export class OutstandingPaymentsComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
+    this.getUsers(this.usersPerPage, this.currentPage, this.search);
+  }
+
+  reset() {
+    this.startDate = '';
+    this.endDate = '';
+    this.selectedGroupType = '';
     this.getUsers(this.usersPerPage, this.currentPage, this.search);
   }
 

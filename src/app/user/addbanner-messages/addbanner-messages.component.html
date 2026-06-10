@@ -86,7 +86,7 @@
                 </div> -->
                 <div class="ct_img_upload file-input box-header">
                   <div class="form-group">
-                    <label for="file">Banner Image:</label>
+                    <label for="file">Banner Image/Video:</label>
                     <input id="file" type="file" class="form-control" accept="image/*,video/*"
                       (change)="onFileChange($event)">
                     <!-- <div *ngIf="f['file'].touched && f['file'].invalid" class="alert alert-danger">
@@ -104,6 +104,11 @@
                   <div class="ct_img_grid" *ngIf="editStatus==true && imageUrls.length ==0">
                     <img [src]="editImg" style="height: 300px; width:500px">
                   </div>
+
+                  <label for="file">
+                    Banner Image/Video:
+                    <span style="font-size:11px; color:gray;">(Image max 5 MB, Video max 20 MB)</span>
+                  </label>
 
                 </div>
                 <div class="box-footer">

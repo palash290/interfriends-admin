@@ -10,6 +10,7 @@ import { bannersAndmessagesService } from 'src/app/service/bannersAndmessages.se
   styleUrls: ['./addbanner-messages.component.css']
 })
 export class AddbannerMessagesComponent implements OnInit {
+
   imageSrc: any = [];
   myForm: FormGroup;
   messages: any;
@@ -27,7 +28,6 @@ export class AddbannerMessagesComponent implements OnInit {
     this.myForm = new FormGroup({
       title: new FormControl('',),
     });
-
   }
 
   ngOnInit(): void {
@@ -47,15 +47,25 @@ export class AddbannerMessagesComponent implements OnInit {
   }
 
   // onFileChange(event: any) {
-  //   let filesAmount = event.target.files;
+  //   const files = event.target.files;
 
-  //   for (let file in Object.keys(filesAmount)) {
-  //     console.log(filesAmount[file]);
-  //     this.item_image = [...this.item_image, filesAmount[file]];
-  //     this.imageUrls = [
-  //       ...this.imageUrls,
-  //       URL.createObjectURL(filesAmount[file]),
-  //     ];
+  //   // Reset arrays to replace previous image(s)
+  //   this.item_image = [];
+  //   this.imageUrls = [];
+
+  //   for (let i = 0; i < files.length; i++) {
+  //     if (!this.isImageOrVideo(files[i])) {
+  //       this.toastr.error("Only image and video files are allowed");
+  //       event.target.value = '';
+  //       this.item_image = [];
+  //       this.imageUrls = [];
+  //       return;
+  //     }
+  //     this.item_image.push(files[i]);
+  //     this.imageUrls.push({
+  //       url: URL.createObjectURL(files[i]),
+  //       type: files[i].type
+  //     });
   //   }
   // }
 
@@ -67,17 +77,44 @@ export class AddbannerMessagesComponent implements OnInit {
     this.imageUrls = [];
 
     for (let i = 0; i < files.length; i++) {
-      if (!this.isImageOrVideo(files[i])) {
+      const file = files[i];
+
+      // Type validation
+      if (!this.isImageOrVideo(file)) {
         this.toastr.error("Only image and video files are allowed");
         event.target.value = '';
         this.item_image = [];
         this.imageUrls = [];
         return;
       }
-      this.item_image.push(files[i]);
+
+      // Size validation
+      if (file.type.startsWith('image/')) {
+        const maxImageSize = 5 * 1024 * 1024; // 5 MB
+        if (file.size > maxImageSize) {
+          this.toastr.error("Image size must not exceed 5 MB");
+          event.target.value = '';
+          this.item_image = [];
+          this.imageUrls = [];
+          return;
+        }
+      }
+
+      if (file.type.startsWith('video/')) {
+        const maxVideoSize = 20 * 1024 * 1024; // 20 MB
+        if (file.size > maxVideoSize) {
+          this.toastr.error("Video size must not exceed 20 MB");
+          event.target.value = '';
+          this.item_image = [];
+          this.imageUrls = [];
+          return;
+        }
+      }
+
+      this.item_image.push(file);
       this.imageUrls.push({
-        url: URL.createObjectURL(files[i]),
-        type: files[i].type
+        url: URL.createObjectURL(file),
+        type: file.type
       });
     }
   }

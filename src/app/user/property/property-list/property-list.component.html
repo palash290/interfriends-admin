@@ -68,11 +68,22 @@
                           ngbTooltip="View" (click)="onview(list.id, i)">
                           <i class="fa fa-eye"></i>
                         </button>
+
+                        <button type="button" class="btn btn-success margin" data-toggle="modal"
+                          data-target="#closeModal" ngbTooltip="Open" (click)="onSetIdClose(list.id, '1')"
+                          *ngIf="list.is_closed === '0'">
+                          <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger margin" data-toggle="modal" ngbTooltip="Closed"
+                          data-target="#openModal" (click)="onSetIdClose(list.id, '0')" *ngIf="list.is_closed === '1'">
+                          <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
@@ -93,6 +104,7 @@
   </div>
 </div>
 <!-- ./wrapper -->
+
 <!-- block model popup start -->
 <div class="modal fade show" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel"
   aria-hidden="true" [ngStyle]="{'display':display}">
@@ -113,6 +125,7 @@
   </div>
 </div>
 <!-- block model popup end -->
+
 <!-- unblock model popup start -->
 <div class="modal fade show" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
   aria-hidden="true" [ngStyle]="{'display':display2}">
@@ -132,6 +145,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade show" id="viewModal" [ngStyle]="{'display':display1}">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -200,4 +214,46 @@
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
+</div>
+
+
+<!-- close model popup start -->
+<div class="modal fade show" id="closeModal" tabindex="-1" role="dialog" aria-labelledby="closeModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayClose}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Close This Group</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onCloseOpen('1')">Yes</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock1"
+          (click)="onClose()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- close model popup end -->
+
+<!-- open model popup start -->
+<div class="modal fade show" id="openModal" tabindex="-1" role="dialog" aria-labelledby="openModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':display2Close}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Open This Group</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onCloseOpen('0')">Yes</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock1"
+          (click)="onClose()">No</button>
+      </div>
+    </div>
+  </div>
 </div>

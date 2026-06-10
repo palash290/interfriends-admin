@@ -2,25 +2,19 @@
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper ">
     <app-header></app-header>
-    <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
           Dashboard
         </h1>
       </section>
-
-      <!-- Main content -->
       <section class="content">
         <!-- Info boxes -->
         <div class="row">
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">members</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.userCount}}</span>
@@ -35,7 +29,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-refresh" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Cycle saving</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount2">{{row_two?.cycle | dynamicCurrency }}</span>
@@ -80,7 +73,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-money" aria-hidden="true"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Provident Fund</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.pf | dynamicCurrency}}</span>
@@ -125,7 +117,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Complete/closed loans</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.loan_completed |
@@ -141,7 +132,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Emergency loan active</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.emergency_loan_active |
@@ -157,7 +147,6 @@
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Emergency Loan Completed</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount1">{{row_one?.emergency_loan_completed |
@@ -198,7 +187,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
@@ -213,7 +201,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
@@ -229,7 +216,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
@@ -247,7 +233,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-balance-scale" aria-hidden="true"></i></span>
@@ -265,7 +250,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12" [routerLink]="['/user/groupsOfuser']">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -297,10 +281,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
-
-
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -316,7 +296,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -332,11 +311,9 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Help to Pay Credit Card</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycc |
@@ -349,11 +326,9 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Help to Pay Car Insurance</span>
                 <span class="info-box-number" *ngIf="!isLoadingCount3">{{row_three?.helptobuycarInsurance |
@@ -366,7 +341,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -381,7 +355,6 @@
             </div>
             <!-- /.info-box -->
           </div>
-
           <div class="col-md-3 col-sm-6 col-xs-12" routerLink="/user/recommendUserList" style="cursor: pointer">
             <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
@@ -412,15 +385,10 @@
           <!-- /.info-box -->
           <!-- </div> -->
 
-
-
-
-
           <!-- /.col -->
           <!-- <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
             <div class="info-box-content">
               <span class="info-box-text">Products</span>
               <span class="info-box-number" *ngIf="!isLoadingCount">{{productCount}}</span>
@@ -432,11 +400,9 @@
         </div>
 
         <div class="clearfix visible-sm-block"></div>
-
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
             <div class="info-box-content">
               <span class="info-box-text">Categorys</span>
               <span class="info-box-number" *ngIf="!
@@ -450,19 +416,16 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-
             <div class="info-box-content">
               <span class="info-box-text">New Members</span>
               <span class="info-box-number">2,000</span>
             </div>
           </div>
         </div> -->
+
         </div>
       </section>
     </div>
-    <!-- /.content-wrapper -->
-
     <app-footer></app-footer>
   </div>
-  <!-- ./wrapper -->
 </div>
