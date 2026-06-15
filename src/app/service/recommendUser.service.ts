@@ -18,7 +18,7 @@ export class RecommendUserService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  getLists(listsPerPage: number, currentPage: number, user_id: string, group_id: string) {
+  getLists(listsPerPage: number, currentPage: number, search: string, user_id: string, group_id: string) {
 
     const listData = new FormData();
 
@@ -28,6 +28,7 @@ export class RecommendUserService {
       listData.append('start', totalPage.toString());
     }
 
+    listData.append('search_keyword', search);
 
     this.http
       .post<{ success: string; message: string; lists: any; listCount: number; }>(

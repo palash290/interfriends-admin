@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -31,13 +32,21 @@ export class LoginComponent implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
+      this.isLoading = false;
       return;
     }
 
     this.isLoading = true;
+
+    this.authService.getauthUserStatusListner()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isLoading = false;
+      });
+
     this.authService.login(this.form.value.email, this.form.value.password);
 
-    this.form.reset();
+    // this.form.reset();
   }
 
   isPasswordVisible: boolean = false;

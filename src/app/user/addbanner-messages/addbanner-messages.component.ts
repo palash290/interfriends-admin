@@ -101,7 +101,7 @@ export class AddbannerMessagesComponent implements OnInit {
       }
 
       if (file.type.startsWith('video/')) {
-        const maxVideoSize = 20 * 1024 * 1024; // 20 MB
+        const maxVideoSize = 25 * 1024 * 1024; // 25 MB
         if (file.size > maxVideoSize) {
           this.toastr.error("Video size must not exceed 20 MB");
           event.target.value = '';

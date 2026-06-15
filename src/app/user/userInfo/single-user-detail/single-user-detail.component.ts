@@ -8,9 +8,6 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './single-user-detail.component.html',
   styleUrls: ['./single-user-detail.component.css']
 })
-
-
-
 export class SingleUserDetailComponent implements OnInit {
   userId: string;
   groupId: string;

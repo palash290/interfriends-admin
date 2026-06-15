@@ -15,7 +15,7 @@
                                             formControlName="savings" />
                                         <span class="help-block"
                                             *ngIf="form.get('savings').invalid  && (form.get('savings').touched || form.get('savings').dirty)">
-                                            Please enter a positive amount.
+                                            Enter numbers only, no currency sign
                                         </span>
                                     </div>
                                 </div>
@@ -40,7 +40,7 @@
                                             formControlName="jnr_amount" />
                                         <span class="help-block"
                                             *ngIf="form.get('jnr_amount').invalid  && (form.get('jnr_amount').touched || form.get('jnr_amount').dirty)">
-                                            Please enter a positive amount.
+                                            Enter numbers only, no currency sign
                                         </span>
                                     </div>
                                 </div>

@@ -55,6 +55,7 @@ import { HelpToPayccComponent } from './loan/help-to-paycc/help-to-paycc.compone
 import { GroupsOfUserComponent } from './dashboard/groups-of-user/groups-of-user.component'
 import { GroupedUserDetailComponent } from './dashboard/grouped-user-detail/grouped-user-detail.component'
 import { WelfareComponent } from './loan/welfare/welfare.component';
+import { UserNotesHistoryComponent } from './userInfo/notes-history/user-notes-history.component';
 import { NotesHistoryComponent } from './loan/welfare/notes-history/notes-history.component';
 import { CircleListComponent } from './group/groupCircle/circle-list/circle-list.component';
 import { CircleUsersComponent } from './group/groupCircle/circle-list/circle-users/circle-users.component';
@@ -119,6 +120,11 @@ const routes: Routes = [
          {
             path: 'privacyPolicy',
             component: PrivacyPolicyUpdateComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'notes-history',
+            component: UserNotesHistoryComponent,
             canActivate: [AuthUserGuard]
          },
          {

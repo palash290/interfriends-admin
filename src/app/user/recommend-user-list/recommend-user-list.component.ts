@@ -31,6 +31,7 @@ export class RecommendUserListComponent implements OnInit {
   display: string = 'none';
   display1: string = 'none';
   selectedUserID: any;
+  search = '';
 
   constructor(
     public recommendUserService: RecommendUserService,
@@ -42,9 +43,17 @@ export class RecommendUserListComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
-      this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
+      this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
     });
     this.getLists();
+  }
+
+  keyPress(): any {
+    // if (this.users.length > 0) {
+    //   this.paginator.pageIndex = 0;
+    // }
+    this.currentPage = 0;
+    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
   }
 
   checkAdminType() {
@@ -69,7 +78,7 @@ export class RecommendUserListComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
+    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
   }
 
   onview(id: string, index: number) {
@@ -170,7 +179,7 @@ export class RecommendUserListComponent implements OnInit {
     this.recommendUserService.UpdateStatusAccept(formData).subscribe(
       {
         next: resp => {
-          this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
+          this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
           if (resp.success == 1) {
             this.toastr.success(resp.message);
             this.closeModal2.nativeElement.click();

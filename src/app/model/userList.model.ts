@@ -5,6 +5,7 @@ export interface UserList {
   email: string;
   dob: string;
   mobile_number: string;
+  circle_name: string;
   home_number: string;
   emergency_number: string;
   kin_name: string;

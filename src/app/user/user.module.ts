@@ -104,6 +104,7 @@ import { HelpToPayCarInsuraneComponent } from './loan/help-to-pay-car-insurane/h
 import { GroupsOfUserComponent } from './dashboard/groups-of-user/groups-of-user.component';
 import { GroupedUserDetailComponent } from './dashboard/grouped-user-detail/grouped-user-detail.component';
 import { WelfareComponent } from './loan/welfare/welfare.component';
+import { UserNotesHistoryComponent } from './userInfo/notes-history/user-notes-history.component';
 import { NotesHistoryComponent } from './loan/welfare/notes-history/notes-history.component';
 import { CircleListComponent } from './group/groupCircle/circle-list/circle-list.component';
 import { CircleUsersComponent } from './group/groupCircle/circle-list/circle-users/circle-users.component';
@@ -226,6 +227,7 @@ import { DynamicCurrencyPipe } from '../pipe/dynamic-currency.pipe';
     GroupsOfUserComponent,
     GroupedUserDetailComponent,
     WelfareComponent,
+    UserNotesHistoryComponent,
     NotesHistoryComponent,
     CircleListComponent,
     CircleUsersComponent,

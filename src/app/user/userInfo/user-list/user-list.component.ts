@@ -70,7 +70,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onChangedPage(pageData: PageEvent): any {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
@@ -129,7 +128,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.display2 = 'block'
   }
 
-
   onBlockUnblock(status: string): void {
     this.userService.blockUnblock(this.selectPlanId, status, this.adminType).subscribe((response: any) => {
       if (response.status === '1') {
@@ -144,9 +142,9 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   onDefaultUser(isDefault: string): void {
     this.userService.setDefault(this.selectPlanId, isDefault, this.adminType).subscribe((response: any) => {
-    
-        document.getElementById('closeDefault').click();
-      
+
+      document.getElementById('closeDefault').click();
+
       this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
       this.toastr.success(response.message);
     });
@@ -169,7 +167,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.displayDefault = 'none'
   }
 
-
   ngOnDestroy(): void {
     this.usersSub.unsubscribe();
   }
@@ -177,6 +174,40 @@ export class UserListComponent implements OnInit, OnDestroy {
   handleCounterChange(event: any) {
     this.display = event;
     this.display1 = event;
+  }
+
+  downloadCSV(): void {
+    const rows = this.users.map((list, index) => {
+      return {
+        '#': index + 1,
+        'First Name': list.first_name,
+        'Last Name': `${list.last_name}`,
+        'Email': list.email,
+        'Circle Name': list.circle_name,
+        'Total Credit Score': list.total_credit_score,
+        'Unique Id': list.unique_id,
+        'Created On': new Date(list.created_at).toLocaleDateString()
+      };
+    });
+
+    const csvContent = this.convertToCSV(rows);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'interfriends.csv');
+    link.click();
+  }
+
+  convertToCSV(objArray: any[]): string {
+    const header = Object.keys(objArray[0]).join(',');
+    const rows = objArray.map(row =>
+      Object.values(row)
+        .map(value => `"${(value ?? '').toString().replace(/"/g, '""')}"`) // Escape quotes
+        .join(',')
+    );
+    return [header, ...rows].join('\r\n');
   }
 
 }

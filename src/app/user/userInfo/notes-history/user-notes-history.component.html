@@ -1,0 +1,125 @@
+<div class="hold-transition sidebar-mini"
+    [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+        <app-header></app-header>
+        <app-sidebar></app-sidebar>
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    User Notes
+                </h1>
+                <span class="breadcrumb">
+                    <!-- <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+                        Add
+                    </button> -->
+                </span>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header d-flex align-items-center">
+                                <!-- <h3 class="box-title">Outstanding Payment List</h3> -->
+
+                                <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
+                                    <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Group Type</label>
+                                    <select class="form-control py-2 h-auto ct_input"
+                                        style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedGroupType"
+                                        name="loan_type"
+                                        (ngModelChange)="getNotes(this.user_id, this.usersPerPage, this.currentPage)">
+                                        <option value="">All</option>
+                                        <option value="loan">Loan</option>
+                                        <option value="cycle">Cycle</option>
+                                        <option value="emergency_loan">Emergency Loan</option>
+                                        <option value="miscellaneous">Miscellaneous</option>
+                                    </select>
+                                </div>
+
+                                <!-- From Date -->
+                                <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
+                                    style="gap:10px">
+                                    <label class="ct_fs_18 ct_fw_500 mb-0">From<span
+                                            class="ct_text_red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="date" class="form-control ct_input ct_fs_18"
+                                            [(ngModel)]="startDate">
+                                    </div>
+                                </div>
+                                <!-- To Date -->
+                                <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
+                                    style="gap:10px">
+                                    <label class="ct_fs_18 ct_fw_500 mb-0">To<span class="ct_text_red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="endDate"
+                                            [disabled]="!startDate">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
+                                    <button *ngIf="!isLoading"
+                                        (click)="getNotes(this.user_id, this.usersPerPage, this.currentPage)"
+                                        type="submit" class="btn btn-primary" style="height:37px"
+                                        [disabled]="isLoading">
+                                        <span *ngIf="!isLoading">Apply</span>
+                                        <span *ngIf="isLoading"><i class="fa fa-refresh fa-spin"></i></span>
+                                    </button>
+                                    <button *ngIf="!isLoading" class="btn btn-primary" style="height:37px"
+                                        (click)="reset()">Reset</button>
+                                </div>
+
+                                <input type="text" class="form-control w-25 rounded float-right ml-auto"
+                                    placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
+                            </div>
+                            <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                            <div class="box-body" *ngIf="isLoading">
+                                <mat-spinner class="mx-auto"></mat-spinner>
+                            </div>
+                            <div class="box-body" *ngIf="users.length > 0 && !isLoading">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Title</th>
+                                            <th>Note Description</th>
+                                            <th>Type</th>
+                                            <!-- <th>Status</th> -->
+                                            <th>Created At</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of users, let i = index">
+                                            <td>{{user.sno}}</td>
+                                            <td>{{user.note_title}}</td>
+                                            <td>{{user.note_description}}</td>
+                                            <td>{{user.type}}</td>
+                                            <!-- <td>
+                                                <div *ngIf="user.status == 1">
+
+                                                </div>
+
+                                                <div *ngIf="user.status == 2">
+
+                                                </div>
+                                            </td> -->
+                                            <td>{{user.created_at | date: 'dd/MM/yyyy'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
+                                (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
+
+                            <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
+                                You have'nt had any user yet!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

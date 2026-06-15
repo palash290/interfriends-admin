@@ -74,6 +74,22 @@ export class UserListService {
     );
   }
 
+  getNotes(id: string, status: string, admintype: string): any {
+
+    const instituteData = new FormData();
+    instituteData.append('id', id);
+    instituteData.append('status', status);
+    instituteData.append('admintype', admintype);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + `/getUserNotes/${id}`, instituteData
+    );
+  }
+
   userBlockconfirm(
     id: string,
     status: string): any {
