@@ -191,8 +191,8 @@
   [ngStyle]="{'display':display}">
   <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
 
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="max-width: 800px !important; width: 100% !important;">
         <div class="modal-header">
           <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -214,8 +214,10 @@
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
               <label>Body</label>
-              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel
-                required></textarea>
+              <ckeditor #editor [(ngModel)]="mailBody" id="body" name="body" [config]="{ extraPlugins: 'divarea' }"
+                required>
+              </ckeditor>
+
               <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
                 Please enter a Description.
               </span>
@@ -223,7 +225,15 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" type="submit">Send email</button>
+          <!-- <button class="btn btn-primary" type="submit">Send email</button> -->
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span>Send email</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
           <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
             #closeBlock2>Close</button>
         </div>
@@ -231,8 +241,6 @@
     </div>
   </form>
 </div>
-
-
 
 
 <!-- Img -->

@@ -14,6 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./safe-keeping-withdral-request.component.css'],
 })
 export class SafeKeepingWithdralRequestComponent implements OnInit {
+  
   lists: Safekeepingwithdral[] = [];
 
   listDetail: Safekeepingwithdral;

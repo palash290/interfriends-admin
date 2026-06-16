@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+// import { Editor, Toolbar } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { UsergroupList } from 'src/app/model/usergroupList.model';
@@ -18,6 +19,7 @@ export class CircleUsersComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild('closeBlock') closeModal: ElementRef;
   @ViewChild('closeBlock2') closeModal2: ElementRef;
+  @ViewChild('editor', { static: false }) editor: any;
   users: UsergroupList[] = [];
   totalUsers = 0;
   usersPerPage = 10;
@@ -43,6 +45,7 @@ export class CircleUsersComponent implements OnInit {
   circleName: string;
   display: string = "none";
   circlelists: any[] = [];
+  mailBody: string = '';
 
   constructor(
     public singleUserGroupList: SingleUserGroupList,
@@ -211,25 +214,34 @@ export class CircleUsersComponent implements OnInit {
       return
     }
     const userData = new FormData();
-
+    this.isLoading = true;
     userData.append('user_id', this.updateId);
     userData.append('subject', data.value.subject);
     userData.append('message', data.value.body);
     this.groupService
       .postAPI(
         '/sendEmailtoUserinCircle', userData
-      ).subscribe(responseData => {
-        if (responseData.success == 0) {
-          this.toastr.warning(responseData.message);
-        } else {
-          this.toastr.success(responseData.message)
-          // this.totalUsers =  responseData.userCount;
+      ).subscribe({
+        next: (responseData: any) => {
+          if (responseData.success == 0) {
+            this.toastr.warning(responseData.message);
+            this.isLoading = false;
+          } else {
+            this.toastr.success(responseData.message);
+            this.isLoading = false;
+            this.isLoadingPage = false;
+            this.mailBody = '';
+            if (this.editor && this.editor.instance) {
+              this.editor.instance.setData('');
+            }
+            data.resetForm();
+            document.getElementById('closeBlock3').click();
+          }
+        },
+        error: (err: any) => {
+          this.toastr.error('Failed to send email. Please try again.');
           this.isLoading = false;
-          this.isLoadingPage = false;
-          document.getElementById('closeBlock3').click();
         }
-
-
       });
   };
 

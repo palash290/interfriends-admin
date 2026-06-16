@@ -56,10 +56,10 @@
                       <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
                       <td>
                         <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
-                          data-target="#blockModal" ngbTooltip="rejected" *ngIf="list.request_status == '0'">Rejected
+                          data-target="#blockModal" ngbTooltip="rejected" *ngIf="list.request_status == '0'">Reject
                         </button>
                         <button type="button" class="m-1 btn btn-success btn-sm" data-toggle="modal"
-                          data-target="#blockModal" ngbTooltip="accepted" *ngIf="list.request_status == '1'">Accepted
+                          data-target="#blockModal" ngbTooltip="accepted" *ngIf="list.request_status == '1'">Accept
                         </button>
                         <button type="button" class="m-1 btn btn-primary btn-sm" data-toggle="modal"
                           data-target="#blockModal" ngbTooltip="pending" *ngIf="list.request_status == '2'"

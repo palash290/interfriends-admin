@@ -58,4 +58,8 @@ export class RecommendUserService {
     return this.http.post<any>(API_URL + '/recommendUserApprovalTracking', data);
   }
 
+  sendReminder(data: any): Observable<any> {
+    return this.http.post<any>(API_URL + '/sendRecommendUserApprovalReminder', data);
+  }
+
 }

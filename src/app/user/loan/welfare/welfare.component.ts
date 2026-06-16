@@ -66,13 +66,13 @@ export class WelfareComponent implements OnInit {
   admin_id: string;
 
   // payOutElem: any = { 1: "975.00", 2: "1950.00" };
-  payOutElem: any = { 1: "500", 2: "1000", 3: "1500", 4: "2000" };
+  payOutElem: any = { 1: "1000", 3: "2000", 4: "3000" };
   tenureElem: number[] = [12, 18, 24, 36];
   providentElem: any = { 1: "0", 2: "0", 3: "0", 4: "0" };
-  AdminriskElem: any = { 1: "25.00", 2: "50", 3: "75.00", 4: "100.00" };
+  AdminriskElem: any = { 1: "25.00", 2: "50", 3: "75.00" };
   // totalPayElem: any = { 1: "1000.00", 2: "2000.00" };
-  totalPayElem: any = { 1: "525.00", 2: "1050.00", 3: "1575.00", 4: "2100.00" };
-  monthlyPayElem: any = { 1: "25.00", 2: "50.00", 3: "75.00", 4: "100.00" };
+  totalPayElem: any = { 1: "1025.00", 2: "2050.00", 3: "3075.00" };
+  monthlyPayElem: any = { 1: "25.00", 2: "50", 3: "75.00" };
   payout: string;
   newStatus: string;
   myDate: string;
@@ -133,7 +133,7 @@ export class WelfareComponent implements OnInit {
     });
 
     this.form = new FormGroup({
-      loan_amount: new FormControl(null, { validators: [Validators.required] }),
+      loan_amount: new FormControl('', { validators: [Validators.required] }),
       tenure: new FormControl('', { validators: [Validators.required] }),
       emi: new FormControl(null, {}),
       pay_date: new FormControl(null, {}),

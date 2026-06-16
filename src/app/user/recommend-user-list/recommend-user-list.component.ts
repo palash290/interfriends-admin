@@ -140,6 +140,33 @@ export class RecommendUserListComponent implements OnInit {
     // this.display1 = "block";
   }
 
+  isLoadingReminder = false;
+
+  sendReminder(id: string) {
+    // this.trackingData = [];
+    this.isLoadingReminder = true;
+
+    const formData = new FormData();
+    formData.append('approval_id', id.toString());
+    formData.append('admin_id', '1');
+
+    this.recommendUserService.sendReminder(formData).subscribe({
+      next: (resp: any) => {
+        this.isLoadingReminder = false;
+
+        if (resp && resp.success == 1) {
+          this.toastr.success(resp.message || 'Reminder sent successfully.');
+        } else {
+          this.toastr.warning(resp.message || 'Failed to send reminder.');
+        }
+      },
+      error: () => {
+        this.isLoadingReminder = false;
+        this.toastr.warning('Something went wrong.');
+      }
+    });
+  }
+
   onClose() {
     this.display = 'none';
     this.trackingData = [];

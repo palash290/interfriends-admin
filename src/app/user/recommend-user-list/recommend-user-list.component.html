@@ -197,7 +197,22 @@
                     </span>
                   </div>
                   <div>{{ step.approver_name }}</div>
-                  <small>{{ step.approver_email }}</small>
+                  <div class="d-flex align-items-center justify-content-between" style="margin-top: 4px; gap: 10px;">
+                    <small>{{ step.approver_email }}</small>
+                    <!-- <button *ngIf="step.status?.toLowerCase() === 'pending'" type="button"
+                      class="btn btn-warning btn-xs" (click)="sendReminder(listDetail.id)">
+                      Send Reminder
+                    </button> -->
+                    <button *ngIf="step.status?.toLowerCase() === 'pending'" type="button" (click)="sendReminder(step.id)"
+                      class="btn btn-primary" [disabled]="isLoadingReminder">
+                      <span *ngIf="!isLoadingReminder">
+                        <span>Send Reminder</span>
+                      </span>
+                      <span *ngIf="isLoadingReminder">
+                        <i class="fa fa-refresh fa-spin"></i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -169,7 +169,7 @@
                       <!--<input type="text" formControlName="loan_amount" placeholder="Enter Loan Amount" class="form-control"   *ngIf="mainId === '1'" (input)="onInputAmount1($event.target.value) ">-->
                       <select class="form-control" formControlName="loan_amount"
                         (input)="onInputAmount($event.target.value)">
-                        <option value="">Payout Amount</option>
+                        <option value="" disabled>Payout Amount</option>
                         <option *ngFor="let item of payOutElem | keyvalue" value="{{ item.value }}">
                           {{ item.value }}
                         </option>

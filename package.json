@@ -22,6 +22,8 @@
     "@angular/platform-browser": "~12.1.0",
     "@angular/platform-browser-dynamic": "~12.1.0",
     "@angular/router": "~12.1.0",
+    "@ckeditor/ckeditor5-angular": "^3.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@types/googlemaps": "^3.39.6",
     "@types/jquery": "^3.5.5",

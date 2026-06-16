@@ -48,6 +48,36 @@ export class InvestmentRequestService {
       });
   }
 
+  acceptReject(
+    request_status: string,
+    user_id: string,
+    description?: string,
+    note_title?: string,
+    note_description?: string
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('status', request_status);
+    instituteData.append('admin_id', '1');
+    instituteData.append('request_id', user_id);
+    // if (description) {
+    //   instituteData.append('description', description);
+    // }
+    if (note_title) {
+      instituteData.append('note_title', note_title);
+    }
+    if (note_description) {
+      instituteData.append('note_description', note_description);
+    }
+    // instituteData.append('grpId', grpId)
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/updateInvestmentRequestStatus', instituteData
+    );
+  }
+
   getListUpdateListener() {
     return this.listsUpdated.asObservable();
   }
