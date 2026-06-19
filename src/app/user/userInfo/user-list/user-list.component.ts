@@ -18,8 +18,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   users: UserList[] = [];
   totalUsers = 0;
   usersPerPage = 10;
+  selectedUsersPerPage: number | 'all' = 10;
   currentPage = 0;
-  pageSizeOptions = [1, 2, 5, 10];
+  pageSizeOptions = [10, 50, 100, 200];
   private usersSub: Subscription;
   isLoading = true;
   isLoadingPage = true;
@@ -62,6 +63,26 @@ export class UserListComponent implements OnInit, OnDestroy {
       });
   }
 
+  private getRequestedPageSize(): number {
+    if (this.selectedUsersPerPage === 'all') {
+      return Math.max(this.totalUsers, this.users.length, 10);
+    }
+
+    return this.selectedUsersPerPage;
+  }
+
+  onPageSizeChange(): void {
+    this.isLoadingPage = true;
+    this.currentPage = 0;
+    this.usersPerPage = this.getRequestedPageSize();
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
+  }
+
   checkAdminType() {
     if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
       return true;
@@ -74,6 +95,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
+    this.selectedUsersPerPage = pageData.pageSize;
     this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
   }
 
@@ -106,6 +128,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   onReload(): any {
+    this.usersPerPage = this.getRequestedPageSize();
     this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
   }
 
@@ -156,6 +179,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.paginator.pageIndex = 0;
     }
     this.currentPage = 0;
+    this.usersPerPage = this.getRequestedPageSize();
     this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
   }
 

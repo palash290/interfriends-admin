@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/service/shared.service';
 import { UserListService } from 'src/app/service/userList.service';
 
@@ -24,10 +26,16 @@ export class OutstandingPaymentsComponent implements OnInit {
 
   startDate: any = '';
   endDate: any = '';
+  display: string = "none";
 
-  constructor(public userService: UserListService, public sharedService: SharedService) { }
+  group_ids: any;
+  circle_ids: any;
+
+  constructor(public userService: UserListService, public sharedService: SharedService, private toastr: ToastrService,) { }
 
   ngOnInit(): void {
+    this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.getUsers(this.usersPerPage, this.currentPage, this.search);
   }
 
@@ -40,6 +48,15 @@ export class OutstandingPaymentsComponent implements OnInit {
       const totalPage = usersPerPage * currentPage;
       userData.append('start', totalPage.toString());
     }
+
+    if (this.group_ids) {
+      userData.append('group_ids', this.group_ids.toString());
+    }
+
+    if (this.circle_ids) {
+      userData.append('circle_ids', this.circle_ids.toString());
+    }
+
     this.isLoading = true;
     userData.append('search_keyword', this.search);
     userData.append('type', this.selectedGroupType);
@@ -92,6 +109,60 @@ export class OutstandingPaymentsComponent implements OnInit {
     this.endDate = '';
     this.selectedGroupType = '';
     this.getUsers(this.usersPerPage, this.currentPage, this.search);
+  }
+
+  details: any;
+
+  getDetails(details: any) {
+    this.details = details;
+    // this.display = "block";
+  }
+
+  isLoadingBtn: boolean = false;
+
+  sendEmail() {
+    this.isLoadingBtn = true;
+
+    const userData = new FormData();
+
+    userData.append('amount', this.details?.amount ?? this.details?.loan_amount);
+    userData.append('user_id', this.details?.user_id);
+    userData.append('type', this.details?.type);
+
+    if (this.details?.type == 'saving') {
+      userData.append('date', this.details?.date);
+    } else {
+      userData.append('date', this.details?.created_at);
+    }
+
+    this.userService
+      .postAPI('/sendOutstandingPaymentReminder', userData)
+      .subscribe({
+        next: (responseData: any) => {
+          if (responseData.success == 0) {
+            this.toastr.warning(responseData.message);
+          } else {
+            this.toastr.success(responseData.message);
+          }
+
+          this.isLoadingBtn = false;
+          this.display = 'none';
+          document.getElementById('closeBlock2')?.click();
+        },
+
+        error: (error) => {
+          this.isLoadingBtn = false;
+          this.display = 'none';
+          this.toastr.error(
+            error?.error?.message || 'Something went wrong. Please try again.'
+          );
+          // console.error('Send reminder error:', error);
+        }
+      });
+  }
+
+  onClose(): void {
+    this.display = "none";
   }
 
 

@@ -21,10 +21,10 @@ export class UserListService {
 
     const userData = new FormData();
 
-    if (currentPage) {
-      const totalPage = usersPerPage * currentPage;
-      userData.append('start', totalPage.toString());
-    }
+    const totalPage = usersPerPage * currentPage;
+    userData.append('start', totalPage.toString());
+    userData.append('limit', usersPerPage.toString());
+    userData.append('page_size', usersPerPage.toString());
 
     if (group_ids && group_ids != "") {
       userData.append('group_ids', group_ids.toString());

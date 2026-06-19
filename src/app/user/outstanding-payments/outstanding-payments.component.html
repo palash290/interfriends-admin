@@ -85,7 +85,7 @@
                                             <th>Amount</th>
                                             <th>Group Name</th>
                                             <th>Created At</th>
-                                            <!-- <th>Action</th> -->
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,13 +108,18 @@
                                             </td>
                                             <td *ngIf="selectedGroupType != 'saving'">{{user.created_at | date:
                                                 'dd/MM/yyyy'}}</td>
-                                            <!-- <td>
-                                                <button type="button" class="btn btn-dark margin" data-toggle="modal"
+                                            <td>
+                                                <!-- <button type="button" class="btn btn-dark margin" data-toggle="modal"
                                                     data-target="#viewModal" ngbTooltip="View"
                                                     (click)="onUpdateView(user)">
                                                     <i class="fa fa-eye"></i>
+                                                </button> -->
+                                                <button type="button" class="btn btn-success margin" data-toggle="modal"
+                                                    ngbTooltip="Send email to this circle users"
+                                                    data-target="#emailModal" (click)="getDetails(user)">
+                                                    Send email
                                                 </button>
-                                            </td> -->
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -132,4 +137,31 @@
         </div>
         <app-footer></app-footer>
     </div>
+</div>
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+    [ngStyle]="{'display':display}">
+    <form>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Are you sure you want to send this user reminder?</div>
+                <div class="modal-footer">
+                    <!-- <button class="btn btn-primary" >Yes</button> -->
+                    <button (click)="sendEmail()" type="submit" class="btn btn-primary "
+                        [disabled]="isLoadingBtn">
+                        <span *ngIf="!isLoadingBtn">Yes</span>
+                        <span *ngIf="isLoadingBtn"><i class="fa fa-refresh fa-spin"></i></span>
+                    </button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock2"
+                        #closeBlock2>Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>

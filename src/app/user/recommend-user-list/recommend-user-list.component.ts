@@ -33,6 +33,9 @@ export class RecommendUserListComponent implements OnInit {
   selectedUserID: any;
   search = '';
 
+  group_ids: any;
+  circle_ids: any;
+
   constructor(
     public recommendUserService: RecommendUserService,
     private toastr: ToastrService,
@@ -40,10 +43,12 @@ export class RecommendUserListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
-      this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
+      this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId, this.group_ids, this.circle_ids);
     });
     this.getLists();
   }
@@ -53,7 +58,7 @@ export class RecommendUserListComponent implements OnInit {
     //   this.paginator.pageIndex = 0;
     // }
     this.currentPage = 0;
-    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
+    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId, this.group_ids, this.circle_ids);
   }
 
   checkAdminType() {
@@ -78,7 +83,7 @@ export class RecommendUserListComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
+    this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId, this.group_ids, this.circle_ids);
   }
 
   onview(id: string, index: number) {
@@ -206,7 +211,7 @@ export class RecommendUserListComponent implements OnInit {
     this.recommendUserService.UpdateStatusAccept(formData).subscribe(
       {
         next: resp => {
-          this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId);
+          this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.search, this.userId, this.groupId, this.group_ids, this.circle_ids);
           if (resp.success == 1) {
             this.toastr.success(resp.message);
             this.closeModal2.nativeElement.click();

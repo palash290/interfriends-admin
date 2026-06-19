@@ -18,6 +18,7 @@ export class UpdateUserPaymentComponent implements OnInit {
   mode = 'create';
   ID: string;
   private readonly positiveAmountPattern = /^(?=.*[1-9])(?:\d+|\d*\.\d+)$/;
+  private readonly positiveAmountPatternJNR = /^(0|[1-9]\d*)(\.\d+)?$/;
   constructor(
     public authService: AuthService,
     public userService: UserService,
@@ -33,7 +34,7 @@ export class UpdateUserPaymentComponent implements OnInit {
     });
     this.form = new FormGroup({
       savings: new FormControl(null, { validators: [Validators.pattern(this.positiveAmountPattern)] }),
-      jnr_amount: new FormControl(null, { validators: [Validators.pattern(this.positiveAmountPattern)] }),
+      jnr_amount: new FormControl(null, { validators: [Validators.pattern(this.positiveAmountPatternJNR)] }),
       expected_date: new FormControl(null, { validators: [Validators.required] }),
       christmas_date: new FormControl(null, { validators: [Validators.required] }),
     });

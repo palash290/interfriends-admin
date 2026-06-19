@@ -2,11 +2,8 @@
   [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
   <div class="wrapper">
     <app-header></app-header>
-    <!-- Left side column. contains the logo and sidebar -->
     <app-sidebar></app-sidebar>
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
           Users
@@ -17,7 +14,6 @@
           </button>
         </span>
       </section>
-      <!-- Main content -->
       <section class="content">
         <div class="row">
           <div class="col-md-12">
@@ -28,7 +24,6 @@
                   placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
                 <button class="btn btn-primary" (click)="downloadCSV()">Download CSV</button>
               </div>
-              <!-- /.box-header -->
               <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
@@ -100,7 +95,6 @@
                             [routerLink]="['/user/notes-history']" [queryParams]="{user_id: user.user_id}">
                             <i class="fa fa-file text-white" aria-hidden="true"></i>
                           </a>
-
                         </div>
                       </td>
                       <td class="d-flex">
@@ -126,22 +120,30 @@
                   </tbody>
                 </table>
               </div>
-              <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" (page)="onChangedPage($event)"
-                *ngIf="users.length > 0"></mat-paginator>
+              <div class="user-list-pagination" *ngIf="users.length > 0">
+                <div class="user-list-page-size">
+                  <label for="userListPageSize">Show</label>
+                  <select id="userListPageSize" class="form-control" [(ngModel)]="selectedUsersPerPage"
+                    (change)="onPageSizeChange()">
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                    <option [ngValue]="200">200</option>
+                    <option [ngValue]="'all'">All</option>
+                  </select>
+                </div>
+                <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" [hidePageSize]="true"
+                  (page)="onChangedPage($event)">
+                </mat-paginator>
+              </div>
               <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
                 You have'nt had any user yet!
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
       </section>
-      <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
     <app-footer></app-footer>
   </div>
 </div>

@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { InvestmentService} from '../../../service/investment.service';
+import { AuthService } from '../../../service/auth.service';
+import { InvestmentService } from '../../../service/investment.service';
 import { Investment } from 'src/app/model/investment.model';
 import { UserService } from 'src/app/service/user.service';
 import { AllUser } from 'src/app/model/allUser.model';
@@ -29,7 +29,7 @@ export class ProfitAddComponent implements OnInit {
   investment: Investment;
   isLoadingProperty = true;
   propertyList: AllUser[] = [];
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
 
 
   constructor(
@@ -44,16 +44,16 @@ export class ProfitAddComponent implements OnInit {
     this.mode = 'create';
     this.form = new FormGroup({
       property_id: new FormControl(null, { validators: [Validators.required] }),
-      amount	: new FormControl(null, { validators: [Validators.required] }),
-      description	: new FormControl(null, { validators: [Validators.required] }),
+      amount: new FormControl(null, { validators: [Validators.required] }),
+      description: new FormControl(null, { validators: [Validators.required] }),
       note_title: new FormControl(null, { validators: [Validators.required] }),
       note_description: new FormControl(null, { validators: [Validators.required] }),
     });
 
 
     this.userService.allPropertyList().subscribe((response: any) => {
-        this.propertyList= response.propertyList;
-        this.isLoadingProperty = false;
+      this.propertyList = response.propertyList;
+      this.isLoadingProperty = false;
     });
   }
 
@@ -61,35 +61,35 @@ export class ProfitAddComponent implements OnInit {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.investmentService.investment_detail(this.mainId)
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+        this.investmentService.investment_detail(this.mainId)
           .subscribe((response: any) => {
-            this.investment =  response.investmentDetail;
+            this.investment = response.investmentDetail;
             this.form.patchValue({
               property_id: this.investment.property_id,
               amount: this.investment.amount,
-              description: this.investment.description
+              description: this.investment.description,
+              note_title: this.investment.note_title,
+              note_description: this.investment.note_description
             });
             this.isLoadingUpdate = false;
           });
       }
     }
 
-
-
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -125,7 +125,7 @@ export class ProfitAddComponent implements OnInit {
 
         if (response.success === '1') {
           this.valueChange.emit('add');
-          this.router.navigate(['/user/UserGroupAddList',response.group_id]);
+          this.router.navigate(['/user/UserGroupAddList', response.group_id]);
           this.toastr.success(response.message);
         } else {
           this.toastr.error(response.message);
@@ -143,9 +143,9 @@ export class ProfitAddComponent implements OnInit {
         this.form.value.property_id,
         this.form.value.amount,
         this.form.value.description,
-       '1',
-       '',
-       this.form.value.note_title,
+        '1',
+        '',
+        this.form.value.note_title,
         this.form.value.note_description
       ).subscribe((response: any) => {
         this.form.reset();
