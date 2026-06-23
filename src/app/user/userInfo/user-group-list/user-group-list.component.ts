@@ -185,7 +185,6 @@ export class UserGroupListComponent implements OnInit, OnDestroy {
     const userData = new FormData();
     userData.append('group_id', this.groupId.toString());
 
-
     this.userListService.postAPI('/sendEmailtoUserGroupAll', userData)
       .subscribe((response: any) => {
 

@@ -21,6 +21,7 @@ export class InvestmentRequestComponent implements OnInit {
   pageSizeOptions = [1, 2, 5, 10];
   private listsSub: Subscription;
   isLoading = true;
+  isLoadingBtn = false;
   isLoadingPage = true;
   selectListId: string;
   userId: string;
@@ -90,8 +91,6 @@ export class InvestmentRequestComponent implements OnInit {
     this.display = 'none';
   }
 
-
-
   @ViewChild('closeModal2') closeModal2!: ElementRef;
   @ViewChild('closeModal1') closeModal1!: ElementRef;
   // acceptId: any;
@@ -99,7 +98,7 @@ export class InvestmentRequestComponent implements OnInit {
   acceptUserId: any;
   // rejectId: any;
   // rejectGroupId: any;
-  rejectUserId: any;
+  rejectId: any;
 
   description: string = '';
   note_title: string = '';
@@ -117,11 +116,11 @@ export class InvestmentRequestComponent implements OnInit {
   getRejectId(detail: any) {
     // this.rejectId = detail.id;
     // this.rejectGroupId = detail.group_id;
-    this.rejectUserId = detail.id;
+    this.rejectId = detail.id;
   }
 
   onAccept() {
-    this.isLoading = true;
+    this.isLoadingBtn = true;
     this.investmentRequestService
       .acceptReject(
         '1',
@@ -144,7 +143,7 @@ export class InvestmentRequestComponent implements OnInit {
           this.closeModal2.nativeElement.click();
           this.getList();
         }
-        this.isLoading = false;
+        this.isLoadingBtn = false;
         // setTimeout(function () {
         //   window.location.reload();
         // }, 2000);
@@ -152,16 +151,16 @@ export class InvestmentRequestComponent implements OnInit {
   }
 
   onReject() {
-    this.isLoading = true;
+    this.isLoadingBtn = true;
     this.investmentRequestService
       .acceptReject(
         '2',
-        this.rejectUserId,
+        this.rejectId,
         // this.rejectGroupId
       )
       .subscribe((response: any) => {
         this.onClose();
-        debugger
+        // debugger
         if (response.success == '1') {
           this.toastr.success(response.message);
           this.closeModal1.nativeElement.click();
@@ -171,7 +170,7 @@ export class InvestmentRequestComponent implements OnInit {
           this.closeModal1.nativeElement.click();
           this.getList();
         }
-        this.isLoading = false;
+        this.isLoadingBtn = false;
         // setTimeout(function () {
         //   window.location.reload();
         // }, 2000);

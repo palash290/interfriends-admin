@@ -390,7 +390,6 @@ const routes: Routes = [
          {
             path: 'UpdateUserPayment/:id',
             component: UpdateUserPaymentComponent,
-
          },
          {
             path: 'groupedUserDetail/:groupId',

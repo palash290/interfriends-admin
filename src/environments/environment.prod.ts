@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.1.34/interfriends_backend/Api/Admin',
-  // apiUrl: 'https://www.interfriends.uk/backend/Api/Admin',
+  // apiUrl: 'http://192.168.1.34/interfriends_backend/Api/Admin',
+  apiUrl: 'https://www.interfriends.uk/backend/Api/Admin',
 
   firebase: {
     apiKey: "AIzaSyAMUPRiRPReoYc17c8V9Tz2OigkMA-Q7gk",

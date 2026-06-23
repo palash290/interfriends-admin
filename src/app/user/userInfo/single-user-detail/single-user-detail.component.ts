@@ -29,6 +29,7 @@ export class SingleUserDetailComponent implements OnInit {
   avgAmountPf:string;
   welfare:string;
   overAllTotal: number = 0;
+  total_credit_score: any;
 
   constructor(
     public userService: UserService,
@@ -42,7 +43,8 @@ export class SingleUserDetailComponent implements OnInit {
       this.groupId = paramMap.get('groupId');
       this.groupName = localStorage.getItem('GroupnameForUserList')
       this.userService.getUserInfo(this.userId).subscribe((response: any) => {
-        this.user = response.userinfo
+        this.user = response.userinfo;
+        this.total_credit_score = this.user.total_credit_score;
         this.isLoading = false;
       });
       this.userService.userSpecDetails(this.userId, this.groupId).subscribe((response: any) => {

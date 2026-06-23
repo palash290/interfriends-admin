@@ -7,18 +7,23 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1 *ngIf="groupName == ''">
-          User Detail
-        </h1>
-        <h1 *ngIf="groupName != ''">
-          {{groupName}}
-        </h1>
-        <!-- <span class="breadcrumb">
-          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
-            Add
-          </button>
-        </span> -->
+      <section class="content-header single-user-header">
+        <div class="single-user-header__title">
+          <h1 *ngIf="groupName == ''">
+            User Detail
+          </h1>
+          <h1 *ngIf="groupName != ''">
+            {{groupName}}
+          </h1>
+          <p class="single-user-header__subtitle">
+            Member profile overview
+          </p>
+        </div>
+        <div class="trust-score-card" aria-label="Trust score summary">
+          <span class="trust-score-card__label">Trust Score</span>
+          <span class="trust-score-card__value">{{total_credit_score}}</span>
+          <span class="trust-score-card__meta">Overall trust indicator</span>
+        </div>
       </section>
 
       <!-- Main content -->

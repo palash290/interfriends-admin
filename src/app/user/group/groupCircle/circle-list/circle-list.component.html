@@ -43,6 +43,7 @@
                       <th> Circle Lead</th>
                       <th> Deputy</th>
                       <th>Trust Score</th>
+                      <th>Cirlce Total</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -54,6 +55,7 @@
                       <td>{{list.circle_lead_name || '-'}}</td>
                       <td>{{list.deputy_lead_name || '-'}}</td>
                       <td>{{list.trust_score | number:'1.0-0'}}</td>
+                      <td>{{list.total_members || 0}}</td>
                       <td>
                         <!-- <button class="btn btn-primary margin" data-toggle="modal" data-target="#"
                           (click)="onUpdate(list.id)" ngbTooltip="Edit">
