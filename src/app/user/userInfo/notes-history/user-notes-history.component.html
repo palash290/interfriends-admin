@@ -84,7 +84,7 @@
                                             <th>Title</th>
                                             <th>Note Description</th>
                                             <th>Type</th>
-                                            <!-- <th>Status</th> -->
+                                            <th>Status</th>
                                             <th>Created At</th>
                                             <!-- <th>Action</th> -->
                                         </tr>
@@ -95,15 +95,16 @@
                                             <td>{{user.note_title}}</td>
                                             <td>{{user.note_description}}</td>
                                             <td>{{user.type}}</td>
-                                            <!-- <td>
-                                                <div *ngIf="user.status == 1">
-
-                                                </div>
-
-                                                <div *ngIf="user.status == 2">
-
-                                                </div>
-                                            </td> -->
+                                            <td>
+                                                <span class="badge badge-secondary"
+                                                    *ngIf="user.status === '1'">Pending</span>
+                                                <span class="badge badge-success" *ngIf="user.status === '2'">Paid On
+                                                    Time</span>
+                                                <span class="badge badge-warning" *ngIf="user.status === '3'">Missed
+                                                    Payment Deadline</span>
+                                                <span class="badge badge-danger" *ngIf="user.status === '4'">Paid
+                                                    Late</span>
+                                            </td>
                                             <td>{{user.created_at | date: 'dd/MM/yyyy'}}</td>
                                         </tr>
                                     </tbody>

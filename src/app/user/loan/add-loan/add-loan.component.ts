@@ -56,6 +56,7 @@ export class AddLoanComponent implements OnInit {
       note_description	: new FormControl(null, { validators: [Validators.required] }),
       status	: new FormControl(null, { validators: [Validators.required] }),
       created_at : new FormControl(null, { validators: [Validators.required] }),
+      started_at : new FormControl(null),
       ref_no : new FormControl(null, { validators: [Validators.required] })
     });
 
@@ -90,7 +91,8 @@ export class AddLoanComponent implements OnInit {
               contact_number: this.loan.contact_number,
               loan_type: this.loan.loan_type,
               status: this.loan.status,
-              created_at: this.loan.created_at
+              created_at: this.loan.created_at,
+              started_at: this.loan.start_date
             });
             this.isLoadingUpdate = false;
           });
@@ -156,6 +158,7 @@ export class AddLoanComponent implements OnInit {
         this.form.value.status,
         this.form.value.created_at,
         this.form.value.ref_no,
+        this.form.value.started_at,
         this.loan_emi
       ).subscribe((response: any) => {
         this.form.reset();

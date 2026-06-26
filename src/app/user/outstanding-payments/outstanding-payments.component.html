@@ -26,7 +26,8 @@
                                     <select class="form-control py-2 h-auto ct_input"
                                         style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedGroupType"
                                         name="loan_type" (ngModelChange)="getUsers(usersPerPage, currentPage, search)">
-                                        <option value="">All</option>
+                                        <!-- <option value="">All</option> -->
+                                         <option value="" disabled>Select</option>
                                         <option value="loan">Loan</option>
                                         <option value="saving">Saving</option>
                                         <option value="miscellaneous">Miscellaneous</option>
@@ -84,7 +85,8 @@
                                             <th>Email</th>
                                             <th>Amount</th>
                                             <th>Group Name</th>
-                                            <th>Created At</th>
+                                            <th *ngIf="selectedGroupType == 'saving'">Payment Date</th>
+                                            <th *ngIf="selectedGroupType != 'saving'">Created At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -104,9 +106,11 @@
                                                 </div>
                                             </td>
                                             <td>{{user.type}}</td>
-                                            <td *ngIf="selectedGroupType == 'saving'">{{user.date | date: 'dd/MM/yyyy'}}
+                                            <!-- <td *ngIf="selectedGroupType == 'saving'">{{user.date | date: 'dd/MM/yyyy'}}
                                             </td>
                                             <td *ngIf="selectedGroupType != 'saving'">{{user.created_at | date:
+                                                'dd/MM/yyyy'}}</td> -->
+                                                <td >{{user.created_at | date:
                                                 'dd/MM/yyyy'}}</td>
                                             <td>
                                                 <!-- <button type="button" class="btn btn-dark margin" data-toggle="modal"

@@ -71,7 +71,7 @@
                       <th>Amount</th>
                       <th>Note Title</th>
                       <th>Note Description</th>
-                      <th>Created on</th>
+                      <th>Payment Date</th>
                       <th>Payment Method</th>
                       <th>Status</th>
                       <th>Action</th>
@@ -83,7 +83,7 @@
                       <td>{{list.amount| number:'1.0-0'}}</td>
                       <td>{{list.note_title}}</td>
                       <td>{{list.note_description}}</td>
-                      <td>{{list.created_at| date: 'dd MMM yyyy'}}</td>
+                      <td>{{list.emi_date| date: 'dd MMM yyyy'}}</td>
                       <td>
                         <span class="badge badge-secondary" *ngIf="list.payment_method === '1'">Direct Transfer</span>
                         <span class="badge badge-success" *ngIf="list.payment_method === '2'">From Provident</span>
