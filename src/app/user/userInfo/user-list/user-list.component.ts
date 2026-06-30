@@ -7,6 +7,8 @@ import { environment } from '../../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/service/auth.service';
+import { GroupService } from 'src/app/service/group.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user-list',
@@ -34,6 +36,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   eachChange: string;
   add: string;
   display = "none";
+  displayEmail = "none";
   display1 = 'none';
   display2 = 'none';
   display4 = 'none';
@@ -46,7 +49,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     public userService: UserListService,
     public authService: AuthService,
     private toastr: ToastrService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public groupService: GroupService
   ) { }
 
   ngOnInit(): void {
@@ -106,6 +110,11 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.updateId = id;
     this.eachChange = Math.random().toString();
     this.display = 'block'
+  }
+
+  onUpdateEmail(id: string): void {
+    this.updateId = id;
+    this.displayEmail = 'block'
   }
 
   onUpdateView(id: string): void {
@@ -233,5 +242,47 @@ export class UserListComponent implements OnInit, OnDestroy {
     );
     return [header, ...rows].join('\r\n');
   }
+
+  mailBody: string = '';
+  @ViewChild('editor', { static: false }) editor: any;
+
+  sendEmail(data: NgForm) {
+    console.log("data", data);
+    data.control.markAllAsTouched();
+    if (data.invalid) {
+      return
+    }
+    const userData = new FormData();
+    this.isLoading = true;
+    userData.append('user_id', this.updateId);
+    userData.append('subject', data.value.subject);
+    userData.append('message', data.value.body);
+    this.groupService
+      .postAPI(
+        '/sendEmailtoUserinCircle', userData
+      ).subscribe({
+        next: (responseData: any) => {
+          if (responseData.success == 0) {
+            this.toastr.warning(responseData.message);
+            this.isLoading = false;
+          } else {
+            this.toastr.success(responseData.message);
+            this.isLoading = false;
+            this.isLoadingPage = false;
+            this.mailBody = '';
+            if (this.editor && this.editor.instance) {
+              this.editor.instance.setData('');
+            }
+            data.resetForm();
+            document.getElementById('closeBlock3').click();
+          }
+        },
+        error: (err: any) => {
+          this.toastr.error('Failed to send email. Please try again.');
+          this.isLoading = false;
+        }
+      });
+  };
+
 
 }

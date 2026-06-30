@@ -122,27 +122,75 @@ export class RecommendUserListComponent implements OnInit {
   trackingData: any;
   isTrackingLoading = false;
 
+  // getTracking(id: string) {
+  //   // this.btn_status = admin_status;
+  //   this.trackingData = [];
+  //   this.isTrackingLoading = true;
+  //   const formData = new FormData();
+  //   formData.append('id', id.toString())
+  //   this.recommendUserService.viewRecommnedTracking(formData).subscribe(
+  //     {
+  //       next: resp => {
+  //         this.trackingData = resp?.lists?.approval_steps || [];
+  //         this.isTrackingLoading = false;
+  //       },
+  //       error: error => {
+  //         this.isTrackingLoading = false;
+  //         this.toastr.warning('Something went wrong.');
+  //       }
+  //     }
+  //   );
+  //   // this.selectListId = id;
+  //   // this.listDetail = this.lists[index];
+  //   // this.display1 = "block";
+  // }
+
   getTracking(id: string) {
-    // this.btn_status = admin_status;
     this.trackingData = [];
     this.isTrackingLoading = true;
+
     const formData = new FormData();
-    formData.append('id', id.toString())
-    this.recommendUserService.viewRecommnedTracking(formData).subscribe(
-      {
-        next: resp => {
-          this.trackingData = resp?.lists?.approval_steps || [];
-          this.isTrackingLoading = false;
-        },
-        error: error => {
-          this.isTrackingLoading = false;
-          this.toastr.warning('Something went wrong.');
-        }
+    formData.append('id', id.toString());
+
+    this.recommendUserService.viewRecommnedTracking(formData).subscribe({
+      next: resp => {
+        let approvalSteps = resp?.lists?.approval_steps || [];
+
+        const circleLead = approvalSteps.find(
+          (x: any) => x.approver_role === 'circle_lead'
+        );
+
+        const deputyCircleLead = approvalSteps.find(
+          (x: any) => x.approver_role === 'deputy_circle_lead'
+        );
+
+        this.trackingData = approvalSteps.filter((item: any) => {
+          // If Circle Lead is approved, hide Deputy Circle Lead
+          if (
+            item.approver_role === 'deputy_circle_lead' &&
+            circleLead?.status_code === '1'
+          ) {
+            return false;
+          }
+
+          // If Deputy Circle Lead is approved, hide Circle Lead
+          if (
+            item.approver_role === 'circle_lead' &&
+            deputyCircleLead?.status_code === '1'
+          ) {
+            return false;
+          }
+
+          return true;
+        });
+
+        this.isTrackingLoading = false;
+      },
+      error: error => {
+        this.isTrackingLoading = false;
+        this.toastr.warning('Something went wrong.');
       }
-    );
-    // this.selectListId = id;
-    // this.listDetail = this.lists[index];
-    // this.display1 = "block";
+    });
   }
 
   isLoadingReminder = false;

@@ -55,11 +55,46 @@
   color: #3c8dbc;
 }
 
+.trust-score-card__band {
+  margin-top: 6px;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
 .trust-score-card__meta {
   margin-top: 6px;
   font-size: 12px;
   line-height: 1.4;
   color: #7b8794;
+}
+
+.color-red {
+  color: #d9534f !important;
+}
+
+.color-orange {
+  color: #f0ad4e !important;
+}
+
+.color-grey {
+  color: #6c757d !important;
+}
+
+.color-gold {
+  color: #c9a227 !important;
+}
+
+.color-green {
+  color: #3da75c !important;
+}
+
+.color-blue {
+  color: #3c8dbc !important;
+}
+
+.color-rhodium {
+  color: #6f42c1 !important;
 }
 
 @media (max-width: 767px) {

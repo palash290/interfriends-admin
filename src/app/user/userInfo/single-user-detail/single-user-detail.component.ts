@@ -30,6 +30,9 @@ export class SingleUserDetailComponent implements OnInit {
   welfare:string;
   overAllTotal: number = 0;
   total_credit_score: any;
+  trustScoreBand: string = 'Unknown';
+  trustScoreRange: string = 'Overall trust indicator';
+  trustScoreClass: string = 'color-grey';
 
   constructor(
     public userService: UserService,
@@ -45,6 +48,7 @@ export class SingleUserDetailComponent implements OnInit {
       this.userService.getUserInfo(this.userId).subscribe((response: any) => {
         this.user = response.userinfo;
         this.total_credit_score = this.user.total_credit_score;
+        this.setTrustScoreBand(this.total_credit_score);
         this.isLoading = false;
       });
       this.userService.userSpecDetails(this.userId, this.groupId).subscribe((response: any) => {
@@ -90,5 +94,64 @@ export class SingleUserDetailComponent implements OnInit {
       return false;
     }
   }
+
+  setTrustScoreBand(score: any): void {
+    const value = Number(score);
+
+    if (Number.isNaN(value)) {
+      this.trustScoreBand = 'Unknown';
+      this.trustScoreRange = 'Overall trust indicator';
+      this.trustScoreClass = 'color-grey';
+      return;
+    }
+
+    if (value <= 650) {
+      this.trustScoreBand = 'Caution';
+      this.trustScoreRange = '0 - 650';
+    } else if (value <= 700) {
+      this.trustScoreBand = 'Poor';
+      this.trustScoreRange = '651 - 700';
+    } else if (value <= 800) {
+      this.trustScoreBand = 'Fair';
+      this.trustScoreRange = '701 - 800';
+    } else if (value <= 850) {
+      this.trustScoreBand = 'Good';
+      this.trustScoreRange = '801 - 850';
+    } else if (value <= 1200) {
+      this.trustScoreBand = 'Excellent';
+      this.trustScoreRange = '851 - 1200';
+    } else if (value <= 1300) {
+      this.trustScoreBand = 'Exemplary';
+    } else if (value <= 1600) {
+      this.trustScoreBand = 'Exemplary';
+    } else if (value <= 1650) {
+      this.trustScoreBand = 'Very Important Person';
+    } else {
+      this.trustScoreBand = 'Unknown';
+      this.trustScoreRange = 'Overall trust indicator';
+    }
+
+    this.trustScoreClass = this.getClassOf(this.trustScoreBand);
+  }
+
+  getClassOf(val: string) {
+    if (val === 'Caution') {
+      return 'color-red';
+    } else if (val === 'Poor') {
+      return 'color-orange';
+    } else if (val === 'Fair') {
+      return 'color-grey';
+    } else if (val === 'Good') {
+      return 'color-gold';
+    } else if (val === 'Excellent') {
+      return 'color-green';
+    } else if (val === 'Exemplary') {
+      return 'color-blue';
+    } else if (val === 'Very Important Person' || val === 'Very Important person') {
+      return 'color-rhodium';
+    } else {
+      return 'color-grey';
+    }
+  };
 
 }

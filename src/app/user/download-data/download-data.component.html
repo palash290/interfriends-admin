@@ -20,7 +20,7 @@
                                         <!-- <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Select</label> -->
                                         <select class="form-control py-2 h-auto ct_input"
                                             [(ngModel)]="selectedGroupType"
-                                            (ngModelChange)="getAdminNotifications(usersPerPage, currentPage, search)">
+                                            (ngModelChange)="getDownloadableData(usersPerPage, currentPage, search)">
                                             <option value="" disabled>Select Category</option>
                                             <option value="payout">Saving Payout</option>
                                             <option value="investment">Investment</option>
@@ -93,7 +93,7 @@
                                         <div class="position-relative">
                                             <input type="date" class="form-control ct_input ct_fs_18"
                                                 [(ngModel)]="endDate" [disabled]="!startDate"
-                                                (ngModelChange)="getAdminNotifications(usersPerPage, currentPage, search)">
+                                                (ngModelChange)="getDownloadableData(usersPerPage, currentPage, search)">
                                         </div>
                                     </div>
                                     <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
@@ -141,11 +141,27 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"
+                            <!-- <mat-paginator [length]="totalLists" [pageSize]="listsPerPage"
                                 (page)="onChangedPage($event)" *ngIf="lists.length > 0"></mat-paginator>
                             <div class="box-body text-center py-4"
                                 *ngIf="lists.length <= 0 && !isLoading || totalLists=='0'">
                                 No data found
+                            </div> -->
+                            <div class="user-list-pagination" *ngIf="lists.length > 0">
+                                <div class="user-list-page-size">
+                                    <label for="userListPageSize">Show</label>
+                                    <select id="userListPageSize" class="form-control"
+                                        [(ngModel)]="selectedUsersPerPage" (change)="onPageSizeChange()">
+                                        <option [ngValue]="10">10</option>
+                                        <option [ngValue]="50">50</option>
+                                        <option [ngValue]="100">100</option>
+                                        <option [ngValue]="200">200</option>
+                                        <option [ngValue]="'all'">All</option>
+                                    </select>
+                                </div>
+                                <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" [hidePageSize]="true"
+                                    (page)="onChangedPage($event)">
+                                </mat-paginator>
                             </div>
                         </div>
                     </div>

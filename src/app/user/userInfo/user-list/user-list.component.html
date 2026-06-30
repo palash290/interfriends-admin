@@ -95,6 +95,13 @@
                             [routerLink]="['/user/notes-history']" [queryParams]="{user_id: user.user_id}">
                             <i class="fa fa-file text-white" aria-hidden="true"></i>
                           </a>
+
+                          <button type="button" class="btn btn-dark margin" data-toggle="modal"
+                            data-target="#emailModal" ngbTooltip="send email to user"
+                            (click)="onUpdateEmail(user.user_id)">
+                            Email send
+                          </button>
+
                         </div>
                       </td>
                       <td class="d-flex">
@@ -235,3 +242,63 @@
   </div>
 </div>
 <!-- block model popup end -->
+
+
+
+
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':displayEmail}">
+  <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
+
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="max-width: 800px !important; width: 100% !important;">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
+              <label>Subject</label>
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject" ngModel required />
+
+              <span class="help-block"
+                *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+                <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+              <label>Body</label>
+              <ckeditor #editor [(ngModel)]="mailBody" id="body" name="body" [config]="{ extraPlugins: 'divarea' }"
+                required>
+              </ckeditor>
+
+              <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button class="btn btn-primary" type="submit">Send email</button> -->
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span>Send email</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
+            #closeBlock2>Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

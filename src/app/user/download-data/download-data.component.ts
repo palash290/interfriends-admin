@@ -31,6 +31,8 @@ export class DownloadDataComponent implements OnInit {
   startDate: any = '';
   endDate: any = '';
 
+  selectedUsersPerPage: number | 'all' = 200;
+
   // add edit code start
   listId: string;
   updateId: string;
@@ -54,7 +56,7 @@ export class DownloadDataComponent implements OnInit {
     // this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search)
   }
 
-  getAdminNotifications(listsPerPage: any, currentPage: any, search_keyword: any) {
+  getDownloadableData(listsPerPage: any, currentPage: any, search_keyword: any) {
     const listData = new FormData();
 
     // Set isLoading only if no search_keyword
@@ -62,10 +64,10 @@ export class DownloadDataComponent implements OnInit {
       this.isLoading = true;
     }
 
-    if (currentPage) {
-      const totalPage = listsPerPage * currentPage;
-      listData.append('start', totalPage.toString());
-    }
+    const totalPage = listsPerPage * currentPage;
+    listData.append('start', totalPage.toString());
+    listData.append('limit', listsPerPage.toString());
+    listData.append('page_size', listsPerPage.toString());
 
     listData.append('search', search_keyword);
     listData.append('product_category', this.selectedGroupType);
@@ -86,14 +88,14 @@ export class DownloadDataComponent implements OnInit {
 
 
   change() {
-    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+    this.getDownloadableData(this.usersPerPage, this.currentPage, this.search);
   }
 
   reset() {
     this.startDate = '';
     this.endDate = '';
     this.selectedGroupType = '';
-    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+    this.getDownloadableData(this.usersPerPage, this.currentPage, this.search);
   }
 
   checkAdminType() {
@@ -110,7 +112,7 @@ export class DownloadDataComponent implements OnInit {
       this.paginator.pageIndex = 0;
     }
     this.currentPage = 0;
-    this.getAdminNotifications(this.usersPerPage, this.currentPage, this.search);
+    this.getDownloadableData(this.usersPerPage, this.currentPage, this.search);
   }
 
   onReload(): any {
@@ -122,7 +124,9 @@ export class DownloadDataComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.listsPerPage = pageData.pageSize;
-    this.getAdminNotifications(this.listsPerPage, this.currentPage, '');
+    this.usersPerPage = pageData.pageSize;
+    this.selectedUsersPerPage = pageData.pageSize;
+    this.getDownloadableData(this.listsPerPage, this.currentPage, this.search);
   }
 
 
@@ -183,6 +187,27 @@ export class DownloadDataComponent implements OnInit {
     safekeeping_remove: 'Safekeeping Remove',
     active_loan: 'Active Loan'
   };
+
+  private getRequestedPageSize(): number {
+    if (this.selectedUsersPerPage === 'all') {
+      return Math.max(this.totalLists, this.lists.length, 10);
+    }
+
+    return this.selectedUsersPerPage;
+  }
+
+  onPageSizeChange(): void {
+    this.isLoadingPage = true;
+    this.currentPage = 0;
+    this.usersPerPage = this.getRequestedPageSize();
+    this.listsPerPage = this.usersPerPage;
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.getDownloadableData(this.usersPerPage, this.currentPage, this.search);
+  }
 
 
 }

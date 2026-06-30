@@ -21,8 +21,9 @@
         </div>
         <div class="trust-score-card" aria-label="Trust score summary">
           <span class="trust-score-card__label">Trust Score</span>
-          <span class="trust-score-card__value">{{total_credit_score}}</span>
-          <span class="trust-score-card__meta">Overall trust indicator</span>
+          <span class="trust-score-card__value" [ngClass]="trustScoreClass">{{total_credit_score}}</span>
+          <span class="trust-score-card__band" [ngClass]="trustScoreClass">{{trustScoreBand}}</span>
+          <!-- <span class="trust-score-card__meta">{{trustScoreRange}}</span> -->
         </div>
       </section>
 
