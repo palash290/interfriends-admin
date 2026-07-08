@@ -29,6 +29,9 @@ export class PayoutRequestComponent implements OnInit {
   groupId: string;
   display: string;
   form: FormGroup;
+  rejectForm: FormGroup = new FormGroup({
+    reason: new FormControl(null, { validators: [Validators.required] }),
+  });
   isLoadingUpdate = false;
   mode = 'update';
   adminType: string;
@@ -175,17 +178,24 @@ export class PayoutRequestComponent implements OnInit {
   }
 
   onReject() {
+    this.rejectForm.markAllAsTouched();
+
+    if (this.rejectForm.invalid) {
+      return;
+    }
+
     this.isLoading = true;
     this.safeKeepingService
       .acceptRejectPayout(
         this.rejectId,
         '0',
         this.rejectGroupId,
-        this.rejectUserId
+        this.rejectUserId,
+        this.rejectForm.value.reason
       )
       .subscribe((response: any) => {
         this.onClose();
-        debugger
+        // debugger
         if (response.success == '1') {
           this.toastr.success(response.message);
           this.closeModal1.nativeElement.click();
@@ -204,6 +214,7 @@ export class PayoutRequestComponent implements OnInit {
 
   onClose(): void {
     this.form.reset();
+    this.rejectForm.reset();
     this.display = 'none';
   }
 

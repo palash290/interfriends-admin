@@ -62,6 +62,10 @@ export class RecommendUserService {
     return this.http.post<any>(API_URL + '/userDetailInfo', data);
   }
 
+  viewRecommnedUserForm1(recommend_id: any): Observable<any> {
+    return this.http.get<any>(API_URL + `/getRecommendedUserDetails/${recommend_id}`);
+  }
+
   viewRecommnedTracking(data: any): Observable<any> {
     return this.http.post<any>(API_URL + '/recommendUserApprovalTracking', data);
   }

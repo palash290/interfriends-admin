@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { Group } from 'src/app/model/group.model';
 import { AuthService } from 'src/app/service/auth.service';
 import { GroupService } from 'src/app/service/group.service';
@@ -28,6 +29,7 @@ export class CircleListComponent implements OnInit {
   private listsSub: Subscription;
   isLoading = true;
   isLoadingPage = true;
+  isLoadingBtn = false;
   selectListId: string;
   adminType: string;
   display: string = "none"
@@ -57,7 +59,7 @@ export class CircleListComponent implements OnInit {
     this.mode = 'create';
     this.form = new FormGroup({
       circle_name: new FormControl(null, { validators: [Validators.required] }),
-      description: new FormControl(null, { validators: [Validators.required] })
+      description: new FormControl('', { validators: [Validators.required] })
     });
     this.route.params.subscribe(params => {
       // Retrieve individual parameters using params object
@@ -192,33 +194,45 @@ export class CircleListComponent implements OnInit {
   };
 
   sendEmail(data: NgForm) {
-    data.control.markAllAsTouched()
+    data.control.markAllAsTouched();
+
     if (data.invalid) {
-      return
+      return;
     }
+
     const userData = new FormData();
+    this.isLoadingBtn = true;
 
     userData.append('circle_id', this.circleID);
     userData.append('subject', data.value.subject);
     userData.append('message', data.value.body);
+
     this.groupService
-      .postAPI(
-        '/sendEmailtoAllmembersinCircle', userData
-      ).subscribe(responseData => {
-        if (responseData.success == 0) {
-          this.toastr.warning(responseData.message);
-          this.mailForm.reset();
-        } else {
-          this.toastr.success(responseData.message);
-          // this.totalUsers =  responseData.userCount;
-          this.isLoading = false;
-          this.isLoadingPage = false;
+      .postAPI('/sendEmailtoAllmembersinCircle', userData)
+      .pipe(
+        finalize(() => {
+          this.isLoadingBtn = false;
+        })
+      )
+      .subscribe({
+        next: (responseData: any) => {
+          if (responseData.success == 0) {
+            this.toastr.warning(responseData.message);
+            this.mailForm.reset();
+          } else {
+            this.toastr.success(responseData.message);
+          }
+
+          document.getElementById('closeBlock2')?.click();
+        },
+        error: (err) => {
+          this.toastr.error('Something went wrong. Please try again.');
         }
-        document.getElementById('closeBlock2').click();
-
-
       });
-  };
+  }
+
+  mailBody: string = '';
+  @ViewChild('editor', { static: false }) editor: any;
 
   sendLeadsEmail(data: NgForm) {
     data.control.markAllAsTouched()
@@ -230,6 +244,7 @@ export class CircleListComponent implements OnInit {
     userData.append('circle_id', this.circleID);
     userData.append('subject', data.value.subject);
     userData.append('message', data.value.message);
+
     this.groupService
       .postAPI(
         '/sendEmailtoAllCirclelead', userData
@@ -237,15 +252,15 @@ export class CircleListComponent implements OnInit {
         this.mailForm.reset();
         if (responseData.success == 0) {
           this.toastr.warning(responseData.message);
+          this.mailBody = '';
         } else {
           this.toastr.success(responseData.message);
           // this.totalUsers =  responseData.userCount;
           this.isLoading = false;
           this.isLoadingPage = false;
+          this.mailBody = '';
         }
         document.getElementById('closeBlock2').click();
-
-
       });
   };
 

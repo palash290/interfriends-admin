@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { RecommendUserService } from '../../service/recommendUser.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { GroupService } from 'src/app/service/group.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-recommend-user-list',
@@ -39,7 +41,8 @@ export class RecommendUserListComponent implements OnInit {
   constructor(
     public recommendUserService: RecommendUserService,
     private toastr: ToastrService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public groupService: GroupService
   ) { }
 
   ngOnInit(): void {
@@ -87,8 +90,15 @@ export class RecommendUserListComponent implements OnInit {
   }
 
   onview(id: string, index: number) {
+    this.userId = id;
     this.listDetail = this.lists[index];
     this.display = "block";
+  }
+
+    onview1(id: string, index: number) {
+    this.userId = id;
+    // this.listDetail = this.lists[index];
+    // this.display = "block";
   }
 
   btn_status: any;
@@ -98,9 +108,12 @@ export class RecommendUserListComponent implements OnInit {
     const formData = new FormData();
     formData.append('user_id', userId.toString())
     this.recommendUserService.viewRecommnedUserForm(formData).subscribe(
+    // this.recommendUserService.viewRecommnedUserForm1(id).subscribe(
       {
         next: resp => {
+          // debugger
           this.recommendUser = resp.userinfo;
+          // users
           // this.recommendUserService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId);
           // if (resp.success == 1) {
           //   this.onClose2()
@@ -283,6 +296,55 @@ export class RecommendUserListComponent implements OnInit {
   showImg(url: any) {
     this.userImg1 = url;
   }
+
+  displayEmail = "none";
+
+  onUpdateEmail(id: string): void {
+    // this.userId = id;
+    this.displayEmail = 'block';
+    this.onClose2();
+  }
+
+  mailBody: string = '';
+  @ViewChild('editor', { static: false }) editor: any;
+
+  sendEmail(data: NgForm) {
+    console.log("data", data);
+    data.control.markAllAsTouched();
+    if (data.invalid) {
+      return
+    }
+    const userData = new FormData();
+    this.isLoading = true;
+    userData.append('admin_status', '3')
+    userData.append('id', this.userId);
+    userData.append('resubmit_note', data.value.body);
+    this.groupService
+      .postAPI(
+        '/recommendUser_status', userData
+      ).subscribe({
+        next: (responseData: any) => {
+          if (responseData.success == 0) {
+            this.toastr.warning(responseData.message);
+            this.isLoading = false;
+          } else {
+            this.toastr.success(responseData.message);
+            this.isLoading = false;
+            this.isLoadingPage = false;
+            this.mailBody = '';
+            if (this.editor && this.editor.instance) {
+              this.editor.instance.setData('');
+            }
+            data.resetForm();
+            document.getElementById('closeBlock3').click();
+          }
+        },
+        error: (err: any) => {
+          this.toastr.error('Failed to send email. Please try again.');
+          this.isLoading = false;
+        }
+      });
+  };
 
 
 }

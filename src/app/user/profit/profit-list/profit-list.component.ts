@@ -55,9 +55,13 @@ export class ProfitListComponent implements OnInit {
         (listData: { lists: Investment[]; listCount: number }) => {
           this.lists = listData.lists;
           this.totalLists = listData.listCount;
-          this.lists.forEach(elem => {
-            this.totalAmount = this.totalAmount + parseInt(elem.amount);
-          });
+          // this.lists.forEach(elem => {
+          //   this.totalAmount = this.totalAmount + parseInt(elem.amount);
+          // });
+          this.totalAmount = this.lists.reduce(
+            (total, elem) => total + (Number(elem.amount) || 0),
+            0
+          );
           this.isLoading = false;
           this.isLoadingPage = false;
 

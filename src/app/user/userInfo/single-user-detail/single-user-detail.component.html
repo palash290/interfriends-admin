@@ -7,7 +7,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <section class="content-header single-user-header">
+      <section class="content-header single-user-header align-items-start">
         <div class="single-user-header__title">
           <h1 *ngIf="groupName == ''">
             User Detail
@@ -19,11 +19,16 @@
             Member profile overview
           </p>
         </div>
-        <div class="trust-score-card" aria-label="Trust score summary">
-          <span class="trust-score-card__label">Trust Score</span>
-          <span class="trust-score-card__value" [ngClass]="trustScoreClass">{{total_credit_score}}</span>
-          <span class="trust-score-card__band" [ngClass]="trustScoreClass">{{trustScoreBand}}</span>
-          <!-- <span class="trust-score-card__meta">{{trustScoreRange}}</span> -->
+        <div class="d-flex align-items-start" style="gap: 20px;">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#emailModal"
+            ngbTooltip="send email to user"><i class="fa-regular fa-envelope mr-1"></i> Send Mail</button>
+          <div class="trust-score-card" aria-label="Trust score summary">
+            <span class="trust-score-card__label">Trust Score</span>
+            <span class="trust-score-card__value" [ngClass]="trustScoreClass">{{total_credit_score}}
+              <span style="font-size: 16px;"> {{trustScoreBand}}</span></span>
+            <!-- <span class="trust-score-card__band" [ngClass]="trustScoreClass">{{trustScoreBand}}</span> -->
+            <!-- <span class="trust-score-card__meta">{{trustScoreRange}}</span> -->
+          </div>
         </div>
       </section>
 
@@ -42,7 +47,7 @@
                     <div class="col-md-4 col-sm-12">
                       <div class="text-center">
                         <img class="profile-user-img img-responsive img-circle" [src]="user.profile_image_thumb"
-                          alt="User profile picture">
+                          alt="User profile picture" style="width: 100px; height: 100px;">
                       </div>
                       <h3 class="profile-username text-center mb-1 mt-2">{{user.first_name}} {{user.last_name}}</h3>
                       <p class="text-muted text-center mb-0">{{user.email}}</p>
@@ -87,7 +92,7 @@
                             <i class="fa fa-shield" aria-hidden="true"></i>
                           </a>
                         </div>
-                        <div class=" greenColor2">
+                        <div class="greenColor2 mt-1">
                           <a class="btn btn-primary margin" ngbTooltip="Miscellaneous"
                             [routerLink]="['/user/miscellaneousList', groupId, user.user_id]">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -101,7 +106,7 @@
                             <i class="fa fa-university" aria-hidden="true"></i>
                           </a>
                         </div>
-                        <div class=" greenColor3 ">
+                        <div class="col_withd greenColor2 mt-1 mr-1">
                           <a class="btn btn-light margin" ngbTooltip="Investment"
                             [routerLink]="['/user/investmentList', groupId, user.user_id]">
                             <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -111,7 +116,7 @@
                             <i class="fa fa-floppy-o" aria-hidden="true"></i>
                           </a>
                         </div>
-                        <div class=" col_withd redColor">
+                        <div class=" col_withd redColor mt-1">
                           <a class="btn btn-success margin" ngbTooltip="Help to Buy a Car"
                             [routerLink]="['/user/helpToBuyCar', groupId, user.user_id]">
                             <i class="fa fa-car" aria-hidden="true"></i>
@@ -211,3 +216,63 @@
   </div>
 </div>
 <!-- ./wrapper -->
+
+
+
+
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':displayEmail}">
+  <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
+
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="max-width: 800px !important; width: 100% !important;">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-12">
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['subject']?.invalid && mailForm['subject']?.touched}">
+              <label>Subject</label>
+              <input type="text" class="form-control" placeholder="Enter subject" name="subject" ngModel required />
+
+              <span class="help-block"
+                *ngIf="mailForm.controls['subject']?.invalid && mailForm.controls['subject']?.touched">
+                <div *ngIf="mailForm.controls['subject'].errors?.required">Name is required.</div>
+              </span>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+              <label>Message</label>
+              <ckeditor #editor [(ngModel)]="mailBody" id="body" name="body" [config]="{ extraPlugins: 'divarea' }"
+                required>
+              </ckeditor>
+
+              <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button class="btn btn-primary" type="submit">Send email</button> -->
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span>Send email</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
+            #closeBlock2>Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

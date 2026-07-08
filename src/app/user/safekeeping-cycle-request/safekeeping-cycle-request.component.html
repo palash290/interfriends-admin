@@ -115,9 +115,22 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Reject This Request</div>
+      <div class="modal-body">
+        <p>Do You Realy Want To Reject This Request</p>
+        <form [formGroup]="rejectForm">
+          <div class="form-group">
+            <label for="rejectReason">Reason</label>
+            <textarea id="rejectReason" class="form-control" rows="4" formControlName="reason"
+              placeholder="Enter rejection reason"></textarea>
+            <small class="text-danger" *ngIf="rejectForm.get('reason')?.touched && rejectForm.get('reason')?.invalid">
+              Reason is required.
+            </small>
+          </div>
+        </form>
+      </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" (click)="onReject()">Reject</button>
+        <button class="btn btn-primary" (click)="onReject()"
+          [disabled]="rejectForm?.invalid || isLoading">Reject</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>
         <button hidden type="button" class="btn btn-secondary" #closeModal1 data-dismiss="modal">Close</button>
       </div>

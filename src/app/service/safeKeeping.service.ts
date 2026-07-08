@@ -87,12 +87,16 @@ export class SafeKeepingService {
     payout_id: string,
     request_status: string,
     group_id: any,
-    user_id: string
+    user_id: string,
+    reason: string = ''
   ): any {
 
     const instituteData = new FormData();
     instituteData.append('payout_id', payout_id);
     instituteData.append('request_status', request_status);
+    if (reason) {
+      instituteData.append('reason', reason);
+    }
     instituteData.append('grour_id', group_id);
     instituteData.append('admin_id', '1');
     instituteData.append('user_id', user_id);
@@ -104,16 +108,18 @@ export class SafeKeepingService {
     );
   }
 
-  acceptRejectSafekeepingRequest(
+  rejectSafekeepingRequest(
     payout_id: string,
     request_status: string,
     group_id: any,
-    user_id: string
+    user_id: string,
+    reason: string
   ): any {
 
     const instituteData = new FormData();
     instituteData.append('safekeeping_id', payout_id);
     instituteData.append('request_status', request_status);
+    instituteData.append('reason', reason);
     // instituteData.append('grour_id', group_id);
     instituteData.append('admin_id', '1');
     // instituteData.append('user_id', user_id);
@@ -125,7 +131,29 @@ export class SafeKeepingService {
     );
   }
 
-    removeSafekeepingRequest(
+  acceptSafekeepingRequest(
+    payout_id: string,
+    request_status: string,
+    group_id: any,
+    user_id: string
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('safekeeping_id', payout_id);
+    instituteData.append('request_status', request_status);
+    // instituteData.append('reason', reason);
+    // instituteData.append('grour_id', group_id);
+    instituteData.append('admin_id', '1');
+    // instituteData.append('user_id', user_id);
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/acceptRejectSafekeepingRequest', instituteData
+    );
+  }
+
+  removeSafekeepingRequest(
     payout_id: string,
   ): any {
 

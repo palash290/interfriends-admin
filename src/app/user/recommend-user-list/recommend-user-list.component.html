@@ -82,11 +82,15 @@
                           ngbTooltip="View" (click)="onview(list.id, i); getTracking(list.id)">
                           <i class="fa fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#myModal"
+                        <button *ngIf="list?.signup_form == '1'" type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#myModal"
                           ngbTooltip="Accept / Reject"
-                          (click)="onUpdateUserStatus(list.id, i, list.recommended_user_id, list.admin_status)">
+                          (click)="onUpdateUserStatus(list.id, i, list.recommended_user_id, list.admin_status); onview1(list.id, i)">
                           <i class="fa fa-eject" aria-hidden="true"></i>
                         </button>
+
+                        <!-- <button type="button" class="btn btn-secondary ml-2" data-toggle="modal"
+                          data-target="#emailModal" (click)="onUpdateEmail(recommendUser.id)">Re-Submit</button> -->
+
                       </td>
                     </tr>
                   </tbody>
@@ -203,8 +207,8 @@
                       class="btn btn-warning btn-xs" (click)="sendReminder(listDetail.id)">
                       Send Reminder
                     </button> -->
-                    <button *ngIf="step.status?.toLowerCase() === 'pending'" type="button" (click)="sendReminder(step.id)"
-                      class="btn btn-primary" [disabled]="isLoadingReminder">
+                    <button *ngIf="step.status?.toLowerCase() === 'pending'" type="button"
+                      (click)="sendReminder(step.id)" class="btn btn-primary" [disabled]="isLoadingReminder">
                       <span *ngIf="!isLoadingReminder">
                         <span>Send Reminder</span>
                       </span>
@@ -404,6 +408,8 @@
         <button *ngIf="btn_status == 0" type="button" class="btn btn-danger ml-2" id="rejectBtn"
           (click)="userAccptReject('reject')">Reject</button>
 
+        <button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-dismiss="modal"
+          data-target="#emailModal" (click)="onUpdateEmail(recommendUser.user_id)">Re-Submit</button>
       </div>
 
       <!-- Modal Footer -->
@@ -419,4 +425,51 @@
       <img [src]="userImg1  ? userImg1 : 'assets/img/np_pro.png'" alt="img">
     </div>
   </div>
+</div>
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':displayEmail}">
+  <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
+
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="max-width: 800px !important; width: 100% !important;">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="col-md-12">
+         
+            <div class="form-group"
+              [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
+              <label>message</label>
+              <ckeditor #editor [(ngModel)]="mailBody" id="body" name="body" [config]="{ extraPlugins: 'divarea' }"
+                required>
+              </ckeditor>
+
+              <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
+                Please enter a Description.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button class="btn btn-primary" type="submit">Send email</button> -->
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span>Send email</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
+            #closeBlock2>Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

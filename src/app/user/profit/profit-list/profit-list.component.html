@@ -28,7 +28,7 @@
                   <div class="box">
                      <div class="box-header">
                         <h3 class="box-title">Profit List</h3>
-                        <h3 class="box-title" style="float:right;">Total Amount : {{totalAmount}}</h3>
+                        <h3 class="box-title" style="float:right;">Total Amount : {{totalAmount | number:'1.0-0'}}</h3>
                      </div>
                      <!-- /.box-header -->
                      <div class="overlay" *ngIf="isLoadingPage && !isLoading">
@@ -54,7 +54,7 @@
                            <tbody>
                               <tr *ngFor="let list of lists; let i = index">
                                  <td>{{list.sno}}</td>
-                                 <td>{{list.amount| number:'1.0-0'}}</td>
+                                 <td>{{list.amount}}</td>
                                  <td>{{list.description}}</td>
                                  <td>
                                     <span class="badge badge-primary"
