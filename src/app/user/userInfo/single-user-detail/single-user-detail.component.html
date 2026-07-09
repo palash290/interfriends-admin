@@ -10,9 +10,11 @@
       <section class="content-header single-user-header align-items-start">
         <div class="single-user-header__title">
           <h1 *ngIf="groupName == ''">
+            <i class="fa-solid fa-angle-left" routerLink="/user/userList"></i>
             User Detail
           </h1>
           <h1 *ngIf="groupName != ''">
+            <i class="fa-solid fa-angle-left" routerLink="/user/userList"></i>
             {{groupName}}
           </h1>
           <p class="single-user-header__subtitle">

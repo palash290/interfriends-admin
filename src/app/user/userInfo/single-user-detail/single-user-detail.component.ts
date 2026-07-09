@@ -12,6 +12,7 @@ import { UserService } from 'src/app/service/user.service';
   styleUrls: ['./single-user-detail.component.css']
 })
 export class SingleUserDetailComponent implements OnInit {
+
   userId: string;
   groupId: string;
   user: UserList;
@@ -57,7 +58,7 @@ export class SingleUserDetailComponent implements OnInit {
         this.isLoading = false;
       });
       this.userService.userSpecDetails(this.userId, this.groupId).subscribe((response: any) => {
-        console.log(response, "dd")
+        // console.log(response, "dd")
         this.help2Buy = response.Help2buy.replace(',', '');
         this.saving = response.Saving.replace(',', '');
         this.savingJNR = response.SavingJNR.replace(',', '');
