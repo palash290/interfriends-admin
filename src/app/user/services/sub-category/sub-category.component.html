@@ -1,0 +1,171 @@
+<div class="hold-transition sidebar-mini"
+  [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+    <app-header></app-header>
+    <app-sidebar></app-sidebar>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <h1>
+          Sub Categories
+        </h1>
+        <span class="breadcrumb">
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
+            (click)="onOpenCreate()">
+            Add
+          </button>
+        </span>
+      </section>
+
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header d-flex align-items-center flex-wrap">
+                <div class="form-group mb-0 mr-2" style="min-width: 220px;">
+                  <select class="form-control" [(ngModel)]="filterCategoryId" (change)="onFilterChange()">
+                    <option value="">All Categories</option>
+                    <option *ngFor="let category of categories" [value]="category.id">
+                      {{ category.category_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group mb-0 mr-2" style="min-width: 180px;">
+                  <select class="form-control" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+                    <option value="">All Status</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                  </select>
+                </div>
+                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
+                  placeholder="Search.." [(ngModel)]="search" (keyup)="onSearchChange()">
+              </div>
+
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="subCategories.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Sub Category</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let subCategory of subCategories">
+                      <td>{{ subCategory.sno }}</td>
+                      <td>{{ subCategory.subcategory_name }}</td>
+                      <td>{{ getCategoryName(subCategory.category_id) || subCategory.category_name }}</td>
+                      <td>
+                        <span class="label label-success" *ngIf="subCategory.status === '1'">Active</span>
+                        <span class="label label-danger" *ngIf="subCategory.status === '0'">Inactive</span>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-primary margin" data-toggle="modal"
+                          data-target="#exampleModal" (click)="onEdit(subCategory)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <mat-paginator [length]="totalSubCategories" [pageSize]="subCategoriesPerPage"
+                (page)="onChangedPage($event)" *ngIf="subCategories.length > 0">
+              </mat-paginator>
+              <div class="box-body" *ngIf="subCategories.length <= 0 && !isLoading">
+                No sub categories found.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" *ngIf="mode === 'create'">Add Sub Category</h5>
+        <h5 class="modal-title" *ngIf="mode === 'update'">Update Sub Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup"
+          (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form role="form" [formGroup]="form" (submit)="onSave()">
+        <div class="box-body" *ngIf="isLoadingForm">
+          <mat-spinner class="mx-auto"></mat-spinner>
+        </div>
+        <div class="modal-body" *ngIf="!isLoadingForm">
+          <div class="box-body">
+            <div class="form-group"
+              [ngClass]="{'has-error': form.get('category_id').invalid  && form.get('category_id').touched}">
+              <label>Category</label>
+              <select class="form-control" formControlName="category_id">
+                <option value="">Select category</option>
+                <option *ngFor="let category of categories" [value]="category.id">
+                  {{ category.category_name }}
+                </option>
+              </select>
+              <span class="help-block"
+                *ngIf="form.get('category_id').invalid  && form.get('category_id').touched">
+                Please select a category.
+              </span>
+            </div>
+
+            <div class="form-group"
+              [ngClass]="{'has-error': form.get('subcategory_name').invalid  && form.get('subcategory_name').touched}">
+              <label>Sub Category Name</label>
+              <input type="text" class="form-control" placeholder="Enter sub category name"
+                formControlName="subcategory_name" />
+              <span class="help-block"
+                *ngIf="form.get('subcategory_name').invalid  && form.get('subcategory_name').touched">
+                Please enter a sub category name.
+              </span>
+            </div>
+
+            <div class="form-group"
+              [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}">
+              <label>Status</label>
+              <select class="form-control" formControlName="status">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+              </select>
+              <span class="help-block" *ngIf="form.get('status').invalid  && form.get('status').touched">
+                Please select a status.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="closeModal()">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoadingForm">
+            <span *ngIf="!isLoadingForm">
+              <span *ngIf="mode === 'create'">Add</span>
+              <span *ngIf="mode === 'update'">Update</span>
+            </span>
+            <span *ngIf="isLoadingForm">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

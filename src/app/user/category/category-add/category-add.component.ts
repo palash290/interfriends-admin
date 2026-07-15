@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, SimpleChange, OnChanges, Output, EventEmitter} from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { AuthService} from '../../../service/auth.service';
 import { CategoryService} from '../../../service/category.service';
 import { Category } from 'src/app/model/category.model';
@@ -19,24 +18,24 @@ export class CategoryAddComponent implements OnInit, OnChanges {
   mode = 'create';
   mainId: string;
   @Input() uniqueId: string;
+  @Input() categoryName: string;
+  @Input() categoryStatus: string;
   @Input() eachChange: string;
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
   category: Category;
-  imagePreview = 'assets/img/default-user-icon.jpg';
 
   constructor(
     public authService: AuthService,
     public categoryService: CategoryService,
-    private toastr: ToastrService,
-    private router: Router
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.mode = 'create';
     this.form = new FormGroup({
       category_name: new FormControl(null, { validators: [Validators.required] }),
-      image: new FormControl(null, {})
+      status: new FormControl('1', { validators: [Validators.required] })
     });
   }
 
@@ -44,29 +43,16 @@ export class CategoryAddComponent implements OnInit, OnChanges {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
-
           this.isLoadingUpdate = true;
           this.mode = 'update';
-          this.categoryService.categoryDetail(this.mainId)
-          .subscribe((response: any) => {
-            this.category =  response.categoryDetail;
-            this.form.patchValue({
-              category_name: this.category.category_name
-            });
-            this.isLoadingUpdate = false;
-            this.imagePreview = this.category.category_image_thumb;
+          this.mainId = changes['uniqueId']?.currentValue || this.mainId;
+          this.form.patchValue({
+            category_name: this.categoryName || '',
+            status: this.categoryStatus || '1'
           });
+          this.isLoadingUpdate = false;
       }
     }
-
-
 
     if (changes['add'] !== undefined) {
           if (changes['add'].currentValue !== undefined) {
@@ -77,15 +63,39 @@ export class CategoryAddComponent implements OnInit, OnChanges {
   }
 
 
-  onImagePicked(event: Event): any {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ image: file });
-    this.form.get('image').updateValueAndValidity();
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
+  private getCategoryCreator(): { createdBy: string; createdByType: string } {
+    const adminType = localStorage.getItem('admin_type_interFriendAdmin');
+    const userId = localStorage.getItem('userId_interFriendAdmin');
+
+    if (adminType == '1') {
+      return {
+        createdBy: userId || '',
+        createdByType: 'subadmin'
+      };
+    }
+
+    return {
+      createdBy: '1',
+      createdByType: 'admin'
     };
-    reader.readAsDataURL(file);
+  }
+
+
+  private getCategoryUpdater(): { updatedBy: string; updatedByType: string } {
+    const adminType = localStorage.getItem('admin_type_interFriendAdmin');
+    const userId = localStorage.getItem('userId_interFriendAdmin');
+
+    if (adminType === '1') {
+      return {
+        updatedBy: userId || '',
+        updatedByType: 'subadmin'
+      };
+    }
+
+    return {
+      updatedBy: '1',
+      updatedByType: 'admin'
+    };
   }
 
 
@@ -100,13 +110,15 @@ export class CategoryAddComponent implements OnInit, OnChanges {
         return;
       }
       this.isLoading = true;
+      const creator = this.getCategoryCreator();
 
-      this.categoryService.addCategory(
+      this.categoryService.addServiceCategory(
         this.form.value.category_name,
-        this.form.value.image,
+        creator.createdBy,
+        creator.createdByType
       ).subscribe((response: any) => {
         this.form.reset();
-        this.imagePreview = 'assets/img/default-user-icon.jpg';
+        this.form.patchValue({ status: '1' });
         document.getElementById('closePopup').click();
         this.isLoading = false;
 
@@ -123,13 +135,16 @@ export class CategoryAddComponent implements OnInit, OnChanges {
         return;
       }
       this.isLoading = true;
-      this.categoryService.editCategory(
-        this.category.category_id,
+      const updater = this.getCategoryUpdater();
+      this.categoryService.updateServiceCategory(
+        this.mainId,
         this.form.value.category_name,
-        this.form.value.image,
+        this.form.value.status,
+        updater.updatedBy,
+        updater.updatedByType
       ).subscribe((response: any) => {
         this.form.reset();
-        this.imagePreview = 'assets/img/default-user-icon.jpg';
+        this.form.patchValue({ status: '1' });
         document.getElementById('closePopup').click();
         this.isLoading = false;
         if (response.success === '1') {
@@ -145,7 +160,7 @@ export class CategoryAddComponent implements OnInit, OnChanges {
 
   onClose(): void {
     this.form.reset();
-    this.imagePreview = 'assets/img/default-user-icon.jpg';
+    this.form.patchValue({ status: '1' });
   }
 
 }

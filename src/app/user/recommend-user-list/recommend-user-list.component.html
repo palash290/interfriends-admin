@@ -97,8 +97,8 @@
                 </table>
               </div>
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
-                *ngIf="lists.length > 0"></mat-paginator>
-              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                *ngIf="lists?.length > 0"></mat-paginator>
+              <div class="box-body" *ngIf="lists?.length <= 0 && !isLoading">
                 You have'nt had any group yet!
               </div>
               <!-- /.box-body -->

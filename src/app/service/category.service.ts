@@ -8,14 +8,14 @@ import { Category } from '../model/category.model';
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class CategoryService {
 
   private categorys: Category[] = [];
-  private categorysUpdated = new Subject<{ categorys: Category[]; categoryCount: number;}>();
+  private categorysUpdated = new Subject<{ categorys: Category[]; categoryCount: number; }>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
 
   getCategorys(categorysPerPage: number, currentPage: number) {
@@ -30,15 +30,15 @@ export class CategoryService {
 
 
     this.http
-      .post<{ success: string; message: string; categoryList: any;  categoryCount: number;}>(
-        API_URL + '/category_all_list' , categoryData
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/serviceCategoryList', categoryData
       ).subscribe(responseData => {
-        this.categorys = responseData.categoryList;
+        this.categorys = responseData.lists;
 
 
         this.categorysUpdated.next({
           categorys: [...this.categorys],
-          categoryCount: responseData.categoryCount,
+          categoryCount: responseData.listCount,
         });
       });
   }
@@ -61,43 +61,117 @@ export class CategoryService {
       success: string;
       message: string;
     }>(
-        API_URL + '/addCategory', userData
-      );
+      API_URL + '/addCategory', userData
+    );
   }
 
 
-  editCategory(
+  addServiceCategory(
+    category_name: string,
+    created_by: string,
+    created_by_type: string,
+  ): any {
+    const userData = new FormData();
+    userData.append('category_name', category_name);
+    userData.append('created_by', created_by);
+    userData.append('created_by_type', created_by_type);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/addServiceCategory', userData
+    );
+  }
+
+
+  updateServiceCategory(
     category_id: string,
     category_name: string,
-    image: any,
+    status: string,
+    updated_by: string,
+    updated_by_type: string,
   ): any {
     const userData = new FormData();
     userData.append('category_id', category_id);
     userData.append('category_name', category_name);
-    userData.append('image', image);
+    userData.append('status', status);
+    userData.append('updated_by', updated_by);
+    userData.append('updated_by_type', updated_by_type);
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/editCategory', userData
-      );
+      API_URL + '/updateServiceCategory', userData
+    );
   }
 
 
-  categoryDetail(
-    category_id: string,
-  ): any {
-    const userData = new FormData();
-    userData.append('category_id', category_id);
+  getServiceCategoriesDropdown(): any {
+    const categoryData = new FormData();
 
-    return this.http.post<{
-      success: string;
-      message: string;
-      categoryDetail: any;
-    }>(
-        API_URL + '/category_detail', userData
-      );
+    return this.http.post<any>(
+      API_URL + '/serviceCategoryList', categoryData
+    );
+  }
+
+
+  getServiceSubCategories(
+    start: string,
+    category_id: string,
+    search: string,
+    status: string
+  ): any {
+    const subCategoryData = new FormData();
+    subCategoryData.append('start', start);
+    subCategoryData.append('category_id', category_id || '');
+    subCategoryData.append('search', search || '');
+    subCategoryData.append('status', status || '');
+
+    return this.http.post<any>(
+      API_URL + '/serviceSubCategoryList', subCategoryData
+    );
+  }
+
+
+  addServiceSubCategory(
+    category_id: string,
+    subcategory_name: string,
+    created_by: string,
+    created_by_type: string
+  ): any {
+    const subCategoryData = new FormData();
+    subCategoryData.append('category_id', category_id);
+    subCategoryData.append('subcategory_name', subcategory_name);
+    subCategoryData.append('created_by', created_by);
+    subCategoryData.append('created_by_type', created_by_type);
+
+    return this.http.post<any>(
+      API_URL + '/addServiceSubCategory', subCategoryData
+    );
+  }
+
+
+  updateServiceSubCategory(
+    subcategory_id: string,
+    category_id: string,
+    subcategory_name: string,
+    status: string,
+    updated_by: string,
+    updated_by_type: string
+  ): any {
+    const subCategoryData = new FormData();
+    subCategoryData.append('subcategory_id', subcategory_id);
+    subCategoryData.append('category_id', category_id);
+    subCategoryData.append('subcategory_name', subcategory_name);
+    subCategoryData.append('status', status);
+    subCategoryData.append('updated_by', updated_by);
+    subCategoryData.append('updated_by_type', updated_by_type);
+
+    return this.http.post<any>(
+      API_URL + '/updateServiceSubCategory', subCategoryData
+    );
   }
 
 
@@ -114,7 +188,7 @@ export class CategoryService {
       message: string;
       status: string
     }>(
-        API_URL + '/blockUnblockCategory', instituteData
-      );
+      API_URL + '/blockUnblockCategory', instituteData
+    );
   }
 }

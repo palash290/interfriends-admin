@@ -9,7 +9,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Categorys
+          Categories
         </h1>
         <span class="breadcrumb">
           <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
@@ -23,6 +23,25 @@
         <div class="row">
           <div class="col-md-12">
             <div class="box">
+               <div class="box-header d-flex align-items-center flex-wrap">
+                <!-- <div class="form-group mb-0 mr-2" style="min-width: 220px;">
+                  <select class="form-control" [(ngModel)]="filterCategoryId" (change)="onFilterChange()">
+                    <option value="">All Categories</option>
+                    <option *ngFor="let category of categories" [value]="category.id">
+                      {{ category.category_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group mb-0 mr-2" style="min-width: 180px;">
+                  <select class="form-control" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+                    <option value="">All Status</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                  </select>
+                </div> -->
+                <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
+                  placeholder="Search.." [(ngModel)]="search" (keyup)="onSearchChange()">
+              </div>
               <div class="box-header">
                 <h3 class="box-title">Category List</h3>
               </div>
@@ -39,7 +58,7 @@
                     <tr>
                       <th>#</th>
                       <th>Category Name</th>
-                      <th>Image</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -48,21 +67,22 @@
                       <td>{{category.sno}}</td>
                       <td>{{category.category_name}}</td>
                       <td>
-                        <img [src]="category.category_image_thumb" class="direct-chat-img">
+                        <span class="label label-success" *ngIf="category.status === '1'">Active</span>
+                        <span class="label label-danger" *ngIf="category.status === '0'">Inactive</span>
                       </td>
                       <td>
                         <button type="button" class="btn btn-primary margin" data-toggle="modal"
-                          data-target="#exampleModal" (click)="onUpdate(category.category_id)">
+                          data-target="#exampleModal" (click)="onUpdate(category)">
                           <i class="fa fa-edit"></i>
                         </button>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal"
+                        <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal"
                           (click)="onSetId(category.category_id)" *ngIf="category.status === '1'">
                           Block
                         </button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unblockModal"
-                          (click)="onSetId(category.category_id)" *ngIf="category.status === '2'">
+                          (click)="onSetId(category.category_id)" *ngIf="category.status === '0'">
                           UnBlock
-                        </button>
+                        </button> -->
                       </td>
                     </tr>
                   </tbody>
@@ -93,7 +113,7 @@
 
 <div class="modal fade" id="exampleModal">
   <div class="modal-dialog">
-    <app-category-add [uniqueId]="updateId" [eachChange]="eachChange" [add]="add"
+    <app-category-add [uniqueId]="updateId" [categoryName]="updateCategoryName" [categoryStatus]="updateCategoryStatus" [eachChange]="eachChange" [add]="add"
       (valueChange)="hidePopup($event)"></app-category-add>
     <!-- /.modal-content -->
   </div>
@@ -113,7 +133,7 @@
       </div>
       <div class="modal-body">Do You Realy Want To Block This Category</div>
       <div class="modal-footer">
-        <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
+        <button class="btn btn-primary" (click)="onBlockUnblock('0')">BLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
       </div>
     </div>

@@ -1,0 +1,485 @@
+<div class="hold-transition sidebar-mini"
+    [ngClass]="{'skin-blue': checkAdminType(),'skin-red-light': !checkAdminType()}">
+    <div class="wrapper">
+        <app-header></app-header>
+        <app-sidebar></app-sidebar>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    Services
+                </h1>
+                <span class="breadcrumb">
+                    <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
+                        (click)="onOpenCreate()">
+                        Add
+                    </button>
+                </span>
+            </section>
+
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header d-flex align-items-center flex-wrap">
+                                <div class="form-group mb-0 mr-2" style="min-width: 220px;">
+                                    <select class="form-control" [(ngModel)]="filterCategoryId"
+                                        (change)="onCategoryChange(filterCategoryId)">
+                                        <option value="">All Categories</option>
+                                        <option *ngFor="let category of categories" [value]="category.id">
+                                            {{ category.category_name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-0 mr-2" style="min-width: 220px;">
+                                    <select class="form-control" [(ngModel)]="filterSubCategoryId"
+                                        (change)="onSubCategoryChange(filterSubCategoryId)">
+                                        <option value="">All Sub Categories</option>
+                                        <option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                                            {{ subCategory.subcategory_name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-0 mr-2" style="min-width: 180px;">
+                                    <select class="form-control" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+                                        <option value="">All Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <input type="text" class="form-control w-25 rounded float-right ml-auto"
+                                    *ngIf="!isLoading" placeholder="Search.." [(ngModel)]="search"
+                                    (keyup)="onSearchChange()">
+                            </div>
+
+                            <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+
+                            <div class="box-body" *ngIf="isLoading">
+                                <mat-spinner class="mx-auto"></mat-spinner>
+                            </div>
+
+                            <div class="box-body" *ngIf="services.length > 0 && !isLoading">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Service Name</th>
+                                            <th>Category</th>
+                                            <th>Sub Category</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let service of services">
+                                            <td>{{ service.sno }}</td>
+                                            <td>{{ service.service_name }}</td>
+                                            <td>{{ getCategoryName(service.category_id) || service.category_name }}</td>
+                                            <td>{{ getSubCategoryName(service.subcategory_id) ||
+                                                service.subcategory_name }}</td>
+                                            <td>{{ service.description }}</td>
+                                            <td>
+                                                <span class="label label-success"
+                                                    *ngIf="service.status === '1'">Active</span>
+                                                <span class="label label-danger"
+                                                    *ngIf="service.status === '0'">Inactive</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary margin" data-toggle="modal"
+                                                    data-target="#exampleModal" (click)="onEdit(service)">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-success margin" data-toggle="modal"
+                                                    data-target="#assignModal" (click)="onOpenAssign(service)">
+                                                    <i class="fa fa-user-plus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger margin" data-toggle="modal"
+                                                    data-target="#viewServiceModal" (click)="viewService(service.id)">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <mat-paginator [length]="totalServices" [pageSize]="servicesPerPage"
+                                (page)="onChangedPage($event)" *ngIf="services.length > 0"></mat-paginator>
+
+                            <div class="box-body" *ngIf="services.length <= 0 && !isLoading">
+                                No services found.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <app-footer></app-footer>
+    </div>
+</div>
+
+<div class="modal fade" id="viewServiceModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Service Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeViewPopup"
+                    (click)="closeViewModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div *ngIf="isLoadingServiceDetail" class="text-center py-4">
+                    <mat-spinner class="mx-auto"></mat-spinner>
+                </div>
+
+                <div *ngIf="!isLoadingServiceDetail && serviceDetail">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Category:</strong> {{ serviceDetail.category_name || '-' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Sub Category:</strong> {{ serviceDetail.subcategory_name || '-' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Service Name:</strong> {{ serviceDetail.service_name || '-' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong>
+                                <span class="label label-success" *ngIf="serviceDetail.status === '1'">Active</span>
+                                <span class="label label-danger" *ngIf="serviceDetail.status === '0'">Inactive</span>
+                            </p>
+                        </div>
+                        <div class="col-md-12">
+                            <p><strong>Description:</strong> {{ serviceDetail.description || '-' }}</p>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <!-- <div class="col-md-6">
+                            <p><strong>Created By:</strong> {{ serviceDetail.created_by || '-' }}</p>
+                        </div> -->
+                        <div class="col-md-6">
+                            <p><strong>Created By Type:</strong> {{ serviceDetail.created_by_type || '-' }}</p>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <h5 class="mb-3">Assigned Users</h5>
+                    <div *ngIf="serviceDetail.assigned_users?.length > 0">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Price</th>
+                                        <th>Location</th>
+                                        <th>Action</th>
+                                        <!-- <th>Approval</th>
+                                        <th>Status</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let user of serviceDetail.assigned_users; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.mobile_number }}</td>
+                                        <td>{{ user.price }}</td>
+                                        <td>{{ user.location || '-' }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary"
+                                                [disabled]="isRemovingUser(user.id)"
+                                                (click)="removeAssignedUser(user)">
+                                                <span *ngIf="!isRemovingUser(user.id)">Remove</span>
+                                                <span *ngIf="isRemovingUser(user.id)">
+                                                    <i class="fa fa-refresh fa-spin"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                        <!-- <td>
+                                            <span class="label label-success" *ngIf="user.approval_status === '1'">Approved</span>
+                                            <span class="label label-warning" *ngIf="user.approval_status === '0'">Pending</span>
+                                            <span class="label label-danger" *ngIf="user.approval_status === '2'">Rejected</span>
+                                        </td>
+                                        <td>
+                                            <span class="label label-success" *ngIf="user.status === '1'">Active</span>
+                                            <span class="label label-danger" *ngIf="user.status === '0'">Inactive</span>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!serviceDetail.assigned_users?.length">
+                        No assigned users found.
+                    </div>
+                </div>
+
+                <div *ngIf="!isLoadingServiceDetail && !serviceDetail">
+                    No service details found.
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeViewModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="assignModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Service to Users</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeAssignPopup"
+                    (click)="closeAssignModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form" [formGroup]="assignForm" (submit)="onAssignSave()">
+                <div class="box-body" *ngIf="isLoadingForm">
+                    <mat-spinner class="mx-auto"></mat-spinner>
+                </div>
+
+                <div class="modal-body" *ngIf="!isLoadingForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group"
+                                [ngClass]="{'has-error': assignForm.get('provider_description').invalid && assignForm.get('provider_description').touched}">
+                                <label>Provider Description</label>
+                                <textarea class="form-control" rows="3" formControlName="provider_description"
+                                    placeholder="Enter provider description"></textarea>
+                                <span class="help-block"
+                                    *ngIf="assignForm.get('provider_description').invalid && assignForm.get('provider_description').touched">
+                                    Please enter a provider description.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"
+                                [ngClass]="{'has-error': assignForm.get('location').invalid && assignForm.get('location').touched}">
+                                <label>Location</label>
+                                <input type="text" class="form-control" formControlName="location"
+                                    placeholder="Enter location" />
+                                <span class="help-block"
+                                    *ngIf="assignForm.get('location').invalid && assignForm.get('location').touched">
+                                    Please enter a location.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"
+                                [ngClass]="{'has-error': assignForm.get('latitude').invalid && assignForm.get('latitude').touched}">
+                                <label>Latitude</label>
+                                <input type="text" class="form-control" formControlName="latitude"
+                                    placeholder="Enter latitude" />
+                                <span class="help-block"
+                                    *ngIf="assignForm.get('latitude').invalid && assignForm.get('latitude').touched">
+                                    Please enter latitude.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"
+                                [ngClass]="{'has-error': assignForm.get('longitude').invalid && assignForm.get('longitude').touched}">
+                                <label>Longitude</label>
+                                <input type="text" class="form-control" formControlName="longitude"
+                                    placeholder="Enter longitude" />
+                                <span class="help-block"
+                                    *ngIf="assignForm.get('longitude').invalid && assignForm.get('longitude').touched">
+                                    Please enter longitude.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex align-items-center flex-wrap mb-2">
+                        <div class="box-title mb-0 mr-3">Users</div>
+                        <input type="text" class="form-control" style="max-width: 280px;" placeholder="Search users.."
+                            [(ngModel)]="assignSearch" [ngModelOptions]="{standalone: true}"
+                            (keyup)="onAssignSearchChange()" />
+                    </div>
+
+                    <div *ngIf="isLoadingAssignUsers" class="text-center py-4">
+                        <mat-spinner class="mx-auto"></mat-spinner>
+                    </div>
+
+                    <div *ngIf="!isLoadingAssignUsers && assignUsers.length > 0"
+                        style="max-height: 320px; overflow: auto;">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;">Select</th>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th style="width: 160px;">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of assignUsers">
+                                    <td>
+                                        <input type="checkbox" [checked]="user.selected"
+                                            (change)="onAssignUserToggle(user.user_id, $event.target.checked)" />
+                                    </td>
+                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        <input type="number" class="form-control" [disabled]="!user.selected"
+                                            [value]="user.price"
+                                            (input)="onAssignUserPriceChange(user.user_id, $event.target.value)"
+                                            placeholder="Enter price" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="!isLoadingAssignUsers && assignUsers.length <= 0">
+                        No users found.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal"
+                        (click)="closeAssignModal()">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="isLoadingForm">
+                        <span *ngIf="!isLoadingForm">Assign</span>
+                        <span *ngIf="isLoadingForm">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="mode === 'create'">Add Service</h5>
+                <h5 class="modal-title" *ngIf="mode === 'update'">Update Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopup"
+                    (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form role="form" [formGroup]="form" (submit)="onSave()">
+                <div class="box-body" *ngIf="isLoadingForm">
+                    <mat-spinner class="mx-auto"></mat-spinner>
+                </div>
+
+                <div class="modal-body" *ngIf="!isLoadingForm">
+                    <div class="box-body">
+                        <div class="form-group"
+                            [ngClass]="{'has-error': form.get('category_id').invalid  && form.get('category_id').touched}">
+                            <label>Category</label>
+                            <select class="form-control" formControlName="category_id"
+                                (change)="onCategoryFormChange($event.target.value)">
+                                <option value="">Select category</option>
+                                <option *ngFor="let category of categories" [value]="category.id">
+                                    {{ category.category_name }}
+                                </option>
+                            </select>
+                            <span class="help-block"
+                                *ngIf="form.get('category_id').invalid  && form.get('category_id').touched">
+                                Please select a category.
+                            </span>
+                        </div>
+
+                        <div class="form-group"
+                            [ngClass]="{'has-error': form.get('subcategory_id').invalid  && form.get('subcategory_id').touched}">
+                            <label>Sub Category</label>
+                            <select class="form-control" formControlName="subcategory_id">
+                                <option value="">Select sub category</option>
+                                <option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                                    {{ subCategory.subcategory_name }}
+                                </option>
+                            </select>
+                            <span class="help-block"
+                                *ngIf="form.get('subcategory_id').invalid  && form.get('subcategory_id').touched">
+                                Please select a sub category.
+                            </span>
+                        </div>
+
+                        <div class="form-group"
+                            [ngClass]="{'has-error': form.get('service_name').invalid  && form.get('service_name').touched}">
+                            <label>Service Name</label>
+                            <input type="text" class="form-control" placeholder="Enter service name"
+                                formControlName="service_name" />
+                            <span class="help-block"
+                                *ngIf="form.get('service_name').invalid  && form.get('service_name').touched">
+                                Please enter a service name.
+                            </span>
+                        </div>
+
+                        <div class="form-group"
+                            [ngClass]="{'has-error': form.get('description').invalid  && form.get('description').touched}">
+                            <label>Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter description"
+                                formControlName="description"></textarea>
+                            <span class="help-block"
+                                *ngIf="form.get('description').invalid  && form.get('description').touched">
+                                Please enter a description.
+                            </span>
+                        </div>
+
+                        <div class="form-group"
+                            [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}">
+                            <label>Status</label>
+                            <select class="form-control" formControlName="status">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                            <span class="help-block" *ngIf="form.get('status').invalid  && form.get('status').touched">
+                                Please select a status.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal"
+                        (click)="closeModal()">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="isLoadingForm">
+                        <span *ngIf="!isLoadingForm">
+                            <span *ngIf="mode === 'create'">Add</span>
+                            <span *ngIf="mode === 'update'">Update</span>
+                        </span>
+                        <span *ngIf="isLoadingForm">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

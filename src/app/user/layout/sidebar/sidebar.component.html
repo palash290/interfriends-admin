@@ -30,7 +30,7 @@
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/userList">
-          <i class="fa fa-users fa-th-list"></i> <span>All members</span>
+          <i class="fa fa-users"></i> <span>All members</span>
         </a>
       </li>
 
@@ -42,85 +42,111 @@
 
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/blockUser">
-          <i class="fa fa-users fa-th-list"></i> <span>Blocked members</span>
+          <i class="fa fa-user-times"></i> <span>Blocked members</span>
         </a>
       </li>
 
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/defaultUser">
-          <i class="fa fa-users fa-th-list"></i> <span>Defaulted members</span>
+          <i class="fa fa-exclamation-triangle"></i> <span>Defaulted members</span>
         </a>
       </li>
 
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/subadminList">
-          <i class="fa fa-users fa-th-list"></i> <span>Sub Admin</span>
+          <i class="fa fa-user-secret"></i> <span>Sub Admin</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/groupList">
-          <i class="fa fa-fw fa-th-list"></i> <span>Groups</span>
+          <i class="fa fa-fw fa-sitemap"></i> <span>Groups</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/addbanner-messages">
-          <i class="fa fa-fw fa-th-list"></i> <span>Banners and Messages</span>
+          <i class="fa fa-fw fa-bullhorn"></i> <span>Banners and Messages</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/user-credit-score">
-          <i class="fa fa-fw fa-th-list"></i> <span>Member Trust Scores</span>
+          <i class="fa fa-fw fa-bar-chart"></i> <span>Member Trust Scores</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/recommendUserList">
-          <i class="fa fa-fw fa-th-list"></i> <span>Recommended members</span>
+          <i class="fa fa-fw fa-thumbs-up"></i> <span>Recommended members</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/safeKeepingWithdral">
-          <i class="fa fa-fw fa-th-list"></i> <span>Safe Keeping Request</span>
+          <i class="fa fa-fw fa-shield"></i> <span>Safe Keeping Request</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/payout-request">
-          <i class="fa fa-fw fa-th-list"></i> <span>Payout Request</span>
+          <i class="fa fa-fw fa-money"></i> <span>Payout Request</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/safekeeping-cycle-request">
-          <i class="fa fa-fw fa-th-list"></i> <span>Safe Keeping Cycle Request</span>
+          <i class="fa fa-fw fa-refresh"></i> <span>Safe Keeping Cycle Request</span>
         </a>
+      </li>
+
+      <li class="treeview" [class.menu-open]="serviceManagementOpen">
+        <a href="#" (click)="toggleServiceManagement($event)">
+          <i class="fa fa-fw fa-cogs"></i> <span>Service management</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" [style.display]="serviceManagementOpen ? 'block' : 'none'">
+          <li routerLinkActive="active">
+            <a routerLink="/user/services">
+              <i class="fa fa-circle-o"></i> <span>Services</span>
+            </a>
+          </li>
+          <li routerLinkActive="active">
+            <a routerLink="/user/categoryList">
+              <i class="fa fa-circle-o"></i> <span>Category</span>
+            </a>
+          </li>
+          <li routerLinkActive="active">
+            <a routerLink="/user/sub-category">
+              <i class="fa fa-circle-o"></i> <span>Sub-Category</span>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/adminNotifications">
-          <i class="fa fa-fw fa-th-list"></i> <span>Notifications</span>
+          <i class="fa fa-fw fa-bell"></i> <span>Notifications</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/download-data">
-          <i class="fa fa-fw fa-th-list"></i> <span>Download</span>
+          <i class="fa fa-fw fa-download"></i> <span>Download</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/investmentRequest">
-          <i class="fa fa-fw fa-th-list"></i> <span>Investment Proposal</span>
+          <i class="fa fa-fw fa-line-chart"></i> <span>Investment Proposal</span>
         </a>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/propertyList">
-          <i class="fa fa-fw fa-th-list"></i> <span>Available investments</span>
+          <i class="fa fa-fw fa-briefcase"></i> <span>Available investments</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/outstanding-payments">
-          <i class="fa fa-fw fa-shield"></i> <span>Outstanding Payments</span>
+          <i class="fa fa-fw fa-exclamation-circle"></i> <span>Outstanding Payments</span>
         </a>
       </li>
 
@@ -137,29 +163,29 @@
       </li>
       <li routerLinkActive="active">
         <a routerLink="/user/termCondition">
-          <i class="fa fa-fw fa-file"></i> <span>Terms & Condition</span>
+          <i class="fa fa-fw fa-file-text-o"></i> <span>Terms & Condition</span>
         </a>
       </li>
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/PfPercentList">
-          <i class="fa fa-fw fa-file"></i> <span>PF Percent</span>
+          <i class="fa fa-fw fa-calculator"></i> <span>PF Percent</span>
         </a>
       </li>
       <li routerLinkActive="active" *ngIf="adminType === '2'">
         <a routerLink="/user/loanPercentList">
-          <i class="fa fa-fw fa-file"></i> <span>Loan Percent</span>
+          <i class="fa fa-fw fa-calculator"></i> <span>Loan Percent</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/contact-management">
-          <i class="fa fa-fw fa-file"></i> <span>Contact Management</span>
+          <i class="fa fa-fw fa-address-book"></i> <span>Contact Management</span>
         </a>
       </li>
 
       <li routerLinkActive="active">
         <a routerLink="/user/intrested-users">
-          <i class="fa fa-fw fa-file"></i> <span>All Interested Members</span>
+          <i class="fa fa-fw fa-heart"></i> <span>All Interested Members</span>
         </a>
       </li>
 

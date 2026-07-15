@@ -121,6 +121,8 @@ import { WaitingListComponent } from './waiting-list/waiting-list.component';
 import { DownloadDataComponent } from './download-data/download-data.component';
 import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/safekeeping-cycle-request.component';
 import { DynamicCurrencyPipe } from '../pipe/dynamic-currency.pipe';
+import { ServicesComponent } from './services/services.component';
+import { SubCategoryComponent } from './services/sub-category/sub-category.component';
 
 @NgModule({
   imports: [
@@ -139,7 +141,7 @@ import { DynamicCurrencyPipe } from '../pipe/dynamic-currency.pipe';
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBz_5wUAu5_IYnw4RnwiK50qT1GUQiy1DE',
+      apiKey: 'AIzaSyC8X41J3doX7L5Xlb6MdlH5X50DrqdijY4',
       libraries: ['places', 'geometry']
     }),
     AgmDirectionModule
@@ -242,7 +244,9 @@ import { DynamicCurrencyPipe } from '../pipe/dynamic-currency.pipe';
     PayoutRequestComponent,
     WaitingListComponent,
     DownloadDataComponent,
-    SafekeepingCycleRequestComponent
+    SafekeepingCycleRequestComponent,
+    ServicesComponent,
+    SubCategoryComponent
   ],
   providers: [
     CurrencyPipe

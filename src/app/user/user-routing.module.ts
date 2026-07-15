@@ -71,6 +71,8 @@ import { PayoutRequestComponent } from './payout-request/payout-request.componen
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
 import { DownloadDataComponent } from './download-data/download-data.component';
 import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/safekeeping-cycle-request.component';
+import { ServicesComponent } from './services/services.component';
+import { SubCategoryComponent } from './services/sub-category/sub-category.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -442,6 +444,18 @@ const routes: Routes = [
          {
             path: 'safekeeping-cycle-request',
             component: SafekeepingCycleRequestComponent,
+            canActivate: [AuthUserGuard]
+         },
+
+         {
+            path: 'services',
+            component: ServicesComponent,
+            canActivate: [AuthUserGuard]
+         },
+
+         {
+            path: 'sub-category',
+            component: SubCategoryComponent,
             canActivate: [AuthUserGuard]
          },
       ]

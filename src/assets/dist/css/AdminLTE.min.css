@@ -637,7 +637,8 @@ a:focus {
 .sidebar-menu>li>a>.fa,
 .sidebar-menu>li>a>.glyphicon,
 .sidebar-menu>li>a>.ion {
-    width: 20px
+    /* width: 26px */
+    margin-right: 10px;
 }
 
 .sidebar-menu>li .label,
