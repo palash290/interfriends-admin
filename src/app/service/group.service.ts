@@ -130,4 +130,58 @@ export class GroupService {
       API_URL + '/blockUnblockGroup', userData
     );
   }
+
+  blockUnblockServices(
+    id: string,
+    status: string
+  ): any {
+    const userData = new FormData();
+    userData.append('service_id', id);
+    userData.append('status', status);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + '/updateServiceStatus', userData
+    );
+  }
+
+
+  blockUnblockSubCatServices(
+    id: string,
+    status: string
+  ): any {
+    const userData = new FormData();
+    userData.append('subcategory_id', id);
+    userData.append('status', status);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + '/updateServiceSubCategoryStatus', userData
+    );
+  }
+
+  blockUnblockBanners(
+    id: string,
+    status: string
+  ): any {
+    const userData = new FormData();
+    userData.append('banner_id', id);
+    userData.append('status', status);
+
+    return this.http.post<{
+      success: string;
+      message: string;
+      status: string
+    }>(
+      API_URL + '/updateBannerStatus', userData
+    );
+  }
+
+
 }

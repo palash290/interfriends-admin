@@ -138,13 +138,24 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   onBlockUnblock(status: string): void {
     this.categoryService.blockUnblock(this.selectCategoryId, status).subscribe((response: any) => {
-      if (response.status === '1') {
+      // if (response.status == '1') {
+      //   document.getElementById('closeUnblock').click();
+      // } else {
+      //   document.getElementById('closeBlock').click();
+      // }
+      // this.loadCategories();
+      // this.toastr.success(response.message);
+        if (response.success == '1') {
+
         document.getElementById('closeUnblock').click();
-      } else {
+
         document.getElementById('closeBlock').click();
+
+        this.loadCategories();
+        this.toastr.success(response.message);
+      } else {
+        this.toastr.warning(response.message);
       }
-      this.loadCategories();
-      this.toastr.success(response.message);
     });
   }
   // block and unblock code end

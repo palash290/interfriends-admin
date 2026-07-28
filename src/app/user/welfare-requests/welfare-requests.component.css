@@ -1,0 +1,22 @@
+.detail-card {
+  padding: 0.9rem 1rem;
+  border: 1px solid #e6ebf2;
+  border-radius: 0.85rem;
+  background: #fafcff;
+}
+
+.detail-card label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.detail-card p {
+  margin: 0;
+  color: #111827;
+  word-break: break-word;
+}

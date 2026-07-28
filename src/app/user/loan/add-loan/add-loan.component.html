@@ -33,9 +33,12 @@
         </div>
         <div class="form-group" [ngClass]="{'has-error': form.get('tenure').invalid  && form.get('tenure').touched}">
           <label>Loan term</label>
-          <select class="form-control" formControlName="tenure">
+          <select class="form-control" formControlName="tenure" disabled='true'>
             <option value='12'>12 Months</option>
             <option value='18'>18 Months</option>
+            <option value='24'>24 Months</option>
+            <option value='30'>30 Months</option>
+            <option value='36'>36 Months</option>
             <option value='40'>40 Months</option>
           </select>
           <span class="help-block" *ngIf="form.get('tenure').invalid  && form.get('tenure').touched">
@@ -53,6 +56,7 @@
             <option value='4'>Help me pay off credit card</option>
             <option value='5'>Help me pay something else</option>
             <option value='6'>Help me raise my house deposit</option>
+            <option value="7">Welfare</option>
           </select>
           <span class="help-block" *ngIf="form.get('loan_type').invalid  && form.get('loan_type').touched">
             Please enter a Loan Type.
@@ -70,7 +74,7 @@
         <div class="form-group" *ngIf="loan?.status == '1' || loan?.status == '5'">
           <label>Started At</label>
           <input type="date" class="form-control" placeholder="Enter Contact number" formControlName="started_at" />
-          <!-- <span class="help-block" *ngIf="form.get('created_at').invalid  && form.get('created_at').touched">
+          <!-- <span class="help-block" *ngIf="form.get('started_at').invalid  && form.get('started_at').touched">
             Please enter a created on.
           </span> -->
         </div>

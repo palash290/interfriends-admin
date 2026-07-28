@@ -73,6 +73,8 @@ import { DownloadDataComponent } from './download-data/download-data.component';
 import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/safekeeping-cycle-request.component';
 import { ServicesComponent } from './services/services.component';
 import { SubCategoryComponent } from './services/sub-category/sub-category.component';
+import { UserServiceRequestsComponent } from './services/user-service-requests/user-service-requests.component';
+import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -441,6 +443,11 @@ const routes: Routes = [
             component: PayoutRequestComponent,
             canActivate: [AuthUserGuard]
          },
+          {
+            path: 'welfare-requests',
+            component: WelfareRequestsComponent,
+            canActivate: [AuthUserGuard]
+         },
          {
             path: 'safekeeping-cycle-request',
             component: SafekeepingCycleRequestComponent,
@@ -456,6 +463,11 @@ const routes: Routes = [
          {
             path: 'sub-category',
             component: SubCategoryComponent,
+            canActivate: [AuthUserGuard]
+         },
+          {
+            path: 'user-services',
+            component: UserServiceRequestsComponent,
             canActivate: [AuthUserGuard]
          },
       ]

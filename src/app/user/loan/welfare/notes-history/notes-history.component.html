@@ -31,10 +31,10 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th>created_at</th>
-                      <th>note_title</th>
-                      <th>note_description</th>
-                      <th>status</th>
+                      <th>Created At</th>
+                      <th>Note Title</th>
+                      <th>Note Description</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -42,11 +42,17 @@
                       <td>{{list.created_at}}</td>
                       <td>{{list.note_title}}</td>
                       <td>{{list.note_description}}</td>
-                      <td>
+                      <!-- <td>
                         <span class="badge badge-secondary" *ngIf="list.status === '1'">Pending</span>
                         <span class="badge badge-success" *ngIf="list.status === '2'">Paid On Time</span>
                         <span class="badge badge-warning" *ngIf="list.status === '3'">Missed Payment Deadline</span>
                         <span class="badge badge-danger" *ngIf="list.status === '4'">Paid Late</span>
+                      </td> -->
+                      <td>
+                        <span class="badge badge-primary" *ngIf="list.status === '1'">Pending</span>
+                        <span class="badge badge-success" *ngIf="list.status === '2'">Done</span>
+                        <span class="badge badge-danger" *ngIf="list.status === '3'">Declined</span>
+                        <span class="badge badge-secondary" *ngIf="list.status === '4'">Accept</span>
                       </td>
                     </tr>
                   </tbody>

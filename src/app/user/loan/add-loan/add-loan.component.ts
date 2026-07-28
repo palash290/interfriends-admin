@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { LoanService} from '../../../service/loan.service';
+import { AuthService } from '../../../service/auth.service';
+import { LoanService } from '../../../service/loan.service';
 import { UserService } from 'src/app/service/user.service';
 import { Loan } from 'src/app/model/loan.model';
 import { AllLoan } from 'src/app/model/allLoan.model';
@@ -31,7 +31,7 @@ export class AddLoanComponent implements OnInit {
 
 
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
   loan: Loan;
   selectListStatusId: string;
 
@@ -52,12 +52,12 @@ export class AddLoanComponent implements OnInit {
       tenure: new FormControl(null, { validators: [Validators.required] }),
       contact_number: new FormControl(null, { validators: [Validators.required] }),
       loan_type: new FormControl("", { validators: [Validators.required] }),
-      note_title	: new FormControl(null, { validators: [Validators.required] }),
-      note_description	: new FormControl(null, { validators: [Validators.required] }),
-      status	: new FormControl(null, { validators: [Validators.required] }),
-      created_at : new FormControl(null, { validators: [Validators.required] }),
-      started_at : new FormControl(null),
-      ref_no : new FormControl(null, { validators: [Validators.required] })
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, { validators: [Validators.required] }),
+      status: new FormControl(null, { validators: [Validators.required] }),
+      created_at: new FormControl(null, { validators: [Validators.required] }),
+      started_at: new FormControl(null),
+      ref_no: new FormControl(null, { validators: [Validators.required] })
     });
 
 
@@ -70,21 +70,23 @@ export class AddLoanComponent implements OnInit {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.loanService.loanDetail(this.mainId)
-          .subscribe((response: any) => {
-            console.log(response.loanDetail, 'response.loanDetail');
-            this.loan =  response.loanDetail;
-            console.log(this.loan, 'this.loan');
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+
+        this.loanService.loanDetail(this.mainId).subscribe({
+          next: (response: any) => {
+            // console.log(response.loanDetail, 'response.loanDetail');
+
+            this.loan = response.loanDetail;
+
             this.form.patchValue({
               loan_amount: this.loan.loan_amount,
               tenure: this.loan.tenure,
@@ -94,17 +96,29 @@ export class AddLoanComponent implements OnInit {
               created_at: this.loan.created_at,
               started_at: this.loan.start_date
             });
+
             this.isLoadingUpdate = false;
-          });
+          },
+          error: (error: any) => {
+            this.isLoadingUpdate = false;
+
+            console.error('Loan Detail Error:', error);
+
+            // If you're using Toastr
+            this.toastr.error(
+              error?.error?.message || 'Unable to fetch loan details.'
+            );
+          }
+        });
       }
     }
 
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -114,37 +128,40 @@ export class AddLoanComponent implements OnInit {
 
     if (this.mode === 'create') {
 
-      // if (this.form.invalid) {
-      //   return;
-      // }
+      //     // if (this.form.invalid) {
+      //     //   return;
+      //     // }
 
-      // this.isLoading = true;
+      //     // this.isLoading = true;
 
-      // this.loanService.addLoanPayment(
-      //   this.userId,
-      //   this.groupId,
-      //   this.loanId,
-      //   this.form.value.amount,
-      //   this.form.value.note_title,
-      //   this.form.value.note_description
-      // ).subscribe((response: any) => {
-      //   this.form.reset();
-      //   document.getElementById('closePopup').click();
-      //   this.isLoading = false;
+      //     // this.loanService.addLoanPayment(
+      //     //   this.userId,
+      //     //   this.groupId,
+      //     //   this.loanId,
+      //     //   this.form.value.amount,
+      //     //   this.form.value.note_title,
+      //     //   this.form.value.note_description
+      //     // ).subscribe((response: any) => {
+      //     //   this.form.reset();
+      //     //   document.getElementById('closePopup').click();
+      //     //   this.isLoading = false;
 
 
-      //   if (response.success === '1') {
-      //     this.valueChange.emit('add');
-      //     this.toastr.success(response.message);
-      //   } else {
-      //     this.toastr.error(response.message);
-      //   }
-      // });
+      //     //   if (response.success === '1') {
+      //     //     this.valueChange.emit('add');
+      //     //     this.toastr.success(response.message);
+      //     //   } else {
+      //     //     this.toastr.error(response.message);
+      //     //   }
+      //     // });
+
     } else {
       if (this.form.invalid) {
         return;
       }
+
       this.isLoading = true;
+
       this.loanService.editLoan(
         this.loan.id,
         this.userId,
@@ -160,15 +177,27 @@ export class AddLoanComponent implements OnInit {
         this.form.value.ref_no,
         this.form.value.started_at,
         this.loan_emi
-      ).subscribe((response: any) => {
-        this.form.reset();
-        document.getElementById('closePopup').click();
-        this.isLoading = false;
-        if (response.success === '1') {
-          this.valueChange.emit('update');
-          this.toastr.success(response.message);
-        } else {
-          this.toastr.error(response.message);
+      ).subscribe({
+        next: (response: any) => {
+          this.isLoading = false;
+
+          if (response.success === '1') {
+            this.form.reset();
+            document.getElementById('closePopup')?.click();
+            this.valueChange.emit('update');
+            this.toastr.success(response.message);
+          } else {
+            this.toastr.error(response.message);
+          }
+        },
+        error: (error: any) => {
+          this.isLoading = false;
+
+          console.error('Edit Loan Error:', error);
+
+          this.toastr.error(
+            error?.error?.message || 'Something went wrong. Please try again.'
+          );
         }
       });
     }
@@ -189,7 +218,7 @@ export class AddLoanComponent implements OnInit {
   checkCycleStatus(id: string) {
     // console.log(this.selectListStatusId, 'this.selectListId111');
     // console.log(id, 'this.selectListId2222');
-    if(id === this.selectListStatusId) {
+    if (id === this.selectListStatusId) {
       return true;
     } else {
       return false;
@@ -198,7 +227,7 @@ export class AddLoanComponent implements OnInit {
 
 
   onSetStatusId(id: string): void {
-    if(this.selectListStatusId === id) {
+    if (this.selectListStatusId === id) {
       this.selectListStatusId = '';
     } else {
       this.selectListStatusId = id;

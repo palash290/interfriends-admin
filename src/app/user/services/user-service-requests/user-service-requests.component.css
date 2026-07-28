@@ -1,0 +1,128 @@
+.service-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: #f3f6fb;
+  color: #1f3b63;
+  text-decoration: none;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.service-view-btn:hover {
+  background: #1f3b63;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.detail-card {
+  padding: 0.9rem 1rem;
+  border: 1px solid #e6ebf2;
+  border-radius: 0.85rem;
+  background: #fafcff;
+}
+
+.detail-card label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.detail-card p {
+  margin: 0;
+  color: #111827;
+  word-break: break-word;
+}
+
+.company-summary-card {
+  gap: 0.9rem;
+}
+
+.company-summary-card__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 0.9rem;
+  object-fit: cover;
+  background: #fff;
+  border: 1px solid #e6ebf2;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .service-view-btn {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .company-summary-card {
+    align-items: flex-start;
+  }
+
+  .company-summary-card__logo {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+
+
+.service-image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+}
+
+.service-image-card {
+  position: relative;
+  border: 1px solid #e6ebf2;
+  border-radius: 0.9rem;
+  background: #fff;
+  padding: 0.55rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.service-image-card__img {
+  display: block;
+  width: 100%;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 0.65rem;
+  background: #f3f6fb;
+}
+
+.service-image-card__name {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  color: #334155;
+  word-break: break-word;
+}
+
+.service-image-card__remove {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.88);
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.service-image-card__remove:hover {
+  background: #ef4444;
+}

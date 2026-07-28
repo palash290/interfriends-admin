@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { GroupService } from 'src/app/service/group.service';
 import { UserList } from 'src/app/model/userList.model';
+import { AuthService } from 'src/app/service/auth.service';
 
 interface ServiceCategoryOption {
   id: string;
@@ -28,13 +29,12 @@ interface ServiceRow {
   subcategory_name?: string;
   provider_description?: string;
   location?: string;
-  latitude?: string;
-  longitude?: string;
+  // latitude?: string;
+  // longitude?: string;
 }
 
 interface AssignUserOption extends UserList {
   selected: boolean;
-  price: string;
 }
 
 interface ServiceAssignedUser {
@@ -44,11 +44,10 @@ interface ServiceAssignedUser {
   last_name: string;
   email: string;
   mobile_number: string;
-  price: string;
   description: string;
   location: string;
-  latitude: string;
-  longitude: string;
+  // latitude: string;
+  // longitude: string;
   approval_status: string;
   status: string;
 }
@@ -81,6 +80,7 @@ export class ServicesComponent implements OnInit {
   selectedAssignServiceId = '';
   assignUsers: AssignUserOption[] = [];
   assignSearch = '';
+  adminType: string;
   serviceDetail: {
     id?: string;
     category_id?: string;
@@ -95,7 +95,6 @@ export class ServicesComponent implements OnInit {
     assigned_users?: ServiceAssignedUser[];
   } | null = null;
   isLoadingServiceDetail = false;
-  removingUserServiceId = '';
 
   search = '';
   filterCategoryId = '';
@@ -105,9 +104,11 @@ export class ServicesComponent implements OnInit {
   constructor(
     public groupService: GroupService,
     private toastr: ToastrService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {
+    this.adminType = this.authService.getAdminType();
     this.initForm();
     this.initAssignForm();
     this.loadCategories();
@@ -128,8 +129,8 @@ export class ServicesComponent implements OnInit {
     this.assignForm = new FormGroup({
       provider_description: new FormControl('', { validators: [Validators.required] }),
       location: new FormControl('', { validators: [Validators.required] }),
-      latitude: new FormControl('', { validators: [Validators.required] }),
-      longitude: new FormControl('', { validators: [Validators.required] })
+      // latitude: new FormControl('', { validators: [Validators.required] }),
+      // longitude: new FormControl('', { validators: [Validators.required] })
     });
   }
 
@@ -171,7 +172,12 @@ export class ServicesComponent implements OnInit {
     const categoryData = new FormData();
 
     this.groupService.postAPI('/serviceCategoryList', categoryData).subscribe((response: any) => {
-      this.categories = response?.lists || response?.categoryList || [];
+      // this.categories = response?.lists || response?.categoryList || [];
+
+      const serviceArray = response?.lists || response?.categoryList || [];
+
+      // Remove services with status == 0
+      this.categories = serviceArray.filter((service: any) => service.status != 0);
     });
   }
 
@@ -193,7 +199,11 @@ export class ServicesComponent implements OnInit {
     }
 
     this.groupService.postAPI('/serviceSubCategoryList', subCategoryData).subscribe((response: any) => {
-      const loadedSubCategories = response?.lists || response?.subCategoryList || response?.subCategoryLists || [];
+      // const loadedSubCategories = response?.lists || response?.subCategoryList || response?.subCategoryLists || [];
+
+      const loadedSubCategories = (
+        response?.lists || []
+      ).filter((subCategory: any) => subCategory.status != 0);
 
       if (
         selectedSubCategory?.subcategory_id &&
@@ -309,8 +319,8 @@ export class ServicesComponent implements OnInit {
     this.assignForm.reset({
       provider_description: row.provider_description || '',
       location: row.location || '',
-      latitude: row.latitude || '',
-      longitude: row.longitude || ''
+      // latitude: row.latitude || '',
+      // longitude: row.longitude || ''
     });
     this.assignUsers = [];
     this.isLoadingAssignUsers = true;
@@ -329,14 +339,13 @@ export class ServicesComponent implements OnInit {
 
     this.groupService.postAPI('/serviceAvailableUserList', userData).subscribe((response: any) => {
       const previousSelections = new Map(
-        this.assignUsers.map(user => [String(user.user_id), { selected: user.selected, price: user.price }])
+        this.assignUsers.map(user => [String(user.user_id), { selected: user.selected }])
       );
       const loadedUsers = response?.userList || response?.users || response?.lists || [];
 
       this.assignUsers = loadedUsers.map((user: UserList) => ({
         ...user,
         selected: previousSelections.get(String(user.user_id))?.selected || false,
-        price: previousSelections.get(String(user.user_id))?.price || ''
       }));
       this.isLoadingAssignUsers = false;
     });
@@ -346,16 +355,6 @@ export class ServicesComponent implements OnInit {
     const user = this.assignUsers.find(item => String(item.user_id) === String(userId));
     if (user) {
       user.selected = checked;
-      if (!checked) {
-        user.price = '';
-      }
-    }
-  }
-
-  onAssignUserPriceChange(userId: string, price: string): void {
-    const user = this.assignUsers.find(item => String(item.user_id) === String(userId));
-    if (user) {
-      user.price = price;
     }
   }
 
@@ -365,8 +364,7 @@ export class ServicesComponent implements OnInit {
     const selectedUsers = this.assignUsers
       .filter(user => user.selected)
       .map(user => ({
-        user_id: Number(user.user_id) || user.user_id,
-        price: Number(user.price)
+        user_id: Number(user.user_id) || user.user_id
       }));
 
     if (this.assignForm.invalid) {
@@ -378,19 +376,14 @@ export class ServicesComponent implements OnInit {
       return;
     }
 
-    if (selectedUsers.some(user => !user.price || Number.isNaN(user.price as number))) {
-      this.toastr.error('Please enter a valid price for each selected user.');
-      return;
-    }
-
     const info = this.getCreatorInfo();
     const payload = {
       service_id: Number(this.selectedAssignServiceId) || this.selectedAssignServiceId,
       users: selectedUsers,
       description: this.assignForm.value.provider_description,
       location: this.assignForm.value.location,
-      latitude: this.assignForm.value.latitude,
-      longitude: this.assignForm.value.longitude,
+      // latitude: this.assignForm.value.latitude,
+      // longitude: this.assignForm.value.longitude,
       created_by: Number(info.userId) || info.userId,
       created_by_type: info.userType
     };
@@ -411,8 +404,8 @@ export class ServicesComponent implements OnInit {
     this.assignForm.reset({
       provider_description: '',
       location: '',
-      latitude: '',
-      longitude: ''
+      // latitude: '',
+      // longitude: ''
     });
     this.assignUsers = [];
     this.selectedAssignServiceId = '';
@@ -535,7 +528,6 @@ export class ServicesComponent implements OnInit {
       return;
     }
 
-    this.removingUserServiceId = user.id || '';
     const info = this.getCreatorInfo();
     const userData = new FormData();
     userData.append('user_service_id', user.id || '');
@@ -543,7 +535,6 @@ export class ServicesComponent implements OnInit {
     userData.append('removed_by_type', info.userType);
 
     this.groupService.postAPI('/removeAssignedUserFromService', userData).subscribe((response: any) => {
-      this.removingUserServiceId = '';
       if (response?.success === '1') {
         this.toastr.success(response.message || 'User removed successfully');
         if (this.serviceDetail?.assigned_users) {
@@ -557,10 +548,6 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  isRemovingUser(userId: string): boolean {
-    return String(this.removingUserServiceId) === String(userId);
-  }
-
   closeViewModal(): void {
     this.serviceDetail = null;
     this.isLoadingServiceDetail = false;
@@ -568,6 +555,42 @@ export class ServicesComponent implements OnInit {
     if (closeButton) {
       closeButton.click();
     }
+  }
+
+
+  selectListId: string;
+  displayBlock: string = "none"
+  displayUnblock: string = "none"
+
+  onSetId(id: string): void {
+    this.selectListId = id;
+    this.displayBlock = "block";
+  }
+
+  onSetUnBlockId(id: string): void {
+    this.selectListId = id;
+    this.displayUnblock = "block";
+  }
+
+  onBlockUnblock(status: string): void {
+    this.groupService.blockUnblockServices(this.selectListId, status).subscribe((response: any) => {
+      if (response.success == '1') {
+
+        document.getElementById('closeUnblock').click();
+
+        document.getElementById('closeBlock').click();
+
+        this.loadServices();
+        this.toastr.success(response.message);
+      } else {
+        this.toastr.warning(response.message);
+      }
+
+    });
+  }
+
+  onClose(): void {
+    this.displayBlock = "none";
   }
 
 

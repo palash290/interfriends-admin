@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { Category } from 'src/app/model/category.model';
+import { AuthService } from 'src/app/service/auth.service';
 import { CategoryService } from 'src/app/service/category.service';
 import { GroupService } from 'src/app/service/group.service';
 
@@ -38,14 +39,17 @@ export class SubCategoryComponent implements OnInit {
   search = '';
   filterCategoryId = '';
   filterStatus = '';
+  adminType: string;
 
   constructor(
     public categoryService: CategoryService,
     public groupService: GroupService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {
+    this.adminType = this.authService.getAdminType();
     this.initForm();
     this.loadCategories();
     this.loadSubCategories();
@@ -80,7 +84,13 @@ export class SubCategoryComponent implements OnInit {
     const categoryData = new FormData();
 
     this.groupService.postAPI('/serviceCategoryList', categoryData).subscribe((response: any) => {
-      this.categories = response?.lists || response?.categoryList || [];
+      // this.categories = response?.lists || response?.categoryList || [];
+
+      const serviceArray = response?.lists || response?.categoryList || [];
+
+      // Remove services with status == 0
+      this.categories = serviceArray.filter((service: any) => service.status != 0);
+
     });
   }
 
@@ -111,7 +121,7 @@ export class SubCategoryComponent implements OnInit {
     subCategoryData.append('search', this.search || '');
     subCategoryData.append('status', this.filterStatus || '');
 
-       if (info.userType === 'admin') {
+    if (info.userType === 'admin') {
       subCategoryData.append('created_by_type', 'admin');
     } else {
       subCategoryData.append('created_by_type', 'subadmin');
@@ -247,6 +257,44 @@ export class SubCategoryComponent implements OnInit {
 
   getCategoryName(categoryId: string): string {
     return this.categories.find(category => category.id === categoryId)?.category_name || '';
+  }
+
+
+
+
+  selectListId: string;
+  displayBlock: string = "none"
+  displayUnblock: string = "none"
+
+  onSetId(id: string): void {
+    this.selectListId = id;
+    this.displayBlock = "block";
+  }
+
+  onSetUnBlockId(id: string): void {
+    this.selectListId = id;
+    this.displayUnblock = "block";
+  }
+
+  onBlockUnblock(status: string): void {
+    this.groupService.blockUnblockSubCatServices(this.selectListId, status).subscribe((response: any) => {
+      if (response.success == '1') {
+
+        document.getElementById('closeUnblock').click();
+
+        document.getElementById('closeBlock').click();
+
+        this.loadSubCategories();
+        this.toastr.success(response.message);
+      } else {
+        this.toastr.warning(response.message);
+      }
+
+    });
+  }
+
+  onClose(): void {
+    this.displayBlock = "none";
   }
 
 }

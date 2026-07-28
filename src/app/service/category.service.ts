@@ -180,7 +180,7 @@ export class CategoryService {
     status: string
   ): any {
     const instituteData = new FormData();
-    instituteData.append('id', id);
+    instituteData.append('category_id', id);
     instituteData.append('status', status);
 
     return this.http.post<{
@@ -188,7 +188,7 @@ export class CategoryService {
       message: string;
       status: string
     }>(
-      API_URL + '/blockUnblockCategory', instituteData
+      API_URL + '/updateServiceCategoryStatus', instituteData
     );
   }
 }

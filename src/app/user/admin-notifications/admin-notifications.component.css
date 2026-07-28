@@ -1,11 +1,25 @@
-.ct_w_100_res_767,.form-control.ct_w_100_res_767,.ct_blue_btn.ct_w_100_res_767 {
+.ct_w_100_res_767,
+.form-control.ct_w_100_res_767,
+.ct_blue_btn.ct_w_100_res_767 {
   width: 100% !important;
 }
 
-.ct_flex_1{
+.ct_flex_1 {
   flex: 1;
 }
-.ct_white_nowrap{
+
+.ct_white_nowrap {
   white-space: nowrap;
 }
 
+
+@media screen and (max-width:767px) {
+  .ct_flex_col_767 {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .ct_w_100_767 {
+    width: 100% !important;
+  }
+}

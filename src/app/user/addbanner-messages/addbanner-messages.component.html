@@ -52,6 +52,18 @@
                       <button (click)="delete(banner.id)" type="button" data-toggle="modal" data-target="#deleteModal"
                         ngbtooltip="Delete" class="btn btn-danger margin" ng-reflect-ngb-tooltip="Delete"><i
                           aria-hidden="true" class="fa fa-trash"></i></button>
+
+                      <button type="button margin" class="btn btn-success margin" data-toggle="modal" ngbTooltip="Block"
+                        data-target="#blockModal" (click)="onSetId(banner.id)"
+                        *ngIf="banner.status == '1' && adminType == '2'">
+                        <i class="fa fa-ban" aria-hidden="true"></i>
+                      </button>
+                      <button type="button margin" class="btn btn-danger margin" data-toggle="modal"
+                        ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetUnBlockId(banner.id)"
+                        *ngIf="banner.status == '0' && adminType == '2'">
+                        <i class="fa fa-ban" aria-hidden="true"></i>
+                      </button>
+
                     </td>
                   </tr>
                 </table>
@@ -135,3 +147,47 @@
   </div>
 </div>
 <!-- ./wrapper -->
+
+
+
+
+<!-- block model popup start -->
+<div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':displayBlock}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Block This Banner</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('0')">BLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock"
+          (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->
+<!-- unblock model popup start -->
+<div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayUnblock}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Unblock This Banner</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock"
+          (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->

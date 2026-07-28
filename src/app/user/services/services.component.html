@@ -5,25 +5,25 @@
         <app-sidebar></app-sidebar>
 
         <div class="content-wrapper">
-            <section class="content-header">
-                <h1>
-                    Services
+            <section class="content-header d-flex align-items-center justify-content-between" style="gap:10px">
+                <h1 class="mb-0">
+                    Business Directory
                 </h1>
-                <span class="breadcrumb">
-                    <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
-                        (click)="onOpenCreate()">
-                        Add
-                    </button>
-                </span>
+
+                <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
+                    (click)="onOpenCreate()">
+                    Add
+                </button>
+
             </section>
 
             <section class="content">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
-                            <div class="box-header d-flex align-items-center flex-wrap">
-                                <div class="form-group mb-0 mr-2" style="min-width: 220px;">
-                                    <select class="form-control" [(ngModel)]="filterCategoryId"
+                            <div class="box-header d-flex align-items-center ct_flex_col_991" style="gap:10px">
+                                <div class="form-group mb-0 mr-2 ct_flex_col_991 ct_w_100_991">
+                                    <select class="form-control ct_w_100_991" [(ngModel)]="filterCategoryId"
                                         (change)="onCategoryChange(filterCategoryId)">
                                         <option value="">All Categories</option>
                                         <option *ngFor="let category of categories" [value]="category.id">
@@ -32,8 +32,8 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group mb-0 mr-2" style="min-width: 220px;">
-                                    <select class="form-control" [(ngModel)]="filterSubCategoryId"
+                                <div class="form-group mb-0 mr-2 ct_flex_col_991 ct_w_100_991">
+                                    <select class="form-control ct_w_100_991" [(ngModel)]="filterSubCategoryId"
                                         (change)="onSubCategoryChange(filterSubCategoryId)">
                                         <option value="">All Sub Categories</option>
                                         <option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
@@ -42,15 +42,16 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group mb-0 mr-2" style="min-width: 180px;">
-                                    <select class="form-control" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+                                <div class="form-group mb-0 mr-2 ct_flex_col_991 ct_w_100_991">
+                                    <select class="form-control ct_w_100_991" [(ngModel)]="filterStatus"
+                                        (change)="onFilterChange()">
                                         <option value="">All Status</option>
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
                                     </select>
                                 </div>
 
-                                <input type="text" class="form-control w-25 rounded float-right ml-auto"
+                                <input type="text" class="form-control w-25 ct_w_100_991 rounded float-right ml-auto"
                                     *ngIf="!isLoading" placeholder="Search.." [(ngModel)]="search"
                                     (keyup)="onSearchChange()">
                             </div>
@@ -63,7 +64,7 @@
                                 <mat-spinner class="mx-auto"></mat-spinner>
                             </div>
 
-                            <div class="box-body" *ngIf="services.length > 0 && !isLoading">
+                            <div class="box-body table-responsive" *ngIf="services.length > 0 && !isLoading">
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -83,14 +84,14 @@
                                             <td>{{ getCategoryName(service.category_id) || service.category_name }}</td>
                                             <td>{{ getSubCategoryName(service.subcategory_id) ||
                                                 service.subcategory_name }}</td>
-                                            <td>{{ service.description }}</td>
+                                            <td><span class="ct_overlay_text">{{ service.description }}</span></td>
                                             <td>
                                                 <span class="label label-success"
                                                     *ngIf="service.status === '1'">Active</span>
                                                 <span class="label label-danger"
                                                     *ngIf="service.status === '0'">Inactive</span>
                                             </td>
-                                            <td>
+                                            <td class="d-flex align-items-center">
                                                 <button type="button" class="btn btn-primary margin" data-toggle="modal"
                                                     data-target="#exampleModal" (click)="onEdit(service)">
                                                     <i class="fa fa-edit"></i>
@@ -103,6 +104,21 @@
                                                     data-target="#viewServiceModal" (click)="viewService(service.id)">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
+
+
+                                                <button type="button margin" class="btn btn-success margin"
+                                                    data-toggle="modal" ngbTooltip="Block" data-target="#blockModal"
+                                                    (click)="onSetId(service.id)"
+                                                    *ngIf="service.status == '1' && adminType == '2'">
+                                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button margin" class="btn btn-danger margin"
+                                                    data-toggle="modal" ngbTooltip="UnBlock" data-target="#unblockModal"
+                                                    (click)="onSetUnBlockId(service.id)"
+                                                    *ngIf="service.status == '0' && adminType == '2'">
+                                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                                </button>
+
                                             </td>
                                         </tr>
                                     </tbody>
@@ -110,10 +126,10 @@
                             </div>
 
                             <mat-paginator [length]="totalServices" [pageSize]="servicesPerPage"
-                                (page)="onChangedPage($event)" *ngIf="services.length > 0"></mat-paginator>
+                                (page)="onChangedPage($event)" *ngIf="services?.length > 0"></mat-paginator>
 
                             <div class="box-body" *ngIf="services.length <= 0 && !isLoading">
-                                No services found.
+                                No Business Directory found.
                             </div>
                         </div>
                     </div>
@@ -150,7 +166,7 @@
                             <p><strong>Sub Category:</strong> {{ serviceDetail.subcategory_name || '-' }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Service Name:</strong> {{ serviceDetail.service_name || '-' }}</p>
+                            <p><strong>Business Directory Name:</strong> {{ serviceDetail.service_name || '-' }}</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong>
@@ -186,7 +202,6 @@
                                         <th>User</th>
                                         <th>Email</th>
                                         <th>Mobile</th>
-                                        <th>Price</th>
                                         <th>Location</th>
                                         <th>Action</th>
                                         <!-- <th>Approval</th>
@@ -199,16 +214,11 @@
                                         <td>{{ user.first_name }} {{ user.last_name }}</td>
                                         <td>{{ user.email }}</td>
                                         <td>{{ user.mobile_number }}</td>
-                                        <td>{{ user.price }}</td>
                                         <td>{{ user.location || '-' }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary"
-                                                [disabled]="isRemovingUser(user.id)"
                                                 (click)="removeAssignedUser(user)">
-                                                <span *ngIf="!isRemovingUser(user.id)">Remove</span>
-                                                <span *ngIf="isRemovingUser(user.id)">
-                                                    <i class="fa fa-refresh fa-spin"></i>
-                                                </span>
+                                                Remove
                                             </button>
                                         </td>
                                         <!-- <td>
@@ -232,7 +242,7 @@
                 </div>
 
                 <div *ngIf="!isLoadingServiceDetail && !serviceDetail">
-                    No service details found.
+                    No business directory details found.
                 </div>
             </div>
 
@@ -287,7 +297,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group"
                                 [ngClass]="{'has-error': assignForm.get('latitude').invalid && assignForm.get('latitude').touched}">
                                 <label>Latitude</label>
@@ -310,7 +320,7 @@
                                     Please enter longitude.
                                 </span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <hr />
@@ -334,7 +344,6 @@
                                     <th style="width: 60px;">Select</th>
                                     <th>User</th>
                                     <th>Email</th>
-                                    <th style="width: 160px;">Price</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -345,12 +354,6 @@
                                     </td>
                                     <td>{{ user.first_name }} {{ user.last_name }}</td>
                                     <td>{{ user.email }}</td>
-                                    <td>
-                                        <input type="number" class="form-control" [disabled]="!user.selected"
-                                            [value]="user.price"
-                                            (input)="onAssignUserPriceChange(user.user_id, $event.target.value)"
-                                            placeholder="Enter price" />
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -430,8 +433,8 @@
 
                         <div class="form-group"
                             [ngClass]="{'has-error': form.get('service_name').invalid  && form.get('service_name').touched}">
-                            <label>Service Name</label>
-                            <input type="text" class="form-control" placeholder="Enter service name"
+                            <label>Business Directory Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Business Directory Name"
                                 formControlName="service_name" />
                             <span class="help-block"
                                 *ngIf="form.get('service_name').invalid  && form.get('service_name').touched">
@@ -450,7 +453,7 @@
                             </span>
                         </div>
 
-                        <div class="form-group"
+                        <!-- <div class="form-group"
                             [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}">
                             <label>Status</label>
                             <select class="form-control" formControlName="status">
@@ -460,7 +463,7 @@
                             <span class="help-block" *ngIf="form.get('status').invalid  && form.get('status').touched">
                                 Please select a status.
                             </span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -483,3 +486,47 @@
         </div>
     </div>
 </div>
+
+
+
+
+<!-- block model popup start -->
+<div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':displayBlock}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Block This Service</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('0')">BLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock"
+          (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->
+<!-- unblock model popup start -->
+<div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayUnblock}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Unblock This Service</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock"
+          (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->

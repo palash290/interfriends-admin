@@ -402,20 +402,20 @@ export class LoanService {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
     instituteData.append('group_id', group_id);
-    instituteData.append('amount', loan_amount);
-    instituteData.append('month', tenure);
-    instituteData.append('total_payment', total40month)
+    instituteData.append('payout_amount', loan_amount);
+    // instituteData.append('month', tenure);
+    // instituteData.append('total_payment', total40month)
     instituteData.append('provident', provident)
     instituteData.append('admin_risk', admin_risk)
-    instituteData.append('loan_emi', loan_emi)
-    instituteData.append('date', startDate)
-    instituteData.append('groupLifecycle_id', groupLifeCycleId)
+    // instituteData.append('loan_emi', loan_emi)
+    // instituteData.append('start_date', startDate)
+    // instituteData.append('groupLifecycle_id', groupLifeCycleId)
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-      API_URL + '/addWelfareCycle', instituteData
+      API_URL + '/request_welfare', instituteData
     );
   }
 

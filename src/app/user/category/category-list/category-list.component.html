@@ -42,9 +42,9 @@
                 <input type="text" class="form-control w-25 rounded float-right ml-auto" *ngIf="!isLoading"
                   placeholder="Search.." [(ngModel)]="search" (keyup)="onSearchChange()">
               </div>
-              <div class="box-header">
+              <!-- <div class="box-header">
                 <h3 class="box-title">Category List</h3>
-              </div>
+              </div> -->
               <!-- /.box-header -->
               <div class="overlay" *ngIf="isLoadingPage && !isLoading">
                 <i class="fa fa-refresh fa-spin"></i>
@@ -75,14 +75,14 @@
                           data-target="#exampleModal" (click)="onUpdate(category)">
                           <i class="fa fa-edit"></i>
                         </button>
-                        <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal"
-                          (click)="onSetId(category.category_id)" *ngIf="category.status === '1'">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#blockModal"
+                          (click)="onSetId(category.id)" *ngIf="category.status === '1'">
                           Block
                         </button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#unblockModal"
-                          (click)="onSetId(category.category_id)" *ngIf="category.status === '0'">
+                          (click)="onSetId(category.id)" *ngIf="category.status === '0'">
                           UnBlock
-                        </button> -->
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -92,7 +92,7 @@
               <mat-paginator [length]="totalCategorys" [pageSize]="categorysPerPage" (page)="onChangedPage($event)"
                 *ngIf="categorys.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="categorys.length <= 0 && !isLoading">
-                You have'nt had any user yet!
+                No category found!
               </div>
               <!-- /.box-body -->
             </div>

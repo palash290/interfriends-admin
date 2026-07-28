@@ -123,6 +123,8 @@ import { SafekeepingCycleRequestComponent } from './safekeeping-cycle-request/sa
 import { DynamicCurrencyPipe } from '../pipe/dynamic-currency.pipe';
 import { ServicesComponent } from './services/services.component';
 import { SubCategoryComponent } from './services/sub-category/sub-category.component';
+import { UserServiceRequestsComponent } from './services/user-service-requests/user-service-requests.component';
+import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.component';
 
 @NgModule({
   imports: [
@@ -246,7 +248,9 @@ import { SubCategoryComponent } from './services/sub-category/sub-category.compo
     DownloadDataComponent,
     SafekeepingCycleRequestComponent,
     ServicesComponent,
-    SubCategoryComponent
+    SubCategoryComponent,
+    UserServiceRequestsComponent,
+    WelfareRequestsComponent
   ],
   providers: [
     CurrencyPipe

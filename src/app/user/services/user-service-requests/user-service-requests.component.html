@@ -1,0 +1,280 @@
+<div class="hold-transition sidebar-mini" [ngClass]="{
+    'skin-blue': checkAdminType(),
+    'skin-red-light': !checkAdminType()}">
+  <div class="wrapper">
+    <app-header></app-header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>User Services</h1>
+      </section>
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <!-- <h3 class="box-title">Payout Withdrawal Request List</h3> -->
+              </div>
+              <!-- /.box-header -->
+              <div class="overlay" *ngIf="isLoadingPage && !isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
+              <div class="box-body" *ngIf="lists.length > 0 && !isLoading">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <!-- <th>Price</th> -->
+                      <th>Service Status</th>
+                      <th>Created on</th>
+                      <th>View</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let list of lists; let i = index">
+                      <td>{{ i+1 }}</td>
+                      <td class="d-flex align-items-center">
+                        <img [src]="list.profile_image_thumb" class="direct-chat-img mr-2">
+                        {{ list.first_name + " " + list.last_name }}
+                      </td>
+                      <td>
+                        <a href="mailto: {{ list.email }}">{{ list.email || '-' }}</a>
+                      </td>
+                      <!-- <td>{{ list.price | number : "1.0-0" }}</td> -->
+                      <td>
+                        <span class="badge"
+                          [ngClass]="list.service_status === '1' ? 'bg-success text-white' : 'bg-danger text-white'">
+                          {{ list.service_status === '1' ? 'Active' : 'Inactive' }}
+                        </span>
+                      </td>
+
+                      <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
+
+                      <td>
+                        <a href="javascript:void(0);" class="service-view-btn" data-toggle="modal"
+                          data-target="#serviceDetailsModal" (click)="viewServiceDetails(list)">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+
+                      <td *ngIf="list.approval_status == 0">
+                        <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
+                          data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">Reject
+                        </button>
+                        <button type="button" class="m-1 btn btn-success btn-sm" data-toggle="modal"
+                          data-target="#ct_accept_modal" ngbTooltip="accepted" (click)="getAcceptId(list)">Accept
+                        </button>
+                      </td>
+                      <td *ngIf="list.approval_status == 2 ">
+                        <span class="m-1 btn btn-danger btn-sm et_cstm_badge text-white">Rejected</span>
+                      </td>
+                      <td *ngIf="list.approval_status == 1">
+                        <span class="m-1 btn btn-success btn-sm et_cstm_badge text-white">Accepted</span>
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <mat-paginator [length]="totalLists" [pageSize]="servicesPerPage" (page)="onChangedPage($event)"
+                *ngIf="lists.length > 0"></mat-paginator>
+              <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
+                You have'nt had any payout request yet!
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!-- ./wrapper -->
+
+
+<!-- delete Modal S -->
+<div class="modal fade " id="ct_reject_modal" tabindex="-1" aria-labelledby="ct_reject_modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Do You Realy Want To Reject This Request</p>
+        <form [formGroup]="rejectForm">
+          <div class="form-group">
+            <label for="rejectReason">Reason</label>
+            <textarea id="rejectReason" class="form-control" rows="4" formControlName="reason"
+              placeholder="Enter rejection reason"></textarea>
+            <small class="text-danger" *ngIf="rejectForm.get('reason')?.touched && rejectForm.get('reason')?.invalid">
+              Reason is required.
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <!-- <button class="btn btn-primary" (click)="onReject()"
+          [disabled]="rejectForm?.invalid || isLoading">Reject</button> -->
+        <button (click)="onReject()" type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">
+          <span *ngIf="!isLoadingBtn">Reject</span>
+          <span *ngIf="isLoadingBtn"><i class="fa fa-refresh fa-spin"></i></span>
+        </button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>
+        <button hidden type="button" class="btn btn-secondary" #closeModal1 data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete Modal E -->
+
+
+<!-- delete Modal S -->
+<div class="modal fade " id="ct_accept_modal" tabindex="-1" aria-labelledby="ct_accept_modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Accept This Request</div>
+      <div class="modal-footer">
+        <!-- <button class="btn btn-primary" (click)="onAccept()">Accept</button> -->
+        <button (click)="onAccept()" type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">
+          <span *ngIf="!isLoadingBtn">Accept</span>
+          <span *ngIf="isLoadingBtn"><i class="fa fa-refresh fa-spin"></i></span>
+        </button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>
+        <button hidden type="button" class="btn btn-secondary" #closeModal2 data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete Modal E -->
+
+
+
+
+
+<div class="modal fade" id="serviceDetailsModal" tabindex="-1" role="dialog" aria-labelledby="serviceDetailsModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h2 class="modal-title mb-0" id="serviceDetailsModalLabel">Service Details</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row" *ngIf="selectedService; else noServiceSelected">
+          <div class="col-12 mb-3" *ngIf="selectedCompanyLogo || selectedCompanyName">
+            <div class="detail-card company-summary-card d-flex align-items-center">
+              <img *ngIf="selectedCompanyLogo" [src]="selectedCompanyLogo" alt="Company logo"
+                class="company-summary-card__logo mr-3">
+              <div>
+                <label>Company</label>
+                <p class="mb-0">{{ selectedCompanyName || '-' }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Service Name</label>
+              <p>{{ selectedService.service_name }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Category Name</label>
+              <p>{{ selectedService.category_name }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Sub Category Name</label>
+              <p>{{ selectedService.subcategory_name }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Price</label>
+              <p>{{ selectedService.price || '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Mobile</label>
+              <p>{{ selectedService.mobile || '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Email</label>
+              <p>{{ selectedService.email || '-' }}</p>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="detail-card">
+              <label>Service Description</label>
+              <p class="mb-0">{{ selectedService.service_description || '-' }}</p>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="detail-card">
+              <label>Provided Description</label>
+              <p class="mb-0">{{ selectedService.provider_description || '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Website</label>
+              <p>{{ selectedService.website || '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="detail-card">
+              <label>Location</label>
+              <p>{{ selectedService.location || '-' }}</p>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3" *ngIf="selectedServiceImages.length > 0">
+            <div class="detail-card">
+              <label>Images</label>
+              <div class="service-image-grid mt-2">
+                <div class="service-image-card" *ngFor="let image of selectedServiceImages; let i = index">
+                  <img *ngIf="image.url" [src]="image.url" alt="Service image" class="service-image-card__img">
+                  <!-- <div class="service-image-card__name">{{ image.name }}</div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <ng-template #noServiceSelected>
+          <p class="mb-0 text-muted">No service selected.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

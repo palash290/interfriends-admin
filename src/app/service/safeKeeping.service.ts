@@ -108,6 +108,31 @@ export class SafeKeepingService {
     );
   }
 
+  acceptRejectWalfare(
+    claim_id: string,
+    request_status: string,
+    group_id: any,
+    user_id: string,
+    reason: string = ''
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('claim_id', claim_id);
+    instituteData.append('status', request_status);
+    if (reason) {
+      instituteData.append('reject_reason', reason);
+    }
+    instituteData.append('grour_id', group_id);
+    instituteData.append('admin_id', '1');
+    instituteData.append('user_id', user_id);
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/approveRejectWelfareClaim', instituteData
+    );
+  }
+
   rejectSafekeepingRequest(
     payout_id: string,
     request_status: string,

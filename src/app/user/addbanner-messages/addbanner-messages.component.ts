@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/service/auth.service';
 import { bannersAndmessagesService } from 'src/app/service/bannersAndmessages.service';
+import { GroupService } from 'src/app/service/group.service';
 
 @Component({
   selector: 'app-addbanner-messages',
@@ -21,9 +23,13 @@ export class AddbannerMessagesComponent implements OnInit {
   editId: any;
   allbannerAndmsg: any = [];
   isLoading = false;
+  adminType: string;
+
   constructor(public sanitizer: DomSanitizer,
     public addbannerAndmessages: bannersAndmessagesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public groupService: GroupService,
+    public authService: AuthService,
   ) {
     this.myForm = new FormGroup({
       title: new FormControl('',),
@@ -31,6 +37,7 @@ export class AddbannerMessagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.adminType = this.authService.getAdminType();
     this.getAllbannerAndmessage()
   }
 
@@ -260,6 +267,45 @@ export class AddbannerMessagesComponent implements OnInit {
       this.isLoading = false;
     }
 
+  }
+
+
+
+
+
+  selectListId: string;
+  displayBlock: string = "none"
+  displayUnblock: string = "none"
+
+  onSetId(id: string): void {
+    this.selectListId = id;
+    this.displayBlock = "block";
+  }
+
+  onSetUnBlockId(id: string): void {
+    this.selectListId = id;
+    this.displayUnblock = "block";
+  }
+
+  onBlockUnblock(status: string): void {
+    this.groupService.blockUnblockBanners(this.selectListId, status).subscribe((response: any) => {
+      if (response.success == '1') {
+
+        document.getElementById('closeUnblock').click();
+
+        document.getElementById('closeBlock').click();
+
+        this.getAllbannerAndmessage();
+        this.toastr.success(response.message);
+      } else {
+        this.toastr.warning(response.message);
+      }
+
+    });
+  }
+
+  onClose(): void {
+    this.displayBlock = "none";
   }
 
 

@@ -125,4 +125,44 @@ export class SafekeepingwithdralService {
   }
 
 
+
+
+  getWelfareLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any, circle_ids?: any) {
+
+    const listData = new FormData();
+
+
+    if (currentPage) {
+      const totalPage = listsPerPage * currentPage;
+      listData.append('start', totalPage.toString());
+    }
+
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
+    }
+
+    if (circle_ids) {
+      listData.append('circle_ids', circle_ids.toString());
+    }
+
+
+    this.http
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/adminWelfareClaimList', listData
+      ).subscribe(responseData => {
+        this.lists = responseData.lists;
+
+
+        this.listsUpdated.next({
+          lists: [...this.lists],
+          listCount: responseData.listCount,
+        });
+      });
+  }
+
+    getListUpdateListenerWelfare() {
+    return this.listsUpdated.asObservable();
+  }
+
+
 }

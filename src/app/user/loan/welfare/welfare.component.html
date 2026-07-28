@@ -8,7 +8,7 @@
           <span>Welfare</span>
         </h1>
         <span class="breadcrumb"></span>
-        <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#exampleModal"
+        <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#welfareModel"
           (click)="showModalAdd()">
           Add
         </button>
@@ -73,7 +73,7 @@
                     <tr>
                       <th>Loan Amount</th>
                       <th>Month</th>
-                      <th>Date</th>
+                      <th>Start Date</th>
                       <th>Total Payment</th>
                       <th>Loan EMI</th>
                       <th>Provident</th>
@@ -83,18 +83,24 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let list of lists; let i = index">
-                      <td>{{ list.amount | number : "1.0-0" }}</td>
-                      <td>{{ list.month }}</td>
-                      <td>{{ list.date | date: 'dd MMM yyyy' }}</td>
+                      <td>{{ list.loan_amount | number : "1.0-0" }}</td>
+                      <td>{{ list.tenure }}</td>
+                      <td>{{ list.start_date | date: 'dd MMM yyyy' }}</td>
                       <td>{{ list.total_payment | number : "1.0-0" }}</td>
                       <td>{{ list.loan_emi | number : "1.0-0" }}</td>
                       <td>{{ list.provident | number : "1.0-0" }}</td>
-                      <td>{{ list.admin_risk | number : "1.0-0" }}</td>
-                      <td>
+                      <td>{{ list.welfare_admin_fee | number : "1.0-0" }}</td>
+                      <!-- <td>
                         <span class="badge badge-secondary" *ngIf="list.status === '1'">Pending</span>
                         <span class="badge badge-success" *ngIf="list.status === '2'">Paid On Time</span>
                         <span class="badge badge-warning" *ngIf="list.status === '3'">Missed Payment Deadline</span>
                         <span class="badge badge-danger" *ngIf="list.status === '4'">Paid Late</span>
+                      </td> -->
+                      <td>
+                        <span class="badge badge-primary" *ngIf="list.status === '1'">Pending</span>
+                        <span class="badge badge-success" *ngIf="list.status === '2'">Completed</span>
+                        <span class="badge badge-danger" *ngIf="list.status === '3'">Declined</span>
+                        <span class="badge badge-secondary" *ngIf="list.status === '4'">Accepted</span>
                       </td>
                       <!--  <td>
                         <span
@@ -113,11 +119,23 @@
                           >From Safe Keeping</span
                         >
                       </td> -->
+
                       <td>
-                        <button [disabled]="list.total_payment != 0" class="btn btn-primary margin" data-toggle="modal"
+                        <!-- <button [disabled]="list.total_payment != 0" class="btn btn-primary margin" data-toggle="modal"
                           data-target="#updateModal" (click)="onUpdate(list, i)">
                           Update Status
+                        </button> -->
+
+                        <a class="btn btn-success margin" [routerLink]="['/user/LoanPayment', groupId, userId, list.id]"
+                          ngbTooltip="Payment History" (click)="sendHeader('Welfare')">
+                          <i class="fa fa-history" aria-hidden="true"></i>
+                        </a>
+
+                        <button class="btn btn-primary margin" data-toggle="modal" data-target="#exampleModal"
+                          (click)="onUpdate(list.id, list.loan_emi)" ngbTooltip="Edit">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
+
                         <a class="btn btn-dark margin" [routerLink]="[
                             '/user/notesHistoryComponent',
                             list.id
@@ -125,6 +143,7 @@
                           <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
                         </a>
                       </td>
+
                     </tr>
                   </tbody>
                 </table>
@@ -141,12 +160,12 @@
   </div>
 </div>
 
-<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal"
+<div class="modal fade show" id="welfareModel" tabindex="-1" role="dialog" aria-labelledby="welfareModel"
   aria-hidden="true" [ngStyle]="{'display':display}">
   <div class="modal-dialog modal-lg modal-apply" role="document">
     <div class="modal-content">
       <div>
-        <h5 class="modal-title" id="exampleModal">
+        <h5 class="modal-title" id="welfareModel">
           <span class="WelfareSpan">Welfare</span>
         </h5>
         <!-- <p class="para-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit Pellentesque dapibus interdum auctor. Donec gravida dolor at mollis fringilla elit quota lesmon.</p> -->
@@ -203,17 +222,23 @@
                         </option>
                       </select>
                     </div>
+                    <span class="error-form" *ngIf="
+                      form.get('tenure').invalid &&
+                      form.get('tenure').touched
+                    ">
+                      Please enter a tenure.
+                    </span>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12" disable>
                   <div class="form-group">
                     <label class="hidden-label">&nbsp;</label>
-                    <label class="label-walfare">Total Over 40 months</label>
+                    <label class="label-walfare">Total Over 24 months</label>
                     <div class=" ct_language_euro">
                       <div class="ct_euro_sign">
                         <p class="mb-0">£</p>
                       </div>
-                      <input type="text" formControlName="total40Months" placeholder="Total Over 40 months"
+                      <input type="text" formControlName="total40Months" placeholder="Total Over 24 months"
                         class="form-control" [(ngModel)]="total40month" readonly="" />
                     </div>
                   </div>
@@ -247,7 +272,7 @@
                   </div>
                 </div>
                 <!--Changes Interfriends Phase 2 Ends-->
-                <div class="col-lg-6 col-md-6 col-sm-12">
+                <!-- <div class="col-lg-6 col-md-6 col-sm-12">
                   <label>When do you require payment select date</label>
                   <div class="form-group">
                     <div class=" ct_language_euro">
@@ -260,7 +285,7 @@
                       </span>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label>Estimated monthly payment</label>
                   <div class="form-group">
@@ -281,8 +306,12 @@
             </div>
 
             <div class="modal-footer justify-content-center border-0">
-              <button class="btn-cstm btn-blue mt-3 min-width-230" type="submit" [disabled]="isLoading">
+              <!-- <button class="btn-cstm btn-blue mt-3 min-width-230" type="submit" [disabled]="isLoading">
                 <span>Apply</span>
+              </button> -->
+              <button type="submit" class="btn-cstm btn-blue mt-3 min-width-230" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Submit</span>
+                <span *ngIf="isLoading"><i class="fa fa-refresh fa-spin"></i></span>
               </button>
             </div>
           </div>
@@ -292,7 +321,17 @@
   </div>
 </div>
 
-<div class="modal fade show" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+<div class="modal fade show" id="exampleModal" [ngStyle]="{'display':display1}">
+  <div class="modal-dialog">
+    <app-add-loan [uniqueId]="updateId" [userId]="userId" [groupId]="groupId" [eachChange]="eachChange"
+      [loan_emi]="loan_emi" [add]="add" (valueChange)="hidePopup($event)"
+      (closeModal)="closeModalF($event)"></app-add-loan>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- <div class="modal fade show" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
   aria-hidden="true" [ngStyle]="{'display':display1}">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -362,9 +401,6 @@
               </span>
             </div>
 
-
-
-
             <div class="form-group" *ngIf="isLastIndexClicked">
               <div>
                 <div class="d-inline">
@@ -373,9 +409,6 @@
                 </div>
               </div>
             </div>
-
-
-
 
             <div class="form-group"
               [ngClass]="{'has-error': formUpdate.get('note')?.invalid  && formUpdate.get('note').touched}">
@@ -436,7 +469,7 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- payout model popup start -->
 <div class="modal fade show" id="payoutModal" tabindex="-1" role="dialog" aria-labelledby="payoutModalLabel"

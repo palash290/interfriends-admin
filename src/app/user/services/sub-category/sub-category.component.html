@@ -72,6 +72,18 @@
                           data-target="#exampleModal" (click)="onEdit(subCategory)">
                           <i class="fa fa-edit"></i>
                         </button>
+
+                        <button type="button margin" class="btn btn-success margin" data-toggle="modal"
+                          ngbTooltip="Block" data-target="#blockModal" (click)="onSetId(subCategory.id)"
+                          *ngIf="subCategory.status == '1' && adminType == '2'">
+                          <i class="fa fa-ban" aria-hidden="true"></i>
+                        </button>
+                        <button type="button margin" class="btn btn-danger margin" data-toggle="modal"
+                          ngbTooltip="UnBlock" data-target="#unblockModal" (click)="onSetUnBlockId(subCategory.id)"
+                          *ngIf="subCategory.status == '0' && adminType == '2'">
+                          <i class="fa fa-ban" aria-hidden="true"></i>
+                        </button>
+
                       </td>
                     </tr>
                   </tbody>
@@ -120,8 +132,7 @@
                   {{ category.category_name }}
                 </option>
               </select>
-              <span class="help-block"
-                *ngIf="form.get('category_id').invalid  && form.get('category_id').touched">
+              <span class="help-block" *ngIf="form.get('category_id').invalid  && form.get('category_id').touched">
                 Please select a category.
               </span>
             </div>
@@ -137,7 +148,7 @@
               </span>
             </div>
 
-            <div class="form-group"
+            <!-- <div class="form-group"
               [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}">
               <label>Status</label>
               <select class="form-control" formControlName="status">
@@ -147,7 +158,8 @@
               <span class="help-block" *ngIf="form.get('status').invalid  && form.get('status').touched">
                 Please select a status.
               </span>
-            </div>
+            </div> -->
+            
           </div>
         </div>
 
@@ -169,3 +181,47 @@
     </div>
   </div>
 </div>
+
+
+
+
+<!-- block model popup start -->
+<div class="modal fade" id="blockModal" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true"
+  [ngStyle]="{'display':displayBlock}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Block This Sub Category</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('0')">BLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock"
+          (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->
+<!-- unblock model popup start -->
+<div class="modal fade" id="unblockModal" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayUnblock}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Do You Realy Want To Unblock This Sub Category</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock"
+          (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- block model popup end -->

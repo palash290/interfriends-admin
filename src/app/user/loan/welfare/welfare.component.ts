@@ -66,8 +66,8 @@ export class WelfareComponent implements OnInit {
   admin_id: string;
 
   // payOutElem: any = { 1: "975.00", 2: "1950.00" };
-  payOutElem: any = { 1: "1000", 3: "2000", 4: "3000" };
-  tenureElem: number[] = [12, 18, 24, 36];
+  payOutElem: any = { 1: "1000", 2: "2000", 3: "3000" };
+  tenureElem: number[] = [24];
   providentElem: any = { 1: "0", 2: "0", 3: "0", 4: "0" };
   AdminriskElem: any = { 1: "25.00", 2: "50", 3: "75.00" };
   // totalPayElem: any = { 1: "1000.00", 2: "2000.00" };
@@ -180,6 +180,8 @@ export class WelfareComponent implements OnInit {
     this.display = "block";
   }
 
+  loan_emi: any;
+
   showModal() {
     this.display2 = "block";
     this.isLoadingTotal = true;
@@ -188,6 +190,24 @@ export class WelfareComponent implements OnInit {
         this.totalInfo = response.info;
         this.isLoadingTotal = false;
       });
+  }
+
+  closeModalF(event: any) {
+    this.display = event;
+    this.display1 = event;
+  }
+
+  hidePopup(status: string): void {
+    if (status === 'add') {
+      this.ngOnInit();
+    } else {
+      this.ngOnInit();
+    }
+  }
+
+  onAdd(): void {
+    this.add = Math.random().toString();
+    this.display = "block";
   }
 
   showModalsafe() {
@@ -200,37 +220,37 @@ export class WelfareComponent implements OnInit {
       });
   }
 
-  onAdd(): void {
-    this.add = Math.random().toString();
-  }
+  // onAdd(): void {
+  //   this.add = Math.random().toString();
+  // }
 
   welfare_uuid: any = '';
 
   //selectedItem: any;
   isLastIndexClicked: boolean = false;
 
-  onUpdate(list: any, index: number): void {
-    this.updateId = list.id;
-    this.payout = list.amount;
-    this.formUpdate.patchValue({ amount: this.payout });
-    this.formUpdate.patchValue({ start_date: list.date });
-    this.formUpdate.patchValue({ month: list.month });
-    this.formUpdate.patchValue({ payment_method: list.payment_method });
-    this.formUpdate.patchValue({ status: list.status });
-    this.formUpdate.patchValue({ is_completed: list.is_completed });
-    this.provident = list.provident;
-    this.adminrisk = list.admin_risk;
-    this.monthlypayment = list.loan_emi;
-    this.total40month = list.total_payment;
-    this.eachChange = Math.random().toString();
-    this.display1 = "block";
-    this.isLoading = false;
-    this.month = list.month;
-    this.welfare_uuid = list.welfare_uuid;
+  // onUpdate(list: any, index: number): void {
+  //   this.updateId = list.id;
+  //   this.payout = list.amount;
+  //   this.formUpdate.patchValue({ amount: this.payout });
+  //   this.formUpdate.patchValue({ start_date: list.date });
+  //   this.formUpdate.patchValue({ month: list.month });
+  //   this.formUpdate.patchValue({ payment_method: list.payment_method });
+  //   this.formUpdate.patchValue({ status: list.status });
+  //   this.formUpdate.patchValue({ is_completed: list.is_completed });
+  //   this.provident = list.provident;
+  //   this.adminrisk = list.admin_risk;
+  //   this.monthlypayment = list.loan_emi;
+  //   this.total40month = list.total_payment;
+  //   this.eachChange = Math.random().toString();
+  //   this.display1 = "block";
+  //   this.isLoading = false;
+  //   this.month = list.month;
+  //   this.welfare_uuid = list.welfare_uuid;
 
-    //this.selectedItem = list;
-    this.isLastIndexClicked = index === this.lists.length - 1;
-  }
+  //   //this.selectedItem = list;
+  //   this.isLastIndexClicked = index === this.lists.length - 1;
+  // }
 
   onClose() {
     this.form.reset();
@@ -278,8 +298,8 @@ export class WelfareComponent implements OnInit {
   }
 
   onSave(): void {
-    console.log(this.form)
     this.form.markAllAsTouched();
+
     if (this.form.invalid) {
       return;
     }
@@ -289,7 +309,7 @@ export class WelfareComponent implements OnInit {
     this.loanService.requestWelfare(
       this.userId,
       this.groupId,
-      this.form.value.emi,
+      this.form.value.loan_amount,
       this.form.value.tenure,
       this.form.value.total40Months,
       this.form.value.provident,
@@ -297,23 +317,41 @@ export class WelfareComponent implements OnInit {
       this.form.value.emi,
       this.form.value.pay_date,
       this.groupLifecycle_id
-    ).subscribe((response: any) => {
-      this.form.reset();
-      document.getElementById('closePopupLoanRequest').click();
-      this.isLoading = false;
-      if (response.success === '1') {
+    ).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
 
-        this.toastr.success(response.message);
-        this.lists = [];
-        this.loanService.welfareList(this.groupId, this.userId, this.groupLifecycle_id).subscribe((response: any) => {
-          this.lists = response.lists;
-        });
+        if (response.success === '1') {
+          this.form.reset();
+          document.getElementById('closePopupLoanRequest')?.click();
+          this.display = 'none';
 
-      } else {
-        this.toastr.error(response.message);
+          this.toastr.success(response.message);
+
+          this.loanService.welfareList(
+            this.groupId,
+            this.userId,
+            this.groupLifecycle_id
+          ).subscribe((res: any) => {
+            this.lists = res.lists;
+          });
+
+        } else {
+          this.toastr.error(response.message);
+        }
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+
+        console.error('Request Welfare Error:', error);
+
+        if (error.error?.message) {
+          this.toastr.error(error.error.message);
+        } else {
+          this.toastr.error('Something went wrong. Please try again.');
+        }
       }
     });
-    this.display = 'none';
   }
 
   onSaveUpdate(): void {
@@ -360,6 +398,18 @@ export class WelfareComponent implements OnInit {
     });
   }
 
+  sendHeader(name: string) {
+    console.log(name, "name")
+    this.userService.sendheaderName(name)
+  }
+
+  onUpdate(id: string, loan_emi: any): void {
+    this.updateId = id;
+    console.log(id, 'idddddd');
+    this.eachChange = Math.random().toString();
+    this.display1 = "block";
+    this.loan_emi = loan_emi
+  }
 
   onSafekeeping() {
     console.log("onSafekeeping");
