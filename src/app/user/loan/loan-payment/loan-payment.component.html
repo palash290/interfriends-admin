@@ -82,8 +82,8 @@
                     <tr *ngFor="let list of lists; let i = index">
                       <td>{{i+1}}</td>
                       <td>{{list.amount| number:'1.0-0'}}</td>
-                      <td>{{list.note_title}}</td>
-                      <td>{{list.note_description}}</td>
+                      <td>{{list.note_title || '-'}}</td>
+                      <td>{{list.note_description || '-'}}</td>
                       <td>{{list.emi_date | date: 'dd MMM yyyy'}}</td>
                       <td>{{list.created_at | date: 'dd MMM yyyy'}}</td>
                       <td>
@@ -92,9 +92,10 @@
                         <span class="badge badge-warning" *ngIf="list.payment_method === '3'">From Safe Keeping</span>
                       </td>
                       <td>
-                        <span class="badge badge-success" *ngIf="list.status === '1'">Paid On Time</span>
-                        <span class="badge badge-danger" *ngIf="list.status === '2'">Paid Late</span>
-                        <span class="badge badge-warning" *ngIf="list.status === '3'">Missed Payment</span>
+                        <span class="badge badge-success" *ngIf="list.status == '1'">Paid On Time</span>
+                        <span class="badge badge-danger" *ngIf="list.status == '2'">Paid Late</span>
+                        <span class="badge badge-warning" *ngIf="list.status == '3'">Missed Payment</span>
+                        <span class="badge badge-warning" *ngIf="list.status == '0'">Pending</span>
                       </td>
                       <td>
                         <button *ngIf="!(list.payment_method === '2' || list.payment_method === '3')"

@@ -40,11 +40,11 @@
           <div *ngIf="loan!==undefined">
             <div class="d-inline mr-3" *ngIf="loan.status == '1' || loan.status == '5'">
               <input type="radio" id="html" formControlName="status" value="4" class="radio-it">
-                <label for="html">Accepted</label>
+                <label for="html">Accept</label>
             </div>
             <div class="d-inline" *ngIf="loan.status == '1' || loan.status == '3' || loan.status == '5'">
                <input type="radio" id="css" formControlName="status" value="3" class="radio-it">
-               <label for="css">Declined</label>
+               <label for="css">Decline</label>
             </div>
             <div class="d-inline" *ngIf="loan.status == '2' || loan.status == '4'">
               <input type="radio" id="javascript" formControlName="status" value="2" class="radio-it">

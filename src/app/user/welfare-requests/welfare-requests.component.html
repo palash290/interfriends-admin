@@ -221,7 +221,12 @@
                     <div class="col-md-6 mb-3">
                         <div class="detail-card">
                             <label>Claim Reason</label>
-                            <p>{{ selectedWelfare.claim_reason }}</p>
+                            <!-- <p>{{ selectedWelfare.claim_reason }}</p> -->
+                            <p>
+                                {{ selectedWelfare.claim_reason === 'Other'
+                                ? (selectedWelfare.claim_reason_other || '-')
+                                : (selectedWelfare.claim_reason || '-') }}
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -239,7 +244,12 @@
                     <div class="col-md-6 mb-3">
                         <div class="detail-card">
                             <label>Beneficiary</label>
-                            <p>{{ selectedWelfare.beneficiary || '-' }}</p>
+                            <!-- <p>{{ selectedWelfare.beneficiary || '-' }}</p> -->
+                            <p>
+                                {{ selectedWelfare.beneficiary === 'Other'
+                                ? (selectedWelfare.beneficiary_other || '-')
+                                : (selectedWelfare.beneficiary || '-') }}
+                            </p>
                         </div>
                     </div>
 
@@ -256,7 +266,7 @@
                         </div>
                     </div>
 
-                         <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
                         <div class="detail-card">
                             <label>Seconder Two</label>
                             <p>{{ selectedWelfare.seconder2_name || '-' }}</p>

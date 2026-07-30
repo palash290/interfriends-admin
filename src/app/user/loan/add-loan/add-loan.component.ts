@@ -50,7 +50,7 @@ export class AddLoanComponent implements OnInit {
     this.form = new FormGroup({
       loan_amount: new FormControl(null, { validators: [Validators.required] }),
       tenure: new FormControl(null, { validators: [Validators.required] }),
-      contact_number: new FormControl(null, { validators: [Validators.required] }),
+      contact_number: new FormControl(null, {}),
       loan_type: new FormControl("", { validators: [Validators.required] }),
       note_title: new FormControl(null, { validators: [Validators.required] }),
       note_description: new FormControl(null, { validators: [Validators.required] }),

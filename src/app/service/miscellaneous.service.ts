@@ -110,8 +110,6 @@ export class MiscellaneousService {
     userData.append('note_description', note_description);
     userData.append('payment_method', payment_method);
     userData.append('paid_status', paid_status);
-
-
     userData.append('admin_id', admin_id);
 
     return this.http.post<{
