@@ -247,42 +247,54 @@ export class UserListComponent implements OnInit, OnDestroy {
   @ViewChild('editor', { static: false }) editor: any;
 
   sendEmail(data: NgForm) {
-    console.log("data", data);
     data.control.markAllAsTouched();
+
     if (data.invalid) {
-      return
+      return;
     }
+
     const userData = new FormData();
     this.isLoading = true;
-    userData.append('user_id', this.updateId);
+
     userData.append('subject', data.value.subject);
     userData.append('message', data.value.body);
-    this.groupService
-      .postAPI(
-        '/sendEmailtoUserinCircle', userData
-      ).subscribe({
-        next: (responseData: any) => {
-          if (responseData.success == 0) {
-            this.toastr.warning(responseData.message);
-            this.isLoading = false;
-          } else {
-            this.toastr.success(responseData.message);
-            this.isLoading = false;
-            this.isLoadingPage = false;
-            this.mailBody = '';
-            if (this.editor && this.editor.instance) {
-              this.editor.instance.setData('');
-            }
-            data.resetForm();
-            document.getElementById('closeBlock3').click();
+
+    // Add user_id only for single user
+    if (this.updateId) {
+      userData.append('user_id', this.updateId);
+    }
+
+    // Select API based on whether a user is selected
+    const apiUrl = this.updateId
+      ? '/sendEmailtoUserinCircle'
+      : '/sendEmailtoAllMembers';
+
+    this.groupService.postAPI(apiUrl, userData).subscribe({
+      next: (responseData: any) => {
+        this.isLoading = false;
+
+        if (responseData.success == 0) {
+          this.toastr.warning(responseData.message);
+        } else {
+          this.toastr.success(responseData.message);
+
+          this.isLoadingPage = false;
+          this.mailBody = '';
+
+          if (this.editor?.instance) {
+            this.editor.instance.setData('');
           }
-        },
-        error: (err: any) => {
-          this.toastr.error('Failed to send email. Please try again.');
-          this.isLoading = false;
+
+          data.resetForm();
+          document.getElementById('emailModal12')?.click();
         }
-      });
-  };
+      },
+      error: () => {
+        this.isLoading = false;
+        this.toastr.error('Failed to send email. Please try again.');
+      }
+    });
+  }
 
 
 }

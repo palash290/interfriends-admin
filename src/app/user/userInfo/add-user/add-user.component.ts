@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { UserList } from 'src/app/model/userList.model';
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css']
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent implements OnInit, OnChanges {
 
   isLoading = false;
   isLoadingUpdate = false;
@@ -61,61 +61,63 @@ export class AddUserComponent implements OnInit {
       image: new FormControl(null, {}),
       id_proof_image: new FormControl(null, {})
     });
+
+    this.applyPendingChanges();
   }
 
 
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
-    console.log("changes===========>", changes)
-    if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
-      if (changes['eachChange'].currentValue !== undefined) {
-        if (changes['uniqueId'] === undefined) {
-          this.mainId = this.mainId;
-        } else if (changes['uniqueId'].currentValue !== undefined) {
-          this.mainId = changes['uniqueId'].currentValue;
-        } else {
-          this.mainId = this.mainId;
-        }
+    this.applyPendingChanges(changes);
+  }
 
-        this.isLoadingUpdate = true;
-        this.mode = 'update';
-        this.userService.getUserInfo(this.mainId)
-          .subscribe((response: any) => {
-            this.user = response.userinfo;
-            this.form.patchValue({
-              first_name: this.user.first_name,
-              last_name: this.user.last_name,
-              email: this.user.email,
-              dob: this.user.dob,
-              mobile_number: this.user.mobile_number,
-              home_number: this.user.home_number,
-              emergency_number: this.user.emergency_number,
-              kin_name: this.user.kin_name,
-              kin_number: this.user.kin_number,
-              address_line_1: this.user.address_line_1,
-              address_line_2: this.user.address_line_2,
-              post_code: this.user.post_code,
-              country: this.user.country,
-              state: this.user.state,
-              city: this.user.city,
-              employement_type: this.user.employement_type,
-              unique_id: this.user.unique_id,
-              created_at: this.user.created_at
-            });
-            this.isLoadingUpdate = false;
-            this.imagePreview = this.user.profile_image;
-            this.id_proof_image = this.user.id_proof_image
+  private applyPendingChanges(changes?: { [property: string]: SimpleChange }): void {
+    const uniqueIdChange = changes?.['uniqueId'];
+    const eachChange = changes?.['eachChange'];
+    const addChange = changes?.['add'];
+
+    if (uniqueIdChange?.currentValue !== undefined) {
+      this.mainId = uniqueIdChange.currentValue;
+    }
+
+    if (eachChange?.currentValue !== undefined || (changes === undefined && this.eachChange !== undefined)) {
+      if (!this.form) {
+        return;
+      }
+
+      this.isLoadingUpdate = true;
+      this.mode = 'update';
+      this.userService.getUserInfo(this.mainId)
+        .subscribe((response: any) => {
+          this.user = response.userinfo;
+          this.form.patchValue({
+            first_name: this.user.first_name,
+            last_name: this.user.last_name,
+            email: this.user.email,
+            dob: this.user.dob,
+            mobile_number: this.user.mobile_number,
+            home_number: this.user.home_number,
+            emergency_number: this.user.emergency_number,
+            kin_name: this.user.kin_name,
+            kin_number: this.user.kin_number,
+            address_line_1: this.user.address_line_1,
+            address_line_2: this.user.address_line_2,
+            post_code: this.user.post_code,
+            country: this.user.country,
+            state: this.user.state,
+            city: this.user.city,
+            employement_type: this.user.employement_type,
+            unique_id: this.user.unique_id,
+            created_at: this.user.created_at
           });
-      }
+          this.isLoadingUpdate = false;
+          this.imagePreview = this.user.profile_image;
+          this.id_proof_image = this.user.id_proof_image;
+        });
     }
 
-
-
-    if (changes['add'] !== undefined) {
-      if (changes['add'].currentValue !== undefined) {
-        this.mode = 'create';
-      }
+    if (addChange?.currentValue !== undefined || (changes === undefined && this.add !== undefined)) {
+      this.mode = 'create';
     }
-
   }
 
 

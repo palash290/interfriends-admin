@@ -9,9 +9,16 @@
           Users
         </h1>
         <span class="breadcrumb">
-          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
-            Add
-          </button>
+          <div class="d-flex align-items-center gap-2" style="gap: 8px;">
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#emailModal12"
+              ngbTooltip="send email to user" (click)="onUpdateEmail('')">
+              Mail All
+            </button>
+            <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
+              (click)="onAdd()">
+              Add
+            </button>
+          </div>
         </span>
       </section>
       <section class="content">
@@ -97,12 +104,13 @@
                           </a>
 
                           <button type="button" class="btn btn-dark margin" data-toggle="modal"
-                            data-target="#emailModal" ngbTooltip="send email to user"
+                            data-target="#emailModal12" ngbTooltip="send email to user"
                             (click)="onUpdateEmail(user.user_id)">
                             Send Mail
                           </button>
 
-                          <button type="button" class="btn btn-dark margin" data-toggle="modal" data-target="#userServiceModal">
+                          <button type="button" class="btn btn-dark margin" data-toggle="modal"
+                            data-target="#userServiceModal">
                             <i class="fa fa-cogs" aria-hidden="true"></i>
                           </button>
 
@@ -252,8 +260,8 @@
 
 
 <!-- assign mailModal popup start -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
-  [ngStyle]="{'display':displayEmail}">
+<div class="modal fade" id="emailModal12" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayEmail}">
   <form #mailForm="ngForm" (ngSubmit)="sendEmail(mailForm)">
 
     <div class="modal-dialog modal-lg" role="document">
@@ -299,33 +307,10 @@
               <i class="fa fa-refresh fa-spin"></i>
             </span>
           </button>
-          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlockEmail"
             #closeBlock2>Close</button>
         </div>
       </div>
     </div>
   </form>
-</div>
-
-
-<!-- assign mailModal popup start -->
-<div class="modal fade" id="userServiceModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel" aria-hidden="true"
-  [ngStyle]="{'display':displayEmail}">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content" style="max-width: 800px !important; width: 100% !important;">
-        <div class="modal-header">
-          <h1 class="modal-title mb-0 pl-2">All Services Assigned To User</h1>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock3"
-            #closeBlock2>Close</button>
-        </div>
-      </div>
-    </div>
 </div>

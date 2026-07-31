@@ -26,26 +26,31 @@ export class UserDetailComponent implements OnInit, OnChanges {
     this.isLoading = true;
   }
 
-
-
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
-    if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
-      if (changes['eachChange'].currentValue !== undefined) {
-        if (changes['uniqueId'] === undefined) {
-          this.userId = this.userId;
-        } else if (changes['uniqueId'].currentValue !== undefined) {
-          this.userId = changes['uniqueId'].currentValue;
-        } else {
-          this.userId = this.userId;
-        }
+    const uniqueIdChange = changes['uniqueId'];
+    const eachChange = changes['eachChange'];
 
-        this.isLoading = true;
-        this.userService.getUserInfo(this.userId).subscribe((response: any) => {
-          this.user = response.userinfo
-          this.isLoading = false;
-        });
-      }
+    if (!uniqueIdChange && !eachChange) {
+      return;
     }
+
+    if (uniqueIdChange?.currentValue !== undefined) {
+      this.userId = uniqueIdChange.currentValue;
+    }
+
+    if (eachChange?.currentValue === undefined) {
+      return;
+    }
+
+    if (!this.userId) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.userService.getUserInfo(this.userId).subscribe((response: any) => {
+      this.user = response.userinfo;
+      this.isLoading = false;
+    });
   }
 
   onClose(): void {
