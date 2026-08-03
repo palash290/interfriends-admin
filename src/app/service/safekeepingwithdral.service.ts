@@ -127,7 +127,15 @@ export class SafekeepingwithdralService {
 
 
 
-  getWelfareLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any, circle_ids?: any) {
+  getWelfareLists(
+    listsPerPage: number,
+    currentPage: number,
+    user_id: string,
+    group_id: any,
+    search: string = '',
+    group_ids?: any,
+    circle_ids?: any
+  ) {
 
     const listData = new FormData();
 
@@ -145,6 +153,7 @@ export class SafekeepingwithdralService {
       listData.append('circle_ids', circle_ids.toString());
     }
 
+    listData.append('search_keyword', search || '');
 
     this.http
       .post<{ success: string; message: string; lists: any; listCount: number; }>(

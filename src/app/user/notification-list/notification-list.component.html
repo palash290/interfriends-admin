@@ -90,9 +90,18 @@
                                                                class="btn btn-primary"
                                                                *ngIf="data.type === '10'">View</a>
 
+                                                            <a [routerLink]="['/user/welfare-requests']"
+                                                               class="btn btn-primary"
+                                                               *ngIf="data.type == '12'">View</a>
+
+                                                            <a [routerLink]="['/user/welfare', data.group_id, data.user_id]"
+                                                               class="btn btn-primary" *ngIf="data.type == '11'">
+                                                               View
+                                                            </a>
+
                                                             <!-- <button class="btn btn-danger" data-toggle="modal" data-target="#activateModal" (click)="onSetId(data.id, i)">
-                                                  <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </button> -->
+                                                                  <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </button> -->
                                                          </div>
                                                       </div>
                                                       <span class="extra-para mt-0 d-block">{{data.message}}</span>

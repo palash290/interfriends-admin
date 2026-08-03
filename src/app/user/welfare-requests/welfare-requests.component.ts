@@ -42,6 +42,7 @@ export class WelfareRequestsComponent implements OnInit {
   request_status: string;
   group_ids: any;
   circle_ids: any;
+  search = '';
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -74,6 +75,7 @@ export class WelfareRequestsComponent implements OnInit {
         this.currentPage,
         this.userId,
         this.groupId,
+        this.search,
         this.group_ids,
         this.circle_ids
       );
@@ -89,6 +91,20 @@ export class WelfareRequestsComponent implements OnInit {
           }
         );
     });
+  }
+
+  keyPress(): any {
+    this.currentPage = 0;
+    this.isLoadingPage = true;
+    this.safekeepingwithdralService.getWelfareLists(
+      this.listsPerPage,
+      this.currentPage,
+      this.userId,
+      this.groupId,
+      this.search,
+      this.group_ids,
+      this.circle_ids
+    );
   }
 
   checkAdminType() {
@@ -209,6 +225,7 @@ export class WelfareRequestsComponent implements OnInit {
       this.currentPage,
       this.userId,
       this.groupId,
+      this.search,
       this.group_ids,
       this.circle_ids
     );
