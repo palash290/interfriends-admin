@@ -33,7 +33,7 @@
           <select class="form-control" formControlName="property_id">
             <option value=''>Select Property</option>
             <option [value]="data.item_id" *ngFor="let data of propertyList">{{data.item_text}}</option>
-            <option value='others'>Other</option>
+            <!-- <option value='others'>Other</option> -->
           </select>
           <span class="help-block" *ngIf="form.get('property_id').invalid  && form.get('property_id').touched">
             Please enter a property.

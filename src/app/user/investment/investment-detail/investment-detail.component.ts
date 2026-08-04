@@ -18,6 +18,7 @@ export class InvestmentDetailComponent implements OnInit, OnChanges {
   mainId: string;
   investment: Investment;
   isLoading = true;
+  subAdminId: any;
 
   constructor(
     public investmentService: InvestmentService,
@@ -25,9 +26,9 @@ export class InvestmentDetailComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.isLoading = true;
   }
-
 
 
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {

@@ -80,6 +80,7 @@ export class WelfareComponent implements OnInit {
   display3: string = "none";
   month: string;
   minDate: any;
+  subAdminId: string;
   @ViewChild('closeBtn') closeBtn!: ElementRef<HTMLButtonElement>;
 
   constructor(
@@ -98,6 +99,7 @@ export class WelfareComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
@@ -316,7 +318,8 @@ export class WelfareComponent implements OnInit {
       this.form.value.admin_risk,
       this.form.value.emi,
       this.form.value.pay_date,
-      this.groupLifecycle_id
+      this.groupLifecycle_id,
+      this.subAdminId
     ).subscribe({
       next: (response: any) => {
         this.isLoading = false;
@@ -374,7 +377,8 @@ export class WelfareComponent implements OnInit {
       this.formUpdate.value.start_date,
       this.formUpdate.value.payment_method,
       this.formUpdate.value.is_completed,
-      this.welfare_uuid
+      this.welfare_uuid,
+      this.subAdminId
 
     ).subscribe((response: any) => {
       this.formUpdate.reset();

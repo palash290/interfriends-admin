@@ -30,6 +30,10 @@ export class UserListService {
       userData.append('group_ids', group_ids.toString());
     }
 
+    // if (subAdminId) {
+    //   userData.append('subAdminId', subAdminId.toString());
+    // }
+
     if (circle_ids && circle_ids != "") {
       userData.append('circle_ids', circle_ids.toString());
     }
@@ -58,12 +62,16 @@ export class UserListService {
   blockUnblock(
     id: string,
     status: string,
-    admintype: string
+    admintype: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
     instituteData.append('status', status);
     instituteData.append('admintype', admintype);
+    if (adminId) {
+      instituteData.append('admin_id', adminId);
+    }
 
     return this.http.post<{
       success: string;
@@ -158,12 +166,14 @@ export class UserListService {
   setDefault(
     id: string,
     status: string,
-    admintype: string
+    admintype: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
     instituteData.append('is_default', status);
     instituteData.append('admintype', admintype);
+    instituteData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -194,7 +204,8 @@ export class UserListService {
     id_proof_image: any,
     employement_type: string,
     unique_id: string,
-    created_at: string
+    created_at: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('first_name', first_name);
@@ -217,6 +228,7 @@ export class UserListService {
     userData.append('employement_type', employement_type);
     userData.append('unique_id', unique_id);
     userData.append('created_at', created_at);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -255,7 +267,8 @@ export class UserListService {
     id_proof_image: any,
     employement_type: string,
     unique_id: string,
-    created_at: string
+    created_at: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('user_id', user_id);
@@ -279,7 +292,7 @@ export class UserListService {
     userData.append('employement_type', employement_type);
     userData.append('unique_id', unique_id);
     userData.append('created_at', created_at);
-
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;

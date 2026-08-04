@@ -41,6 +41,8 @@ export class MiscellaneousAddComponent implements OnInit {
     allowSearchFilter: true
   };
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public miscellaneousService: MiscellaneousService,
@@ -50,6 +52,7 @@ export class MiscellaneousAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
@@ -148,7 +151,8 @@ export class MiscellaneousAddComponent implements OnInit {
         this.form.value.note_title,
         this.form.value.note_description,
         this.form.value.payment_method,
-        this.form.value.paid_status
+        this.form.value.paid_status,
+        this.subAdminId
       ).subscribe({
         next: (response: any) => {
           console.log("response=======>", response)

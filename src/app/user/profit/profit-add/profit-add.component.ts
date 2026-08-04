@@ -30,6 +30,7 @@ export class ProfitAddComponent implements OnInit {
   isLoadingProperty = true;
   propertyList: AllUser[] = [];
   @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
+  subAdminId: any;
 
 
   constructor(
@@ -41,6 +42,7 @@ export class ProfitAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       property_id: new FormControl(null, { validators: [Validators.required] }),
@@ -116,7 +118,8 @@ export class ProfitAddComponent implements OnInit {
         '1',
         '',
         this.form.value.note_title,
-        this.form.value.note_description
+        this.form.value.note_description,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();
@@ -146,7 +149,8 @@ export class ProfitAddComponent implements OnInit {
         '1',
         '',
         this.form.value.note_title,
-        this.form.value.note_description
+        this.form.value.note_description,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();

@@ -37,6 +37,7 @@ export class SingleUserDetailComponent implements OnInit {
   trustScoreBand: string = 'Unknown';
   trustScoreRange: string = 'Overall trust indicator';
   trustScoreClass: string = 'color-grey';
+  subAdminId: any;
 
   constructor(
     public userService: UserService,
@@ -46,6 +47,7 @@ export class SingleUserDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.isLoading = true;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
@@ -176,6 +178,7 @@ export class SingleUserDetailComponent implements OnInit {
     userData.append('user_id', this.userId);
     userData.append('subject', data.value.subject);
     userData.append('message', data.value.body);
+    userData.append('admin_id', this.subAdminId);
     this.groupService
       .postAPI(
         '/sendEmailtoUserinCircle', userData

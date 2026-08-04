@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { SafeKeepingService} from '../../../service/safeKeeping.service';
+import { AuthService } from '../../../service/auth.service';
+import { SafeKeepingService } from '../../../service/safeKeeping.service';
 import { UserService } from 'src/app/service/user.service';
 import { Loan } from 'src/app/model/loan.model';
 
@@ -25,11 +25,12 @@ export class AddSafeKeepingComponent implements OnInit {
   @Input() add: string;
   @Input() userId: string;
   @Input() groupId: string;
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
 
   @Output() valueChange = new EventEmitter();
   loan: Loan;
   selectListStatusId: string;
+  subAdminId: any;
 
   constructor(
     public authService: AuthService,
@@ -54,38 +55,38 @@ export class AddSafeKeepingComponent implements OnInit {
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
 
-          // this.isLoadingUpdate = true;
-          // this.mode = 'update';
-          // this.loanService.loanDetail(this.mainId)
-          // .subscribe((response: any) => {
-          //   console.log(response.loanDetail, 'response.loanDetail');
-          //   this.loan =  response.loanDetail;
-          //   this.form.patchValue({
-          //     loan_amount: this.loan.loan_amount,
-          //     tenure: this.loan.tenure,
-          //     contact_number: this.loan.contact_number,
-          //     loan_type: this.loan.loan_type,
-          //     status: this.loan.status
-          //   });
-          //   this.isLoadingUpdate = false;
-          // });
+        // this.isLoadingUpdate = true;
+        // this.mode = 'update';
+        // this.loanService.loanDetail(this.mainId)
+        // .subscribe((response: any) => {
+        //   console.log(response.loanDetail, 'response.loanDetail');
+        //   this.loan =  response.loanDetail;
+        //   this.form.patchValue({
+        //     loan_amount: this.loan.loan_amount,
+        //     tenure: this.loan.tenure,
+        //     contact_number: this.loan.contact_number,
+        //     loan_type: this.loan.loan_type,
+        //     status: this.loan.status
+        //   });
+        //   this.isLoadingUpdate = false;
+        // });
       }
     }
 
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -109,7 +110,8 @@ export class AddSafeKeepingComponent implements OnInit {
         this.form.value.note_title,
         this.form.value.note_description,
         '0',
-        0
+        0,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup1111').click();

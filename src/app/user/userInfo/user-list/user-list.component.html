@@ -11,7 +11,7 @@
         <span class="breadcrumb">
           <div class="d-flex align-items-center gap-2" style="gap: 8px;">
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#emailModal12"
-              ngbTooltip="send email to user" (click)="onUpdateEmail('')">
+              ngbTooltip="send email to user" (click)="onUpdateEmail('')" *ngIf="adminType === '2'">
               Mail All
             </button>
             <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
@@ -109,10 +109,10 @@
                             Send Mail
                           </button>
 
-                          <button type="button" class="btn btn-dark margin" data-toggle="modal"
+                          <!-- <button type="button" class="btn btn-dark margin" data-toggle="modal"
                             data-target="#userServiceModal">
                             <i class="fa fa-cogs" aria-hidden="true"></i>
-                          </button>
+                          </button> -->
 
                         </div>
                       </td>

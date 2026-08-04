@@ -26,7 +26,7 @@ export class bannersAndmessagesService {
     }
 
     userData.append('title', data.title);
-
+    userData.append('admin_id', data.admin_id);
     return this.http.post<{
       success: string;
       message: string;
@@ -52,6 +52,7 @@ export class bannersAndmessagesService {
     userData.append("image", data.banner[0]);
     userData.append('id', id);
     userData.append('title', data.title);
+    userData.append('admin_id', data.admin_id);
 
     return this.http.post<{
       success: string;
@@ -72,10 +73,11 @@ export class bannersAndmessagesService {
     );
   }
 
-  bannerDelete(id: any) {
+  bannerDelete(id: any, adminId: any) {
 
     const userData = new FormData();
     userData.append('id', id);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;

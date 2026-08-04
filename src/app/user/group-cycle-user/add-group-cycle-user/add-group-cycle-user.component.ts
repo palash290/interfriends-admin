@@ -35,6 +35,8 @@ export class AddGroupCycleUserComponent implements OnInit {
   amount: any;
   minDate: any;
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public groupCycleService: GroupCycleService,
@@ -45,7 +47,7 @@ export class AddGroupCycleUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       start_date: new FormControl(null, { validators: [Validators.required] }),
@@ -147,7 +149,8 @@ export class AddGroupCycleUserComponent implements OnInit {
         this.form.value.start_date,
         this.form.value.month,
         this.form.value.status,
-        this.form.value.payment_method
+        this.form.value.payment_method,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();
@@ -175,7 +178,8 @@ export class AddGroupCycleUserComponent implements OnInit {
         this.form.value.start_date,
         this.form.value.month,
         this.form.value.status,
-        this.form.value.payment_method
+        this.form.value.payment_method,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();

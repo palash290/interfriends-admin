@@ -13,6 +13,7 @@ declare var $: any;
   styleUrls: ['./loan-payment.component.css']
 })
 export class LoanPaymentComponent implements OnInit {
+
   lists: LoanPayment[] = [];
   isLoading = true;
   userId: string;
@@ -36,6 +37,8 @@ export class LoanPaymentComponent implements OnInit {
   add: string;
   // add edit code end
 
+  subAdminId: any;
+
   constructor(
     public userService: UserService,
     public loanService: LoanService,
@@ -44,6 +47,7 @@ export class LoanPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');

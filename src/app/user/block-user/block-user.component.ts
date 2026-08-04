@@ -15,7 +15,7 @@ export class BlockUserComponent implements OnInit {
   totalUsers = 0;
   usersPerPage = 10;
   currentPage = 0;
-  isLoading = true;
+  isLoading = false;
 
   constructor(
     public userService: UserListService,
@@ -38,11 +38,13 @@ export class BlockUserComponent implements OnInit {
   }
 
   onSetId(id: string, status: string) {
+    this.isLoading = true;
     this.userService.userBlockconfirm(id, status).subscribe((response: any) => {
       this.userService.userBlockRequestList(this.usersPerPage, this.currentPage).subscribe((userData: { userList: UserList[]; userCount: number }) => {
         this.users = userData.userList;
         this.totalUsers = userData.userCount;
       })
+      this.isLoading = false;
       this.toastr.success(response.message);
     })
   }

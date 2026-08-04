@@ -6,70 +6,69 @@ import { environment } from '../../environments/environment'
 
 
 const API_URL = environment.apiUrl;
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class creditscoreService {
 
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
-addCreditScore( score1 : any,score2 : any,credit_score_name : any,credit_score_description : any){
+  addCreditScore(score1: any, score2: any, credit_score_name: any, credit_score_description: any, admin_id: any) {
     const userData = new FormData();
     userData.append('score1', score1);
     userData.append('score2', score2);
     userData.append('credit_score_name', credit_score_name);
     userData.append('credit_score_description', credit_score_description);
-
+    userData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;
       message: string;
-      credit_score_list : any
+      credit_score_list: any
     }>(
-        API_URL + '/addCreditScoreList', userData
-      );
-}
+      API_URL + '/addCreditScoreList', userData
+    );
+  }
 
-  getCreditScore(){
+  getCreditScore() {
 
     return this.http.get<{
-        success: string;
-        message: string;
-        credit_score_list: any;
-      }>(
-          API_URL + '/allCreditScoreList',
-        );
+      success: string;
+      message: string;
+      credit_score_list: any;
+    }>(
+      API_URL + '/allCreditScoreList',
+    );
   }
 
-  updateCreditScore(id : any, score1 : any,score2 : any,credit_score_name : any,credit_score_description : any){
-    
+  updateCreditScore(id: any, score1: any, score2: any, credit_score_name: any,
+    credit_score_description: any, admin_id: any) {
+
     const userData = new FormData();
     userData.append('id', id);
     userData.append('score1', score1);
     userData.append('score2', score2);
     userData.append('credit_score_name', credit_score_name);
     userData.append('credit_score_description', credit_score_description);
-
+    userData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/editCreditScoreList', userData
-      );
+      API_URL + '/editCreditScoreList', userData
+    );
   }
 
-  deleteCreditScore(id : any){
+  deleteCreditScore(id: any, admin_id: any) {
     const userData = new FormData();
     userData.append('id', id);
-   
-
-
+    userData.append('admin_id', admin_id);
     return this.http.post<{
       success: string;
       message: string;
     }>(
-        API_URL + '/deleteCreditScoreList', userData
-      );
+      API_URL + '/deleteCreditScoreList', userData
+    );
   }
 }

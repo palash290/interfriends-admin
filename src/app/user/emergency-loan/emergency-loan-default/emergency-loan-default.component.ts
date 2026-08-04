@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { EmergencyLoanService} from '../../../service/emergencyLoan.service';
+import { AuthService } from '../../../service/auth.service';
+import { EmergencyLoanService } from '../../../service/emergencyLoan.service';
 import { EmergencyLoan } from 'src/app/model/emergencyLoan.model';
 import { UserService } from 'src/app/service/user.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -27,9 +27,9 @@ export class EmergencyLoanDefaultComponent implements OnInit {
   @Input() eachChange: string;
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
   loan: EmergencyLoan;
-  dropdownSettings:IDropdownSettings = {
+  dropdownSettings: IDropdownSettings = {
     singleSelection: false,
     idField: 'item_id',
     textField: 'item_text',
@@ -38,6 +38,8 @@ export class EmergencyLoanDefaultComponent implements OnInit {
     itemsShowLimit: 3,
     allowSearchFilter: true
   };
+
+  subAdminId: any;
 
   constructor(
     public authService: AuthService,
@@ -48,15 +50,16 @@ export class EmergencyLoanDefaultComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
       loan_amount: new FormControl(null, { validators: [Validators.required] }),
-      pay_by	: new FormControl(null, { validators: [Validators.required] }),
-      contact_number	: new FormControl(null, { validators: [Validators.required] }),
+      pay_by: new FormControl(null, { validators: [Validators.required] }),
+      contact_number: new FormControl(null, { validators: [Validators.required] }),
       created_at: new FormControl(null, { validators: [Validators.required] }),
-      note_title	: new FormControl(null, { validators: [Validators.required] }),
-      note_description	: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, { validators: [Validators.required] }),
     });
   }
 
@@ -65,37 +68,37 @@ export class EmergencyLoanDefaultComponent implements OnInit {
     console.log("onchanges")
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
-          // this.isLoadingUpdate = true;
-          // this.mode = 'update';
-          // this.emergencyLoanService.emergencyLoan_detail(this.mainId)
-          // .subscribe((response: any) => {
-          //   this.loan =  response.emergencyLoanDetail;
-          //   this.form.patchValue({
-          //     loan_amount: this.loan.loan_amount,
-          //     pay_by: this.loan.pay_by,
-          //     status: this.loan.status,
-          //     payment_method: this.loan.payment_method,
-          //     paid_status: this.loan.paid_status,
-          //     created_at: this.loan.created_at
-          //   });
-          //   this.isLoadingUpdate = false;
-          // });
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
+        // this.isLoadingUpdate = true;
+        // this.mode = 'update';
+        // this.emergencyLoanService.emergencyLoan_detail(this.mainId)
+        // .subscribe((response: any) => {
+        //   this.loan =  response.emergencyLoanDetail;
+        //   this.form.patchValue({
+        //     loan_amount: this.loan.loan_amount,
+        //     pay_by: this.loan.pay_by,
+        //     status: this.loan.status,
+        //     payment_method: this.loan.payment_method,
+        //     paid_status: this.loan.paid_status,
+        //     created_at: this.loan.created_at
+        //   });
+        //   this.isLoadingUpdate = false;
+        // });
       }
     }
 
 
 
     if (changes['add'] !== undefined) {
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -112,7 +115,7 @@ export class EmergencyLoanDefaultComponent implements OnInit {
       }
 
 
-      if(this.form.value.loan_amount > 500) {
+      if (this.form.value.loan_amount > 500) {
         this.toastr.error('Please enter amount less then 500');
         return;
       }
@@ -128,9 +131,10 @@ export class EmergencyLoanDefaultComponent implements OnInit {
         this.form.value.contact_number,
         this.form.value.created_at,
         this.form.value.note_title,
-        this.form.value.note_description
+        this.form.value.note_description,
+        this.subAdminId
       ).subscribe((response: any) => {
-        console.log(response,"response --")
+        console.log(response, "response --")
         this.form.reset();
         document.getElementById('closePopupAdd').click();
         this.isLoading = false;
@@ -175,11 +179,11 @@ export class EmergencyLoanDefaultComponent implements OnInit {
 
 
 
-  onItemSelect(item:any){
+  onItemSelect(item: any) {
 
   }
 
-  OnItemDeSelect(item:any){
+  OnItemDeSelect(item: any) {
 
   }
 

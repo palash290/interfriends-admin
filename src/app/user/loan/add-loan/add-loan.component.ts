@@ -35,6 +35,8 @@ export class AddLoanComponent implements OnInit {
   loan: Loan;
   selectListStatusId: string;
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public loanService: LoanService,
@@ -44,6 +46,7 @@ export class AddLoanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     // this.loan.status = '1';
     this.adminType = this.authService.getAdminType();
@@ -176,7 +179,8 @@ export class AddLoanComponent implements OnInit {
         this.form.value.created_at,
         this.form.value.ref_no,
         this.form.value.started_at,
-        this.loan_emi
+        this.loan_emi,
+        this.subAdminId
       ).subscribe({
         next: (response: any) => {
           this.isLoading = false;

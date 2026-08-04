@@ -41,6 +41,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
   request_status: string;
   group_ids: any;
   circle_ids: any;
+  subAdminId: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -50,6 +51,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
     this.getList();
@@ -168,7 +170,8 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
         this.form.value.note_title,
         this.form.value.note_description,
         this.modalData.id,
-        this.modalData.request_type
+        this.modalData.request_type,
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();
@@ -197,7 +200,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
 
     this.isLoading = true;
     this.safeKeepingService
-      .removeSafekeepingRequest(this.id)
+      .removeSafekeepingRequest(this.id, this.subAdminId)
       .subscribe((response: any) => {
         this.onClose();
         if (response.success == '1') {

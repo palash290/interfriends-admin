@@ -32,6 +32,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   add: string;
   // add edit code end
 
+  subAdminId: any;
+
   constructor(
     public categoryService: CategoryService,
     public groupService: GroupService,
@@ -39,6 +41,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.adminType = localStorage.getItem('admin_type_interFriendAdmin');
     this.loadCategories();
   }

@@ -46,6 +46,7 @@ export class CircleUsersComponent implements OnInit {
   display: string = "none";
   circlelists: any[] = [];
   mailBody: string = '';
+  subAdminId: any;
 
   constructor(
     public singleUserGroupList: SingleUserGroupList,
@@ -56,7 +57,7 @@ export class CircleUsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.circleId = paramMap.get('circleId');
@@ -218,6 +219,7 @@ export class CircleUsersComponent implements OnInit {
     userData.append('user_id', this.updateId);
     userData.append('subject', data.value.subject);
     userData.append('message', data.value.body);
+    userData.append('admin_id', this.subAdminId);
     this.groupService
       .postAPI(
         '/sendEmailtoUserinCircle', userData

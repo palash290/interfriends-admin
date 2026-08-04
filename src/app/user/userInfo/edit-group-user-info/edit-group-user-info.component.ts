@@ -27,6 +27,7 @@ export class EditGroupUserInfoComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
   @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
   userInfo: UserGroup;
+  subAdminId: any;
 
 
   constructor(
@@ -38,6 +39,7 @@ export class EditGroupUserInfoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       amount: new FormControl(null, { validators: [Validators.required] }),
@@ -74,8 +76,6 @@ export class EditGroupUserInfoComponent implements OnInit {
           });
       }
     }
-
-
 
     if (changes['add'] !== undefined) {
           if (changes['add'].currentValue !== undefined) {
@@ -125,6 +125,7 @@ export class EditGroupUserInfoComponent implements OnInit {
         this.form.value.amount,
         this.form.value.expected_date,
         this.form.value.jnr_amount,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopupEdit').click();

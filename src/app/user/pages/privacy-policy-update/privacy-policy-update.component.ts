@@ -9,9 +9,11 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./privacy-policy-update.component.css']
 })
 export class PrivacyPolicyUpdateComponent implements OnInit {
+
   userId: string;
   isLoading = true;
   info: string;
+  subAdminId: any;
 
   constructor(
     public userService: UserService,
@@ -20,6 +22,7 @@ export class PrivacyPolicyUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.isLoading = true;
     this.userId = this.authService.getUserId();
 
@@ -38,7 +41,8 @@ export class PrivacyPolicyUpdateComponent implements OnInit {
     }
 
     this.userService.addPrivacyPolicy(
-      this.info
+      this.info,
+      this.subAdminId
       ).subscribe((response: any) => {
         this.isLoading = false;
         if (response.success === '1') {

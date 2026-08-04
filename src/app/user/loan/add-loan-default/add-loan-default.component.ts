@@ -35,6 +35,8 @@ export class AddLoanDefaultComponent implements OnInit {
   loan: Loan;
   selectListStatusId: string;
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public loanService: LoanService,
@@ -44,12 +46,13 @@ export class AddLoanDefaultComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
       loan_amount: new FormControl(null, { validators: [Validators.required] }),
       tenure: new FormControl('', { validators: [Validators.required] }),
-      contact_number: new FormControl(null, { validators: [Validators.required] }),
+      // contact_number: new FormControl(null, {}),
       loan_type: new FormControl('', { validators: [Validators.required] }),
       created_at: new FormControl('', { validators: [Validators.required] }),
       interRate: new FormControl('', { validators: [Validators.required, Validators.pattern("^[0-9]*$")] }),
@@ -73,12 +76,8 @@ export class AddLoanDefaultComponent implements OnInit {
           } else {
             this.mainId = this.mainId;
           }
-
-
       }
     }
-
-
 
     if (changes['add'] !== undefined) {
           if (changes['add'].currentValue !== undefined) {
@@ -117,14 +116,15 @@ export class AddLoanDefaultComponent implements OnInit {
         this.groupId,
         this.form.value.loan_amount,
         this.form.value.tenure,
-        this.form.value.contact_number,
+        // this.form.value.contact_number,
         this.form.value.loan_type,
         this.form.value.document_image,
         this.form.value.pay_date,
         this.form.value.created_at,
         this.form.value.interRate,
         this.form.value.note_title,
-        this.form.value.note_description
+        this.form.value.note_description,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopupAdd').click();

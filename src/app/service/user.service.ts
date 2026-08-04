@@ -168,9 +168,11 @@ export class UserService {
 
   addPrivacyPolicy(
     info: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('info', info);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -207,9 +209,11 @@ export class UserService {
 
   addTerms(
     info: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('info', info);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;

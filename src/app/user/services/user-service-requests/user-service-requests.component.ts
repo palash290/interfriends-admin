@@ -49,6 +49,7 @@ export class UserServiceRequestsComponent implements OnInit {
   selectedCompanyName = '';
   servicesPerPage = 10;
   selectedServiceImages: Array<{ id: string | number | null; name: string; url: string }> = [];
+  subAdminId: any;
 
   constructor(
     private toastr: ToastrService,
@@ -57,6 +58,7 @@ export class UserServiceRequestsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+     this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
     this.getList();
@@ -243,6 +245,7 @@ export class UserServiceRequestsComponent implements OnInit {
     serviceData.append('user_service_id', this.acceptId);
     serviceData.append('approval_status', '1');
     serviceData.append('approved_by', aprBy);
+    serviceData.append('admin_id', this.subAdminId);
 
     this.groupService.postAPI('/approveRejectUserService', serviceData)
       .subscribe((response: any) => {
@@ -279,6 +282,7 @@ export class UserServiceRequestsComponent implements OnInit {
     serviceData.append('approval_status', '2');
     serviceData.append('approved_by', aprBy);
     serviceData.append('reject_reason', this.rejectForm.value.reason);
+    serviceData.append('admin_id', this.subAdminId);
 
     this.isLoadingBtn = true;
     this.groupService.postAPI('/approveRejectUserService', serviceData)

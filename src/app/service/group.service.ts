@@ -63,10 +63,12 @@ export class GroupService {
   addGroup(
     group_cycle_name: string,
     group_cycle_descp: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('group_cycle_name', group_cycle_name);
     userData.append('group_cycle_descp', group_cycle_descp);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -82,11 +84,13 @@ export class GroupService {
     id: string,
     group_cycle_name: string,
     group_cycle_descp: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('id', id);
     userData.append('group_cycle_name', group_cycle_name);
     userData.append('group_cycle_descp', group_cycle_descp);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -168,12 +172,13 @@ export class GroupService {
 
   blockUnblockBanners(
     id: string,
-    status: string
+    status: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('banner_id', id);
     userData.append('status', status);
-
+    userData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;

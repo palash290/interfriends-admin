@@ -44,6 +44,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   group_ids: any;
   circle_ids: any;
+  subAdminId: any;
 
   constructor(
     public userService: UserListService,
@@ -56,6 +57,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.adminType = this.authService.getAdminType();
     this.userService.getUsers(this.usersPerPage, this.currentPage, this.search, this.group_ids, this.circle_ids);
     this.usersSub = this.userService.getUserUpdateListener().subscribe(
@@ -161,7 +163,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   onBlockUnblock(status: string): void {
-    this.userService.blockUnblock(this.selectPlanId, status, this.adminType).subscribe((response: any) => {
+    this.userService.blockUnblock(this.selectPlanId, status, this.adminType, this.subAdminId).subscribe((response: any) => {
       if (response.status === '1') {
         document.getElementById('closeUnblock').click();
       } else {
@@ -173,7 +175,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   onDefaultUser(isDefault: string): void {
-    this.userService.setDefault(this.selectPlanId, isDefault, this.adminType).subscribe((response: any) => {
+    this.userService.setDefault(this.selectPlanId, isDefault, this.adminType, this.subAdminId).subscribe((response: any) => {
 
       document.getElementById('closeDefault').click();
 
@@ -263,6 +265,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     if (this.updateId) {
       userData.append('user_id', this.updateId);
     }
+
+    userData.append('admin_id', this.subAdminId);
 
     // Select API based on whether a user is selected
     const apiUrl = this.updateId

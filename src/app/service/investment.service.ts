@@ -63,7 +63,8 @@ export class InvestmentService {
     payment_status: string,
     payment_method: string,
     note_title: string,
-    note_description: string
+    note_description: string,
+    admin_id: string
   ): any {
     let adminId = this.authService.getUserId();
 
@@ -78,6 +79,7 @@ export class InvestmentService {
     userData.append('payment_method', payment_method);
     userData.append('note_title', note_title);
     userData.append('note_description', note_description);
+    userData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;
@@ -98,7 +100,8 @@ export class InvestmentService {
     payment_status: string,
     payment_method: string,
     note_title: string,
-    note_description: string
+    note_description: string,
+    admin_id: string
   ): any {
     const userData = new FormData();
     userData.append('id', id);
@@ -111,6 +114,7 @@ export class InvestmentService {
     userData.append('payment_method', payment_method);
     userData.append('note_title', note_title);
     userData.append('note_description', note_description);
+    userData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;

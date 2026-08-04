@@ -24,6 +24,7 @@ export class AddbannerMessagesComponent implements OnInit {
   allbannerAndmsg: any = [];
   isLoading = false;
   adminType: string;
+  subAdminId: any;
 
   constructor(public sanitizer: DomSanitizer,
     public addbannerAndmessages: bannersAndmessagesService,
@@ -37,6 +38,7 @@ export class AddbannerMessagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.adminType = this.authService.getAdminType();
     this.getAllbannerAndmessage()
   }
@@ -151,7 +153,7 @@ export class AddbannerMessagesComponent implements OnInit {
   }
 
   delete(id: any) {
-    this.addbannerAndmessages.bannerDelete(id).subscribe((response: any) => {
+    this.addbannerAndmessages.bannerDelete(id, this.subAdminId).subscribe((response: any) => {
       if (response.success == 1) {
         this.getAllbannerAndmessage();
         this.toastr.success(response.message);
@@ -193,7 +195,8 @@ export class AddbannerMessagesComponent implements OnInit {
     console.log("-----", this.messages, this.myForm.controls.title.value)
     const obj = {
       title: this.myForm.controls.title.value,
-      banner: ''
+      banner: '',
+      admin_id: this.subAdminId
     }
     if (this.addStatus) {
       this.addbannerAndmessages.addbannersAndmessages(obj).subscribe((response: any) => {
@@ -232,7 +235,8 @@ export class AddbannerMessagesComponent implements OnInit {
     }
     const obj = {
       title: this.myForm.controls.title.value,
-      banner: this.item_image
+      banner: this.item_image,
+      admin_id: this.subAdminId
     }
     this.isLoading = true;
     if (this.addStatus) {
@@ -288,7 +292,7 @@ export class AddbannerMessagesComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-    this.groupService.blockUnblockBanners(this.selectListId, status).subscribe((response: any) => {
+    this.groupService.blockUnblockBanners(this.selectListId, status, this.subAdminId).subscribe((response: any) => {
       if (response.success == '1') {
 
         document.getElementById('closeUnblock').click();

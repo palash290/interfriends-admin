@@ -24,6 +24,7 @@ export class CategoryAddComponent implements OnInit, OnChanges {
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
   category: Category;
+  subAdminId: any;
 
   constructor(
     public authService: AuthService,
@@ -32,6 +33,7 @@ export class CategoryAddComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       category_name: new FormControl(null, { validators: [Validators.required] }),
@@ -115,7 +117,8 @@ export class CategoryAddComponent implements OnInit, OnChanges {
       this.categoryService.addServiceCategory(
         this.form.value.category_name,
         creator.createdBy,
-        creator.createdByType
+        creator.createdByType,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         this.form.patchValue({ status: '1' });
@@ -141,7 +144,8 @@ export class CategoryAddComponent implements OnInit, OnChanges {
         this.form.value.category_name,
         this.form.value.status,
         updater.updatedBy,
-        updater.updatedByType
+        updater.updatedByType,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         this.form.patchValue({ status: '1' });

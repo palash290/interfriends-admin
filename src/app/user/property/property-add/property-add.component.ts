@@ -36,6 +36,7 @@ export class PropertyAddComponent implements OnInit {
   fileUploads: any[] = [];
   filesPreview: any[] = [];
   files: FileHandle[] = [];
+  subAdminId: any;
 
   constructor(
     public authService: AuthService,
@@ -46,6 +47,7 @@ export class PropertyAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required] }),
@@ -188,7 +190,8 @@ export class PropertyAddComponent implements OnInit {
         this.form.value.property_tenure,
         this.form.value.image,
         this.fileUploads,
-        this.userId
+        this.userId,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';
@@ -216,7 +219,8 @@ export class PropertyAddComponent implements OnInit {
         this.form.value.start_date,
         this.form.value.property_tenure,
         this.form.value.image,
-        this.fileUploads
+        this.fileUploads,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';

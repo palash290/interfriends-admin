@@ -75,6 +75,8 @@ import { ServicesComponent } from './services/services.component';
 import { SubCategoryComponent } from './services/sub-category/sub-category.component';
 import { UserServiceRequestsComponent } from './services/user-service-requests/user-service-requests.component';
 import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.component';
+import { SubAdminLogsComponent } from './subadmin/sub-admin-logs/sub-admin-logs.component';
+import { SubAdminPermissionsComponent } from './subadmin/sub-admin-permissions/sub-admin-permissions.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -352,6 +354,16 @@ const routes: Routes = [
             canActivate: [AuthUserGuard]
          },
          {
+            path: 'subadminlogs',
+            component: SubAdminLogsComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'subadminPermissions',
+            component: SubAdminPermissionsComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
             path: 'investmentRequest',
             component: InvestmentRequestComponent,
             canActivate: [AuthUserGuard]
@@ -443,7 +455,7 @@ const routes: Routes = [
             component: PayoutRequestComponent,
             canActivate: [AuthUserGuard]
          },
-          {
+         {
             path: 'welfare-requests',
             component: WelfareRequestsComponent,
             canActivate: [AuthUserGuard]
@@ -465,7 +477,7 @@ const routes: Routes = [
             component: SubCategoryComponent,
             canActivate: [AuthUserGuard]
          },
-          {
+         {
             path: 'user-services',
             component: UserServiceRequestsComponent,
             canActivate: [AuthUserGuard]

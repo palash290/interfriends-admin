@@ -100,6 +100,7 @@ export class ServicesComponent implements OnInit {
   filterCategoryId = '';
   filterSubCategoryId = '';
   filterStatus = '';
+  subAdminId: any;
 
   constructor(
     public groupService: GroupService,
@@ -108,6 +109,7 @@ export class ServicesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.adminType = this.authService.getAdminType();
     this.initForm();
     this.initAssignForm();
@@ -457,6 +459,7 @@ export class ServicesComponent implements OnInit {
     serviceData.append('service_name', this.form.value.service_name);
     serviceData.append('description', this.form.value.description);
     serviceData.append('status', this.form.value.status);
+    serviceData.append('admin_id', this.subAdminId);
 
     const endpoint = this.mode === 'update' ? '/updateService' : '/addService';
 

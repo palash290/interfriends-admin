@@ -155,11 +155,13 @@ export class UserGroupService {
 
   adduserGroup(
     id: string,
-    users: string
+    users: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
     instituteData.append('users', users);
+    instituteData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;

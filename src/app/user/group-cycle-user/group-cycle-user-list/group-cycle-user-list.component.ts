@@ -54,6 +54,8 @@ export class GroupCycleUserListComponent implements OnInit {
   display1: string = 'none';
   display2: string = 'none';
 
+  subAdminId: any;
+
   constructor(
     public userService: UserService,
     public groupCycleService: GroupCycleService,
@@ -63,6 +65,7 @@ export class GroupCycleUserListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
@@ -196,8 +199,6 @@ export class GroupCycleUserListComponent implements OnInit {
   }
 
 
-
-
   updateStatus(id: string, status: string, index: number) {
     this.groupCycleService.editUserGroupCycleStatus(id, status)
       .subscribe((response: any) => {
@@ -235,7 +236,7 @@ export class GroupCycleUserListComponent implements OnInit {
 
   onPayout() {
     console.log(this.pfNote, "-----==----==--==-=-=-=")
-    this.groupCycleService.addPayout(this.userId, this.groupLifecycle_id, this.groupId, this.pfNote)
+    this.groupCycleService.addPayout(this.userId, this.groupLifecycle_id, this.groupId, this.pfNote, this.subAdminId)
       .subscribe((response: any) => {
         if (response.success === '1') {
           this.toastr.success(response.message);
@@ -252,7 +253,7 @@ export class GroupCycleUserListComponent implements OnInit {
 
   onSafekeeping() {
     console.log("onSafekeeping");
-    this.groupCycleService.addSafeKeeping(this.userId, this.groupLifecycle_id, this.groupId, this.sfNote)
+    this.groupCycleService.addSafeKeeping(this.userId, this.groupLifecycle_id, this.groupId, this.sfNote, this.subAdminId)
       .subscribe((response: any) => {
         if (response.success === '1') {
           this.toastr.success(response.message);

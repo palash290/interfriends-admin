@@ -37,6 +37,8 @@ export class PropertyListComponent implements OnInit {
   add: string;
   // add edit code end
 
+  subAdminId: any;
+
   constructor(
     public userService: UserService,
     public propertyService: PropertyService,
@@ -44,6 +46,7 @@ export class PropertyListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.propertyService.getLists(this.listsPerPage, this.currentPage);
     this.listsSub = this.propertyService.getListUpdateListener().subscribe(
       (listData: { lists: Property[]; listCount: number }) => {
@@ -75,7 +78,7 @@ export class PropertyListComponent implements OnInit {
   }
 
   onBlockUnblock(status: string): void {
-    this.propertyService.blockUnblock(this.selectListId, status).subscribe((response: any) => {
+    this.propertyService.blockUnblock(this.selectListId, status, this.subAdminId).subscribe((response: any) => {
       this.onClose();
       if (response.status === '1') {
         document.getElementById('closeUnblock').click();
@@ -88,7 +91,7 @@ export class PropertyListComponent implements OnInit {
   }
 
   onCloseOpen(status: string): void {
-    this.propertyService.openCloseProperty(this.selectListId, status).subscribe((response: any) => {
+    this.propertyService.openCloseProperty(this.selectListId, status, this.subAdminId).subscribe((response: any) => {
       this.onClose();
       if (response.is_closed === '0') {
         document.getElementById('closeUnblock1').click();

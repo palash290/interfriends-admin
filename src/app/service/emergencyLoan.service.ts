@@ -63,7 +63,8 @@ export class EmergencyLoanService {
     contact_number: string,
     created_at: string,
     note_title: string,
-    note_description: string
+    note_description: string,
+    admin_id: any
   ): any {
     const userData = new FormData();
     userData.append('user_id', user_id);
@@ -75,6 +76,7 @@ export class EmergencyLoanService {
     userData.append('created_at', created_at);
     userData.append('note_title', note_title);
     userData.append('note_description', note_description);
+    userData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;
@@ -97,10 +99,11 @@ export class EmergencyLoanService {
     note_description: string,
     payment_method: string,
     paid_status: string,
-    created_at: string
+    created_at: string,
+    admin_id: any
   ): any {
     const userData = new FormData();
-    let admin_id = this.authService.getUserId();
+    // let admin_id = this.authService.getUserId();
     userData.append('id', id);
     userData.append('user_id', userId);
     userData.append('group_id', groupId);
@@ -112,8 +115,6 @@ export class EmergencyLoanService {
     userData.append('payment_method', payment_method);
     userData.append('paid_status', paid_status);
     userData.append('created_at', created_at);
-
-
     userData.append('admin_id', admin_id);
 
     return this.http.post<{

@@ -13,6 +13,7 @@ export class TermsUpdateComponent implements OnInit {
   userId: string;
   isLoading = true;
   info: string;
+  subAdminId: any;
 
   constructor(
     public userService: UserService,
@@ -21,6 +22,7 @@ export class TermsUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.isLoading = true;
     this.userId = this.authService.getUserId();
 
@@ -39,7 +41,8 @@ export class TermsUpdateComponent implements OnInit {
     }
 
     this.userService.addTerms(
-      this.info
+      this.info,
+      this.subAdminId
       ).subscribe((response: any) => {
         this.isLoading = false;
         if (response.success === '1') {

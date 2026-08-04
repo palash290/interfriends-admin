@@ -125,6 +125,8 @@ import { ServicesComponent } from './services/services.component';
 import { SubCategoryComponent } from './services/sub-category/sub-category.component';
 import { UserServiceRequestsComponent } from './services/user-service-requests/user-service-requests.component';
 import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.component';
+import { SubAdminLogsComponent } from './subadmin/sub-admin-logs/sub-admin-logs.component';
+import { SubAdminPermissionsComponent } from './subadmin/sub-admin-permissions/sub-admin-permissions.component';
 
 @NgModule({
   imports: [
@@ -250,7 +252,9 @@ import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.co
     ServicesComponent,
     SubCategoryComponent,
     UserServiceRequestsComponent,
-    WelfareRequestsComponent
+    WelfareRequestsComponent,
+    SubAdminLogsComponent,
+    SubAdminPermissionsComponent
   ],
   providers: [
     CurrencyPipe

@@ -43,6 +43,7 @@ export class SafekeepingCycleRequestComponent implements OnInit {
   request_status: string;
   group_ids: any;
   circle_ids: any;
+  subAdminId: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -52,6 +53,7 @@ export class SafekeepingCycleRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
     this.getList();
@@ -176,7 +178,8 @@ export class SafekeepingCycleRequestComponent implements OnInit {
         this.acceptId,
         '1',
         this.acceptGroupId,
-        this.acceptUserId
+        this.acceptUserId,
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();
@@ -210,7 +213,8 @@ export class SafekeepingCycleRequestComponent implements OnInit {
         '0',
         this.rejectGroupId,
         this.rejectUserId,
-        this.rejectForm.value.reason
+        this.rejectForm.value.reason,
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();

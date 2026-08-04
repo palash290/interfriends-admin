@@ -23,12 +23,12 @@
                 <!-- <input type="text" class="form-control w-25 rounded float-right ml-auto"  placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()"> -->
               </div>
               <!-- /.box-header -->
-              <!-- <div class="overlay" >
-                  <i class="fa fa-refresh fa-spin"></i>
-                </div>
-                <div class="box-body" >
-                  <mat-spinner  class="mx-auto"></mat-spinner>
-                </div> -->
+              <div class="overlay" *ngIf="isLoading">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              <div class="box-body" *ngIf="isLoading">
+                <mat-spinner class="mx-auto"></mat-spinner>
+              </div>
               <div class="box-body">
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>

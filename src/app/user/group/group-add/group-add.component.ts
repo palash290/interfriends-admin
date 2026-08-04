@@ -35,6 +35,7 @@ export class GroupAddComponent implements OnInit {
     itemsShowLimit: 3,
     allowSearchFilter: true
   };
+  subAdminId: any;
 
   constructor(
     public authService: AuthService,
@@ -46,6 +47,7 @@ export class GroupAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       group_cycle_name: new FormControl(null, { validators: [Validators.required] }),
@@ -104,7 +106,8 @@ export class GroupAddComponent implements OnInit {
 
       this.groupService.addGroup(
         this.form.value.group_cycle_name,
-        this.form.value.group_cycle_descp
+        this.form.value.group_cycle_descp,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();
@@ -127,7 +130,8 @@ export class GroupAddComponent implements OnInit {
       this.groupService.editGroup(
         this.group.id,
         this.form.value.group_cycle_name,
-        this.form.value.group_cycle_descp
+        this.form.value.group_cycle_descp,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();

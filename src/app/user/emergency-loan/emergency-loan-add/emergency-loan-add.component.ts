@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChange, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, Input, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService} from '../../../service/auth.service';
-import { EmergencyLoanService} from '../../../service/emergencyLoan.service';
+import { AuthService } from '../../../service/auth.service';
+import { EmergencyLoanService } from '../../../service/emergencyLoan.service';
 import { EmergencyLoan } from 'src/app/model/emergencyLoan.model';
 import { UserService } from 'src/app/service/user.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -27,10 +27,12 @@ export class EmergencyLoanAddComponent implements OnInit {
   @Input() eachChange: string;
   @Input() add: string;
   @Output() valueChange = new EventEmitter();
-  @Output()  closeModal1: EventEmitter < string > = new EventEmitter < string > ();
+  @Output() closeModal1: EventEmitter<string> = new EventEmitter<string>();
+
+  subAdminId: any;
 
   loan: EmergencyLoan;
-  dropdownSettings:IDropdownSettings = {
+  dropdownSettings: IDropdownSettings = {
     singleSelection: false,
     idField: 'item_id',
     textField: 'item_text',
@@ -49,17 +51,18 @@ export class EmergencyLoanAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
       loan_amount: new FormControl(null, { validators: [Validators.required] }),
-      pay_by	: new FormControl(null, { validators: [Validators.required] }),
-      status	: new FormControl(null, { validators: [Validators.required] }),
-      note_title	: new FormControl(null, { validators: [Validators.required] }),
-      note_description	: new FormControl(null, { validators: [Validators.required] }),
+      pay_by: new FormControl(null, { validators: [Validators.required] }),
+      status: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, { validators: [Validators.required] }),
       created_at: new FormControl(null, { validators: [Validators.required] }),
-      payment_method: new FormControl(null, { }),
-      paid_status: new FormControl(null, { })
+      payment_method: new FormControl(null, {}),
+      paid_status: new FormControl(null, {})
     });
   }
 
@@ -68,19 +71,19 @@ export class EmergencyLoanAddComponent implements OnInit {
     console.log("changes========>", changes)
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
-          if (changes['uniqueId'] === undefined) {
-            this.mainId = this.mainId;
-          } else if (changes['uniqueId'].currentValue !== undefined) {
-            this.mainId = changes['uniqueId'].currentValue;
-          } else {
-            this.mainId = this.mainId;
-          }
-console.log("update mode on")
-          this.isLoadingUpdate = true;
-          this.mode = 'update';
-          this.emergencyLoanService.emergencyLoan_detail(this.mainId)
+        if (changes['uniqueId'] === undefined) {
+          this.mainId = this.mainId;
+        } else if (changes['uniqueId'].currentValue !== undefined) {
+          this.mainId = changes['uniqueId'].currentValue;
+        } else {
+          this.mainId = this.mainId;
+        }
+        console.log("update mode on")
+        this.isLoadingUpdate = true;
+        this.mode = 'update';
+        this.emergencyLoanService.emergencyLoan_detail(this.mainId)
           .subscribe((response: any) => {
-            this.loan =  response.emergencyLoanDetail;
+            this.loan = response.emergencyLoanDetail;
             this.form.patchValue({
               loan_amount: this.loan.loan_amount,
               pay_by: this.loan.pay_by,
@@ -98,9 +101,9 @@ console.log("update mode on")
 
     if (changes['add'] !== undefined) {
       console.log("added changes")
-          if (changes['add'].currentValue !== undefined) {
-            this.mode = 'create';
-          }
+      if (changes['add'].currentValue !== undefined) {
+        this.mode = 'create';
+      }
     }
 
   }
@@ -156,34 +159,35 @@ console.log("update mode on")
         this.form.value.note_description,
         this.form.value.payment_method,
         this.form.value.paid_status,
-        this.form.value.created_at
+        this.form.value.created_at,
+        this.subAdminId
       ).subscribe({
-next: (response: any) => {
-        console.log("response =====>", response)
-        this.form.reset();
-        document.getElementById('closePopup').click();
-        this.isLoading = false;
-        if (response.success === '1') {
-          this.valueChange.emit('update');
-          this.toastr.success(response.message);
-        } else {
-          this.toastr.error(response.message);
+        next: (response: any) => {
+          console.log("response =====>", response)
+          this.form.reset();
+          document.getElementById('closePopup').click();
+          this.isLoading = false;
+          if (response.success === '1') {
+            this.valueChange.emit('update');
+            this.toastr.success(response.message);
+          } else {
+            this.toastr.error(response.message);
+          }
+        },
+        error: (err: any) => {
+          console.log("errr---->", err)
         }
-      },
-      error:(err:any)=>{
-console.log("errr---->", err)
-      }
-    });
+      });
     }
   }
 
 
 
-  onItemSelect(item:any){
+  onItemSelect(item: any) {
 
   }
 
-  OnItemDeSelect(item:any){
+  OnItemDeSelect(item: any) {
 
   }
 

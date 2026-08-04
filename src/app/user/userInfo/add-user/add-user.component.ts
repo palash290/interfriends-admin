@@ -25,6 +25,8 @@ export class AddUserComponent implements OnInit, OnChanges {
   @Output() valueChange = new EventEmitter();
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
 
+  subAdminId: any;
+
   user: UserList;
   imagePreview = 'assets/img/default-user-icon.jpg';
   id_proof_image = 'assets/img/blank.webp';
@@ -38,6 +40,7 @@ export class AddUserComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       first_name: new FormControl(null, { validators: [Validators.required] }),
@@ -176,7 +179,8 @@ export class AddUserComponent implements OnInit, OnChanges {
         this.form.value.id_proof_image,
         this.form.value.employement_type,
         this.form.value.unique_id,
-        this.form.value.created_at
+        this.form.value.created_at,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';
@@ -217,7 +221,8 @@ export class AddUserComponent implements OnInit, OnChanges {
         this.form.value.id_proof_image,
         this.form.value.employement_type,
         this.form.value.unique_id,
-        this.form.value.created_at
+        this.form.value.created_at,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         this.imagePreview = 'assets/img/default-user-icon.jpg';

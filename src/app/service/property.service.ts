@@ -58,7 +58,8 @@ export class PropertyService {
     property_tenure: string,
     image: any,
     file: any,
-    userId: any
+    userId: any,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('title', title);
@@ -69,6 +70,7 @@ export class PropertyService {
     userData.append('property_tenure', property_tenure);
     userData.append('image', image);
     userData.append('admin_id', userId);
+    userData.append('sub_admin_id', adminId);
     if(file.length > 0) {
       for  (var i =  0; i <  file.length; i++)  {
         userData.append("background_image[]",  file[i]);
@@ -94,6 +96,7 @@ export class PropertyService {
     property_tenure: string,
     image: any,
     file: any,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('property_id', id);
@@ -104,6 +107,7 @@ export class PropertyService {
     userData.append('start_date', start_date);
     userData.append('property_tenure', property_tenure);
     userData.append('image', image);
+    userData.append('admin_id', adminId);
     if(file.length > 0) {
       for  (var i =  0; i <  file.length; i++)  {
         userData.append("background_image[]",  file[i]);
@@ -137,11 +141,13 @@ export class PropertyService {
 
   blockUnblock(
     id: string,
-    status: string
+    status: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('id', id);
     userData.append('status', status);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -154,10 +160,11 @@ export class PropertyService {
 
   openCloseProperty(
     id: string,
-    status: string  ): any {
+    status: string, adminId: any ): any {
     const userData = new FormData();
     userData.append('id', id);
     userData.append('is_closed', status);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;

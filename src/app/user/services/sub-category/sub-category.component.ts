@@ -40,6 +40,7 @@ export class SubCategoryComponent implements OnInit {
   filterCategoryId = '';
   filterStatus = '';
   adminType: string;
+  subAdminId: any;
 
   constructor(
     public categoryService: CategoryService,
@@ -49,6 +50,7 @@ export class SubCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+     this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.adminType = this.authService.getAdminType();
     this.initForm();
     this.loadCategories();
@@ -202,7 +204,8 @@ export class SubCategoryComponent implements OnInit {
         this.form.value.category_id,
         this.form.value.subcategory_name,
         creator.userId,
-        creator.userType
+        creator.userType,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.isLoadingForm = false;
         if (response?.success === '1') {
@@ -222,7 +225,8 @@ export class SubCategoryComponent implements OnInit {
       this.form.value.subcategory_name,
       this.form.value.status,
       updater.userId,
-      updater.userType
+      updater.userType,
+      this.subAdminId
     ).subscribe((response: any) => {
       this.isLoadingForm = false;
       if (response?.success === '1') {

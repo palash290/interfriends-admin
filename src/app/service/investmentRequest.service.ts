@@ -53,7 +53,8 @@ export class InvestmentRequestService {
     user_id: string,
     description?: string,
     note_title?: string,
-    note_description?: string
+    note_description?: string,
+    admin_id?: string
   ): any {
 
     const instituteData = new FormData();
@@ -70,6 +71,7 @@ export class InvestmentRequestService {
       instituteData.append('note_description', note_description);
     }
     // instituteData.append('grpId', grpId)
+    instituteData.append('admin_id', admin_id)
     return this.http.post<{
       success: string;
       message: string;

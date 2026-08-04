@@ -70,12 +70,13 @@ export class CategoryService {
     category_name: string,
     created_by: string,
     created_by_type: string,
+    admin_id: string
   ): any {
     const userData = new FormData();
     userData.append('category_name', category_name);
     userData.append('created_by', created_by);
     userData.append('created_by_type', created_by_type);
-
+    userData.append('admin_id', admin_id);
     return this.http.post<{
       success: string;
       message: string;
@@ -91,6 +92,7 @@ export class CategoryService {
     status: string,
     updated_by: string,
     updated_by_type: string,
+    admin_id: string
   ): any {
     const userData = new FormData();
     userData.append('category_id', category_id);
@@ -98,7 +100,7 @@ export class CategoryService {
     userData.append('status', status);
     userData.append('updated_by', updated_by);
     userData.append('updated_by_type', updated_by_type);
-
+    userData.append('admin_id', admin_id);
     return this.http.post<{
       success: string;
       message: string;
@@ -139,13 +141,15 @@ export class CategoryService {
     category_id: string,
     subcategory_name: string,
     created_by: string,
-    created_by_type: string
+    created_by_type: string,
+    admin_id: string
   ): any {
     const subCategoryData = new FormData();
     subCategoryData.append('category_id', category_id);
     subCategoryData.append('subcategory_name', subcategory_name);
     subCategoryData.append('created_by', created_by);
     subCategoryData.append('created_by_type', created_by_type);
+    subCategoryData.append('admin_id', admin_id);
 
     return this.http.post<any>(
       API_URL + '/addServiceSubCategory', subCategoryData
@@ -159,7 +163,8 @@ export class CategoryService {
     subcategory_name: string,
     status: string,
     updated_by: string,
-    updated_by_type: string
+    updated_by_type: string,
+    admin_id: string
   ): any {
     const subCategoryData = new FormData();
     subCategoryData.append('subcategory_id', subcategory_id);
@@ -168,6 +173,7 @@ export class CategoryService {
     subCategoryData.append('status', status);
     subCategoryData.append('updated_by', updated_by);
     subCategoryData.append('updated_by_type', updated_by_type);
+    subCategoryData.append('admin_id', admin_id);
 
     return this.http.post<any>(
       API_URL + '/updateServiceSubCategory', subCategoryData

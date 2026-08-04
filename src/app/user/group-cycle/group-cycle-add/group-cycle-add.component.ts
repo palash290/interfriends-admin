@@ -29,7 +29,7 @@ export class GroupCycleAddComponent implements OnInit {
   @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
   @Output() valueChange = new EventEmitter();
   group: GroupCycle;
-
+subAdminId: any;
 
   constructor(
     public authService: AuthService,
@@ -41,6 +41,7 @@ export class GroupCycleAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       start_date: new FormControl(null, { validators: [Validators.required] }),
@@ -108,7 +109,8 @@ export class GroupCycleAddComponent implements OnInit {
         this.groupId,
         this.form.value.start_date,
         this.form.value.month_count,
-        this.form.value.group_type_id
+        this.form.value.group_type_id,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();
@@ -132,7 +134,8 @@ export class GroupCycleAddComponent implements OnInit {
         this.groupId,
         this.form.value.start_date,
         this.form.value.month_count,
-        this.form.value.group_type_id
+        this.form.value.group_type_id,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();

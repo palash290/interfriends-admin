@@ -54,14 +54,15 @@ export class GroupCycleService {
     group_id: string,
     start_date: string,
     month_count: string,
-    group_type_id: string
+    group_type_id: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('group_id', group_id);
     userData.append('start_date', start_date);
     userData.append('month_count', month_count);
     userData.append('group_type_id', group_type_id);
-
+    userData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -76,7 +77,8 @@ export class GroupCycleService {
     group_id: string,
     start_date: string,
     month_count: string,
-    group_type_id: string
+    group_type_id: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('id', id);
@@ -84,7 +86,7 @@ export class GroupCycleService {
     userData.append('start_date', start_date);
     userData.append('month_count', month_count);
     userData.append('group_type_id', group_type_id);
-
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -177,10 +179,11 @@ export class GroupCycleService {
     date: string,
     month: string,
     status: string,
-    payment_method: string
+    payment_method: string,
+    adminId: any
   ): any {
     const userData = new FormData();
-    let adminId = this.authService.getUserId();
+    // let adminId = this.authService.getUserId();
     userData.append('id', id);
     userData.append('user_id', userId);
     userData.append('group_id', groupId);
@@ -213,7 +216,8 @@ export class GroupCycleService {
     date: string,
     month: string,
     status: string,
-    payment_method: string
+    payment_method: string,
+    admin_id: any
   ): any {
     const userData = new FormData();
     userData.append('group_id', group_id);
@@ -226,7 +230,7 @@ export class GroupCycleService {
     userData.append('month', month);
     userData.append('status', status);
     userData.append('payment_method', payment_method);
-
+    userData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;
@@ -319,10 +323,11 @@ export class GroupCycleService {
     user_id: string,
     group_cycle_id: string,
     group_id: string,
-    pfNote: any
+    pfNote: any,
+    admin_id: any
   ): any {
     const userData = new FormData();
-    let admin_id = this.authService.getUserId();
+    // let admin_id = this.authService.getUserId();
     userData.append('admin_id', admin_id);
     userData.append('user_id', user_id);
     userData.append('group_cycle_id', group_cycle_id);
@@ -342,10 +347,11 @@ export class GroupCycleService {
     user_id: string,
     group_cycle_id: string,
     group_id: string,
-    sfNote: any
+    sfNote: any,
+    admin_id: any
   ): any {
     const userData = new FormData();
-    let admin_id = this.authService.getUserId();
+    // let admin_id = this.authService.getUserId();
     userData.append('user_id', user_id);
     userData.append('group_cycle_id', group_cycle_id);
     userData.append('group_id', group_id);

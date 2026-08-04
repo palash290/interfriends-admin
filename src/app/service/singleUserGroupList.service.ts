@@ -73,14 +73,15 @@ export class SingleUserGroupList {
     id: string,
     amount: string,
     expected_date: string,
-    jnr_amount: string
+    jnr_amount: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('id', id);
     userData.append('amount', amount);
     userData.append('expected_date', expected_date);
     userData.append('jnr_amount', jnr_amount);
-
+    userData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;

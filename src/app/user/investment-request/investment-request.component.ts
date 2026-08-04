@@ -29,6 +29,7 @@ export class InvestmentRequestComponent implements OnInit {
   display: string = "none"
   group_ids: any;
   circle_ids: any;
+  subAdminId: any;
 
   constructor(
     public investmentRequestService: InvestmentRequestService,
@@ -37,6 +38,7 @@ export class InvestmentRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -127,7 +129,8 @@ export class InvestmentRequestComponent implements OnInit {
         this.acceptUserId,
         this.description,
         this.note_title,
-        this.note_description
+        this.note_description,
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();
@@ -156,7 +159,10 @@ export class InvestmentRequestComponent implements OnInit {
       .acceptReject(
         '2',
         this.rejectId,
-        // this.rejectGroupId
+        '',
+        '',
+        '',
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();

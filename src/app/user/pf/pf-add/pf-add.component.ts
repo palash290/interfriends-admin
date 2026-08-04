@@ -26,6 +26,8 @@ export class PfAddComponent implements OnInit {
   @Input() userId: string;
   @Input() groupId: string;
 
+  subAdminId: any;
+
 
   @Output() valueChange = new EventEmitter();
   @Output()  closeModal: EventEmitter < string > = new EventEmitter < string > ();
@@ -41,6 +43,7 @@ export class PfAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
@@ -108,13 +111,12 @@ export class PfAddComponent implements OnInit {
         this.form.value.amount,
         this.form.value.payment_method,
         this.form.value.note_title,
-        this.form.value.note_description
+        this.form.value.note_description,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();
         this.isLoading = false;
-
-
         if (response.success === '1') {
           this.valueChange.emit('add');
           this.toastr.success(response.message);

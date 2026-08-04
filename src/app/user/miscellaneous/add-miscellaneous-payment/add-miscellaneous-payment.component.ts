@@ -29,6 +29,8 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
   @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
   loan: LoanPayment;
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public loanService: MiscellaneousService,
@@ -38,6 +40,7 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.form = new FormGroup({
       amount: new FormControl(null, { validators: [Validators.required] }),
@@ -107,7 +110,8 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
         this.form.value.note_description,
         this.form.value.payment_method,
         this.form.value.status,
-        this.form.value.created_at
+        this.form.value.created_at,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();
@@ -135,7 +139,8 @@ export class AddMiscellaneousPaymentComponent implements OnInit {
         this.form.value.note_description,
         this.form.value.payment_method,
         this.form.value.status,
-        this.form.value.created_at
+        this.form.value.created_at,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopup').click();

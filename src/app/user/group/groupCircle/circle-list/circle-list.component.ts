@@ -46,6 +46,8 @@ export class CircleListComponent implements OnInit {
   circle_ids: any;
   // add edit code end
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public userService: UserService,
@@ -55,6 +57,7 @@ export class CircleListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.circle_ids = localStorage.getItem('circle_ids');
     this.mode = 'create';
     this.form = new FormGroup({
@@ -148,12 +151,11 @@ export class CircleListComponent implements OnInit {
     userData.append('circle_id', this.circleID);
     // userData.append('group_id_not', group_id_not);
     userData.append('user_id', this.selecteduser);
-
+    userData.append('admin_id', this.subAdminId);
     this.groupService
       .postAPI(
         '/assignLeadcircle', userData
       ).subscribe(responseData => {
-
 
         // this.totalUsers =  responseData.userCount;
         this.isLoading = false;
@@ -174,6 +176,7 @@ export class CircleListComponent implements OnInit {
     userData.append('circle_id', this.circleID);
     // userData.append('group_id_not', group_id_not);
     userData.append('user_id', this.selecteduser);
+    userData.append('admin_id', this.subAdminId);
 
     this.groupService
       .postAPI(
@@ -306,9 +309,10 @@ export class CircleListComponent implements OnInit {
 
       this.isLoading = true;
       const formData = new FormData();
-      formData.append('circle_name', this.form.value.circle_name)
-      formData.append('description', this.form.value.description)
-      formData.append('group_id', this.groupID)
+      formData.append('circle_name', this.form.value.circle_name);
+      formData.append('description', this.form.value.description);
+      formData.append('group_id', this.groupID);
+      formData.append('admin_id', this.subAdminId);
       this.groupService.postAPI('/addgroupCircle', formData
 
       ).subscribe((response: any) => {
@@ -401,6 +405,7 @@ export class CircleListComponent implements OnInit {
     userData.append('group_id', this.groupID);
     userData.append('circle_id', this.removeCircleId);
     //userData.append('user_id', this.selecteduser);
+    userData.append('admin_id', this.subAdminId);
 
     this.groupService
       .postAPI(
@@ -426,6 +431,7 @@ export class CircleListComponent implements OnInit {
     userData.append('group_id', this.groupID);
     userData.append('circle_id', this.removeCircleId);
     //userData.append('user_id', this.selecteduser);
+    userData.append('admin_id', this.subAdminId);
 
     this.groupService
       .postAPI(

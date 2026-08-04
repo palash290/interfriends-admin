@@ -47,6 +47,7 @@ export class InvestmentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      debugger;
       this.groupId = paramMap.get('groupId');
       this.userId = paramMap.get('userId');
       this.investmentService.getLists(this.listsPerPage, this.currentPage, this.userId, this.groupId, this.payment_status);

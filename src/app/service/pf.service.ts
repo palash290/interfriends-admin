@@ -59,6 +59,7 @@ export class PfService {
     payment_method: string,
     note_title: string,
     note_description: string,
+    admin_id: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
@@ -67,6 +68,7 @@ export class PfService {
     instituteData.append('payment_method', payment_method);
     instituteData.append('note_title', note_title);
     instituteData.append('note_description', note_description);
+    instituteData.append('admin_id', admin_id);
     return this.http.post<{
       success: string;
       message: string;

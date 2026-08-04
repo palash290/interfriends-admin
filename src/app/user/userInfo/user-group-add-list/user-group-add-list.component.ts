@@ -24,6 +24,7 @@ export class UserGroupAddListComponent implements OnInit, OnDestroy {
   isLoadingPage = true;
   groupId: string;
   search = '';
+  subAdminId: any;
 
 
   constructor(
@@ -34,6 +35,7 @@ export class UserGroupAddListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.groupId = paramMap.get('groupId');
       localStorage.setItem('groupId_interFriendAdmin', this.groupId);
@@ -99,7 +101,7 @@ export class UserGroupAddListComponent implements OnInit, OnDestroy {
   onSave() {
     if (this.selectUser.length > 0) {
       this.isLoading = true;
-      this.userService.adduserGroup(this.groupId, this.selectUser.join())
+      this.userService.adduserGroup(this.groupId, this.selectUser.join(), this.subAdminId)
       .subscribe((response: any) => {
         this.isLoading = false;
         this.toastr.success(response.message);

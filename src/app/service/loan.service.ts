@@ -145,7 +145,8 @@ export class LoanService {
     payment_method: string,
     status: string,
     created_at: string,
-    loan_title: any
+    loan_title: any,
+    admin_id: any
   ): any {
     const instituteData = new FormData();
     let adminId = this.authService.getUserId();
@@ -160,6 +161,7 @@ export class LoanService {
     instituteData.append('status', status);
     instituteData.append('created_at', created_at);
     instituteData.append('loan_title', loan_title);
+    instituteData.append('admin_id', admin_id);
 
     return this.http.post<{
       success: string;
@@ -214,7 +216,8 @@ export class LoanService {
     note_description: string,
     payment_method: string,
     status: string,
-    created_at: string
+    created_at: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
@@ -226,6 +229,7 @@ export class LoanService {
     instituteData.append('payment_method', payment_method);
     instituteData.append('status', status);
     instituteData.append('created_at', created_at);
+    instituteData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -241,7 +245,7 @@ export class LoanService {
     groupId: string,
     loan_amount: string,
     tenure: string,
-    contact_number: string,
+    // contact_number: string,
     loan_type: string,
     document_image: any,
     pay_date: any,
@@ -249,15 +253,16 @@ export class LoanService {
     interRate: string,
     note_title: string,
     note_description: string,
+    admin_id: any
   ): any {
     const instituteData = new FormData();
-    let admin_id = this.authService.getUserId();
+    // let admin_id = this.authService.getUserId();
     instituteData.append('user_id', user_id);
     instituteData.append('admin_id', admin_id);
     instituteData.append('group_id', groupId);
     instituteData.append('loan_amount', loan_amount);
     instituteData.append('tenure', tenure);
-    instituteData.append('contact_number', contact_number);
+    // instituteData.append('contact_number', contact_number);
     instituteData.append('loan_type', loan_type);
     instituteData.append('status', '4');
     instituteData.append('document_image', document_image);
@@ -289,10 +294,11 @@ export class LoanService {
     created_at: string,
     ref_no: any,
     started_at: any,
-    loan_emi: any
+    loan_emi: any,
+    admin_id: any
   ): any {
     const instituteData = new FormData();
-    let admin_id = this.authService.getUserId();
+    // let admin_id = this.authService.getUserId();
     instituteData.append('id', id);
     instituteData.append('user_id', user_id);
     instituteData.append('admin_id', admin_id);
@@ -363,7 +369,8 @@ export class LoanService {
     startDate: string,
     paymentMethod: string,
     is_completed: any,
-    welfare_uuid: any
+    welfare_uuid: any,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
@@ -379,6 +386,7 @@ export class LoanService {
     instituteData.append('payment_method', paymentMethod);
     instituteData.append('is_completed', is_completed ? is_completed : '');
     instituteData.append('welfare_uuid', welfare_uuid ? welfare_uuid : '');
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -397,7 +405,8 @@ export class LoanService {
     admin_risk: string,
     loan_emi: string,
     startDate: string,
-    groupLifeCycleId: string
+    groupLifeCycleId: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('user_id', user_id);
@@ -410,6 +419,7 @@ export class LoanService {
     // instituteData.append('loan_emi', loan_emi)
     // instituteData.append('start_date', startDate)
     // instituteData.append('groupLifecycle_id', groupLifeCycleId)
+    instituteData.append('admin_id', adminId)
 
     return this.http.post<{
       success: string;

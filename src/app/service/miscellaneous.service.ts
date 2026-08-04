@@ -64,7 +64,8 @@ export class MiscellaneousService {
     description: string,
     tenure: string,
     note_title: string,
-    note_description: string
+    note_description: string,
+    adminId: any
   ): any {
     const userData = new FormData();
     userData.append('user_id', user_id);
@@ -77,6 +78,7 @@ export class MiscellaneousService {
     userData.append('description', description);
     userData.append('note_title', note_title);
     userData.append('note_description', note_description);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -97,10 +99,11 @@ export class MiscellaneousService {
     note_title: string,
     note_description: string,
     payment_method: string,
-    paid_status: string
+    paid_status: string,
+    adminId: any
   ): any {
     const userData = new FormData();
-    let admin_id = this.authService.getUserId();
+    // let admin_id = this.authService.getUserId();
     userData.append('id', id);
     userData.append('user_id', userId);
     userData.append('group_id', groupId);
@@ -110,7 +113,7 @@ export class MiscellaneousService {
     userData.append('note_description', note_description);
     userData.append('payment_method', payment_method);
     userData.append('paid_status', paid_status);
-    userData.append('admin_id', admin_id);
+    userData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -184,10 +187,11 @@ export class MiscellaneousService {
     note_description: string,
     payment_method: string,
     status: string,
-    created_at: string
+    created_at: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
-    let adminId = this.authService.getUserId();
+    // let adminId = this.authService.getUserId();
     instituteData.append('admin_id', adminId);
     instituteData.append('user_id', user_id);
     instituteData.append('group_id', group_id);
@@ -198,6 +202,7 @@ export class MiscellaneousService {
     instituteData.append('payment_method', payment_method);
     instituteData.append('status', status);
     instituteData.append('created_at', created_at);
+    instituteData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;
@@ -217,7 +222,8 @@ export class MiscellaneousService {
     note_description: string,
     payment_method: string,
     status: string,
-    created_at: string
+    created_at: string,
+    adminId: any
   ): any {
     const instituteData = new FormData();
     instituteData.append('id', id);
@@ -229,6 +235,7 @@ export class MiscellaneousService {
     instituteData.append('payment_method', payment_method);
     instituteData.append('status', status);
     instituteData.append('created_at', created_at);
+    instituteData.append('admin_id', adminId);
 
     return this.http.post<{
       success: string;

@@ -38,6 +38,8 @@ export class MiscellaneousDefaultComponent implements OnInit {
     allowSearchFilter: true
   };
 
+  subAdminId: any;
+
   constructor(
     public authService: AuthService,
     public miscellaneousService: MiscellaneousService,
@@ -47,6 +49,7 @@ export class MiscellaneousDefaultComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.mode = 'create';
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
@@ -107,7 +110,8 @@ export class MiscellaneousDefaultComponent implements OnInit {
         this.form.value.description,
         this.form.value.tenure,
         this.form.value.note_title,
-        this.form.value.note_description
+        this.form.value.note_description,
+        this.subAdminId
       ).subscribe((response: any) => {
         this.form.reset();
         document.getElementById('closePopupAdd').click();

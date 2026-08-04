@@ -43,6 +43,7 @@ export class WelfareRequestsComponent implements OnInit {
   group_ids: any;
   circle_ids: any;
   search = '';
+  subAdminId: any;
 
   constructor(
     public safekeepingwithdralService: SafekeepingwithdralService,
@@ -52,6 +53,7 @@ export class WelfareRequestsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
     this.getList();
@@ -259,14 +261,16 @@ export class WelfareRequestsComponent implements OnInit {
   }
 
   onAccept() {
-    debugger
+    // debugger
     this.isLoadingBtn = true;
     this.safeKeepingService
       .acceptRejectWalfare(
         this.acceptId,
         '1',
         this.acceptGroupId,
-        this.acceptUserId
+        this.acceptUserId,
+        '',
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();
@@ -301,7 +305,8 @@ export class WelfareRequestsComponent implements OnInit {
         '2',
         this.rejectGroupId,
         this.rejectUserId,
-        this.rejectForm.value.reason
+        this.rejectForm.value.reason,
+        this.subAdminId
       )
       .subscribe((response: any) => {
         this.onClose();

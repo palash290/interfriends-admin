@@ -61,7 +61,8 @@ export class SafeKeepingService {
     note_title: string,
     note_description: string,
     safe_keeping_id: string,
-    request_type: number
+    request_type: number,
+    adminId: any
   ): any {
 
     const instituteData = new FormData();
@@ -73,6 +74,7 @@ export class SafeKeepingService {
     instituteData.append('note_description', note_description);
     instituteData.append('safe_keeping_id', safe_keeping_id);
     instituteData.append('request_type', request_type.toString());
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -88,7 +90,8 @@ export class SafeKeepingService {
     request_status: string,
     group_id: any,
     user_id: string,
-    reason: string = ''
+    reason: string = '',
+    adminId: any
   ): any {
 
     const instituteData = new FormData();
@@ -100,6 +103,7 @@ export class SafeKeepingService {
     instituteData.append('grour_id', group_id);
     instituteData.append('admin_id', '1');
     instituteData.append('user_id', user_id);
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -113,7 +117,8 @@ export class SafeKeepingService {
     request_status: string,
     group_id: any,
     user_id: string,
-    reason: string = ''
+    reason: string = '',
+    adminId: any
   ): any {
 
     const instituteData = new FormData();
@@ -125,6 +130,7 @@ export class SafeKeepingService {
     instituteData.append('grour_id', group_id);
     instituteData.append('admin_id', '1');
     instituteData.append('user_id', user_id);
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -138,7 +144,8 @@ export class SafeKeepingService {
     request_status: string,
     group_id: any,
     user_id: string,
-    reason: string
+    reason: string,
+    adminId: any
   ): any {
 
     const instituteData = new FormData();
@@ -146,8 +153,8 @@ export class SafeKeepingService {
     instituteData.append('request_status', request_status);
     instituteData.append('reason', reason);
     // instituteData.append('grour_id', group_id);
-    instituteData.append('admin_id', '1');
     // instituteData.append('user_id', user_id);
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -160,7 +167,8 @@ export class SafeKeepingService {
     payout_id: string,
     request_status: string,
     group_id: any,
-    user_id: string
+    user_id: string,
+    adminId: any
   ): any {
 
     const instituteData = new FormData();
@@ -168,8 +176,8 @@ export class SafeKeepingService {
     instituteData.append('request_status', request_status);
     // instituteData.append('reason', reason);
     // instituteData.append('grour_id', group_id);
-    instituteData.append('admin_id', '1');
     // instituteData.append('user_id', user_id);
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;
@@ -179,11 +187,12 @@ export class SafeKeepingService {
   }
 
   removeSafekeepingRequest(
-    payout_id: string,
+    payout_id: string, adminId: any
   ): any {
 
     const instituteData = new FormData();
     instituteData.append('safekeeping_id', payout_id);
+    instituteData.append('admin_id', adminId);
     return this.http.post<{
       success: string;
       message: string;

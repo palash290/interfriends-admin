@@ -78,7 +78,7 @@
                <label>document image</label>
                <input type="file" class="form-control" (change)="onImagePicked($event)" />
             </div>
-            <div class="form-group"
+            <!-- <div class="form-group"
                [ngClass]="{'has-error': form.get('contact_number').invalid  && form.get('contact_number').touched}">
                <label>Contact Number</label>
                <input type="text" class="form-control" placeholder="Enter Contact number"
@@ -87,7 +87,7 @@
                   *ngIf="form.get('contact_number').invalid  && form.get('contact_number').touched">
                   Please enter a contact number.
                </span>
-            </div>
+            </div> -->
             <div class="form-group"
                [ngClass]="{'has-error': form.get('created_at').invalid  && form.get('created_at').touched}">
                <label>Created On</label>
