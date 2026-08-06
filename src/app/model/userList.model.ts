@@ -5,11 +5,15 @@ export interface UserList {
   email: string;
   dob: string;
   mobile_number: string;
+  country_code?: string;
   circle_name: string;
   home_number: string;
+  home_country_code?: string;
   emergency_number: string;
+  emergency_country_code?: string;
   kin_name: string;
   kin_number: string;
+  kin_country_code?: string;
   address_line_1: string;
   address_line_2: string;
   post_code: string;

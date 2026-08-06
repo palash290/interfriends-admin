@@ -94,3 +94,16 @@ span.selected-seat {
     background-color: #3b82f6;
     color: #fff;
 }
+
+.subadmin-form-section ngx-intl-tel-input {
+    display: block;
+    width: 100%;
+}
+
+.subadmin-form-section .iti {
+    width: 100%;
+}
+
+.subadmin-form-section .iti input.form-control {
+    width: 100%;
+}

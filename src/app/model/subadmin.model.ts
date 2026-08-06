@@ -2,6 +2,7 @@ export interface Subadmin {
   id: string;
   name: string;
   email: string;
+  country_code: string;
   phone: string;
   password: string;
   act_token: string;

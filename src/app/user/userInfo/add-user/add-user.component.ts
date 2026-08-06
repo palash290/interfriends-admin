@@ -6,6 +6,7 @@ import { AuthService } from '../../../service/auth.service';
 import { UserService } from '../../../service/user.service';
 import { UserListService } from '../../../service/userList.service';
 import { UserList } from 'src/app/model/userList.model';
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-add-user',
@@ -30,6 +31,13 @@ export class AddUserComponent implements OnInit, OnChanges {
   user: UserList;
   imagePreview = 'assets/img/default-user-icon.jpg';
   id_proof_image = 'assets/img/blank.webp';
+  preferredCountries: CountryISO[] = [CountryISO.UnitedKingdom, CountryISO.India, CountryISO.UnitedStates];
+  searchCountryField = [SearchCountryField.Iso2, SearchCountryField.Name, SearchCountryField.DialCode];
+  phoneNumberFormat = PhoneNumberFormat.International;
+  mobileSelectedCountryISO = CountryISO.UnitedKingdom;
+  homeSelectedCountryISO = CountryISO.UnitedKingdom;
+  emergencySelectedCountryISO = CountryISO.UnitedKingdom;
+  kinSelectedCountryISO = CountryISO.UnitedKingdom;
 
   constructor(
     public authService: AuthService,
@@ -50,10 +58,14 @@ export class AddUserComponent implements OnInit, OnChanges {
       dob: new FormControl(null, { validators: [Validators.required] }),
       created_at: new FormControl(null, { validators: [Validators.required] }),
       mobile_number: new FormControl(null, { validators: [Validators.required] }),
+      country_code: new FormControl('+44', { validators: [Validators.required] }),
       home_number: new FormControl(null, { validators: [Validators.required] }),
+      home_country_code: new FormControl('+44', { validators: [Validators.required] }),
       emergency_number: new FormControl(null, { validators: [Validators.required] }),
+      emergency_country_code: new FormControl('+44', { validators: [Validators.required] }),
       kin_name: new FormControl(null, { validators: [Validators.required] }),
       kin_number: new FormControl(null, { validators: [Validators.required] }),
+      kin_country_code: new FormControl('+44', { validators: [Validators.required] }),
       address_line_1: new FormControl(null, { validators: [Validators.required] }),
       address_line_2: new FormControl(null, { validators: [Validators.required] }),
       post_code: new FormControl(null, { validators: [Validators.required] }),
@@ -98,10 +110,14 @@ export class AddUserComponent implements OnInit, OnChanges {
             email: this.user.email,
             dob: this.user.dob,
             mobile_number: this.user.mobile_number,
+            country_code: this.user.country_code ?? '+44',
             home_number: this.user.home_number,
+            home_country_code: this.user.home_country_code ?? '+44',
             emergency_number: this.user.emergency_number,
+            emergency_country_code: this.user.emergency_country_code ?? '+44',
             kin_name: this.user.kin_name,
             kin_number: this.user.kin_number,
+            kin_country_code: this.user.kin_country_code ?? '+44',
             address_line_1: this.user.address_line_1,
             address_line_2: this.user.address_line_2,
             post_code: this.user.post_code,
@@ -112,6 +128,11 @@ export class AddUserComponent implements OnInit, OnChanges {
             unique_id: this.user.unique_id,
             created_at: this.user.created_at
           });
+          debugger;
+          this.mobileSelectedCountryISO = this.resolveCountryISO(this.user.country_code);
+          this.homeSelectedCountryISO = this.resolveCountryISO(this.user.home_country_code);
+          this.emergencySelectedCountryISO = this.resolveCountryISO(this.user.emergency_country_code);
+          this.kinSelectedCountryISO = this.resolveCountryISO(this.user.kin_country_code);
           this.isLoadingUpdate = false;
           this.imagePreview = this.user.profile_image;
           this.id_proof_image = this.user.id_proof_image;
@@ -133,6 +154,65 @@ export class AddUserComponent implements OnInit, OnChanges {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  onMobileCountryChange(country: any): void {
+    this.form.patchValue({ country_code: `+${country?.dialCode ?? ''}` });
+  }
+
+  onHomeCountryChange(country: any): void {
+    this.form.patchValue({ home_country_code: `+${country?.dialCode ?? ''}` });
+  }
+
+  onEmergencyCountryChange(country: any): void {
+    this.form.patchValue({ emergency_country_code: `+${country?.dialCode ?? ''}` });
+  }
+
+  onKinCountryChange(country: any): void {
+    this.form.patchValue({ kin_country_code: `+${country?.dialCode ?? ''}` });
+  }
+
+  private resolvePhoneValue(phoneField: any): string {
+    if (!phoneField) {
+      return '';
+    }
+
+    if (typeof phoneField === 'string') {
+      return phoneField;
+    }
+
+    return phoneField.number || phoneField.nationalNumber || phoneField.e164Number || phoneField.internationalNumber || '';
+  }
+
+  private resolveCountryISO(dialCode: string | undefined): CountryISO {
+    const code = (dialCode || '').replace(/[^0-9]/g, '');
+
+    switch (code) {
+      case '1':
+        return CountryISO.UnitedStates;
+      case '44':
+        return CountryISO.UnitedKingdom;
+      case '61':
+        return CountryISO.Australia;
+      case '65':
+        return CountryISO.Singapore;
+      case '91':
+        return CountryISO.India;
+      case '92':
+        return CountryISO.Pakistan;
+      case '94':
+        return CountryISO.SriLanka;
+      case '880':
+        return CountryISO.Bangladesh;
+      case '971':
+        return CountryISO.UnitedArabEmirates;
+      case '233':
+        return CountryISO.Ghana;
+      case '33':
+        return CountryISO.France;
+      default:
+        return CountryISO.UnitedKingdom;
+    }
   }
 
   onIdImagePicked(event: Event): any {
@@ -158,17 +238,25 @@ export class AddUserComponent implements OnInit, OnChanges {
         return;
       }
       this.isLoading = true;
+      const mobileNumber = this.resolvePhoneValue(this.form.value.mobile_number);
+      const homeNumber = this.resolvePhoneValue(this.form.value.home_number);
+      const emergencyNumber = this.resolvePhoneValue(this.form.value.emergency_number);
+      const kinNumber = this.resolvePhoneValue(this.form.value.kin_number);
       console.log("innnn", this.isLoading)
       this.userListService.addUser(
         this.form.value.first_name,
         this.form.value.last_name,
         this.form.value.email,
         this.form.value.dob,
-        this.form.value.mobile_number,
-        this.form.value.home_number,
-        this.form.value.emergency_number,
+        mobileNumber,
+        this.form.value.country_code,
+        homeNumber,
+        this.form.value.home_country_code,
+        emergencyNumber,
+        this.form.value.emergency_country_code,
         this.form.value.kin_name,
-        this.form.value.kin_number,
+        kinNumber,
+        this.form.value.kin_country_code,
         this.form.value.address_line_1,
         this.form.value.address_line_2,
         this.form.value.post_code,
@@ -182,7 +270,16 @@ export class AddUserComponent implements OnInit, OnChanges {
         this.form.value.created_at,
         this.subAdminId
       ).subscribe((response: any) => {
-        this.form.reset();
+        this.form.reset({
+          country_code: '+44',
+          home_country_code: '+44',
+          emergency_country_code: '+44',
+          kin_country_code: '+44'
+        });
+        this.mobileSelectedCountryISO = CountryISO.UnitedKingdom;
+        this.homeSelectedCountryISO = CountryISO.UnitedKingdom;
+        this.emergencySelectedCountryISO = CountryISO.UnitedKingdom;
+        this.kinSelectedCountryISO = CountryISO.UnitedKingdom;
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
@@ -200,17 +297,25 @@ export class AddUserComponent implements OnInit, OnChanges {
         return;
       }
       this.isLoading = true;
+      const mobileNumber = this.resolvePhoneValue(this.form.value.mobile_number);
+      const homeNumber = this.resolvePhoneValue(this.form.value.home_number);
+      const emergencyNumber = this.resolvePhoneValue(this.form.value.emergency_number);
+      const kinNumber = this.resolvePhoneValue(this.form.value.kin_number);
       this.userListService.editUser(
         this.user.user_id,
         this.form.value.first_name,
         this.form.value.last_name,
         this.form.value.email,
         this.form.value.dob,
-        this.form.value.mobile_number,
-        this.form.value.home_number,
-        this.form.value.emergency_number,
+        mobileNumber,
+        this.form.value.country_code,
+        homeNumber,
+        this.form.value.home_country_code,
+        emergencyNumber,
+        this.form.value.emergency_country_code,
         this.form.value.kin_name,
-        this.form.value.kin_number,
+        kinNumber,
+        this.form.value.kin_country_code,
         this.form.value.address_line_1,
         this.form.value.address_line_2,
         this.form.value.post_code,
@@ -224,7 +329,16 @@ export class AddUserComponent implements OnInit, OnChanges {
         this.form.value.created_at,
         this.subAdminId
       ).subscribe((response: any) => {
-        this.form.reset();
+        this.form.reset({
+          country_code: '+44',
+          home_country_code: '+44',
+          emergency_country_code: '+44',
+          kin_country_code: '+44'
+        });
+        this.mobileSelectedCountryISO = CountryISO.UnitedKingdom;
+        this.homeSelectedCountryISO = CountryISO.UnitedKingdom;
+        this.emergencySelectedCountryISO = CountryISO.UnitedKingdom;
+        this.kinSelectedCountryISO = CountryISO.UnitedKingdom;
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
@@ -240,7 +354,16 @@ export class AddUserComponent implements OnInit, OnChanges {
 
 
   onClose(): void {
-    this.form.reset();
+    this.form.reset({
+      country_code: '+44',
+      home_country_code: '+44',
+      emergency_country_code: '+44',
+      kin_country_code: '+44'
+    });
+    this.mobileSelectedCountryISO = CountryISO.UnitedKingdom;
+    this.homeSelectedCountryISO = CountryISO.UnitedKingdom;
+    this.emergencySelectedCountryISO = CountryISO.UnitedKingdom;
+    this.kinSelectedCountryISO = CountryISO.UnitedKingdom;
     this.imagePreview = 'assets/img/default-user-icon.jpg';
     this.change.emit("none")
   }

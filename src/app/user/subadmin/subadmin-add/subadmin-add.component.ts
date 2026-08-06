@@ -8,6 +8,7 @@ import { Subadmin } from 'src/app/model/subadmin.model';
 import { GroupService } from 'src/app/service/group.service';
 import { Group } from 'src/app/model/group.model';
 import { Subscription } from 'rxjs';
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-subadmin-add',
@@ -28,6 +29,10 @@ export class SubadminAddComponent implements OnInit {
   @Output() closeModal: EventEmitter<string> = new EventEmitter<string>();
   user: Subadmin;
   imagePreview = 'assets/img/default-user-icon.jpg';
+  preferredCountries: CountryISO[] = [CountryISO.UnitedKingdom, CountryISO.India, CountryISO.UnitedStates];
+  searchCountryField = [SearchCountryField.Iso2, SearchCountryField.Name, SearchCountryField.DialCode];
+  phoneNumberFormat = PhoneNumberFormat.International;
+  selectedCountryISO = CountryISO.UnitedKingdom;
   lists: Group[] = [];
   listsPerPage = 10;
   currentPage = 0;
@@ -48,7 +53,8 @@ export class SubadminAddComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl(null, { validators: [Validators.required] }),
       email: new FormControl(null, { validators: [Validators.required] }),
-      phone: new FormControl(null, { validators: [Validators.required] })
+      phone: new FormControl(null, { validators: [Validators.required] }),
+      country_code: new FormControl('+44', { validators: [Validators.required] }),
     });
     this.groupService.getLists(this.listsPerPage, this.currentPage);
 
@@ -69,8 +75,10 @@ export class SubadminAddComponent implements OnInit {
     this.form.patchValue({
       name: '',
       email: '',
-      phone: ''
+      phone: '',
+      country_code: '+44'
     });
+    this.selectedCountryISO = CountryISO.UnitedKingdom;
     if (changes['uniqueId'] !== undefined || changes['eachChange'] !== undefined) {
       if (changes['eachChange'].currentValue !== undefined) {
         if (changes['uniqueId'] === undefined) {
@@ -89,8 +97,11 @@ export class SubadminAddComponent implements OnInit {
           this.form.patchValue({
             name: this.user.name,
             email: this.user.email,
-            phone: this.user.phone
+            phone: this.user.phone,
+            country_code: this.user.country_code
           });
+          this.selectedCountryISO = this.resolveCountryISO(this.user.country_code);
+          // this.selectedCountryISO = this.resolveCountryISO(this.user.phone);
           this.selectedGroupId = response.userinfo?.group_ids;
           this.getCircleList();
           this.isLoadingUpdate = false;
@@ -145,6 +156,7 @@ export class SubadminAddComponent implements OnInit {
 
     // Collect circle ids from selectedCircles
     const circleIds = this.selectedCircles.map(c => c.id);
+    const phone = this.resolvePhoneValue(this.form.value.phone);
 
     this.isLoading = true;
 
@@ -153,11 +165,13 @@ export class SubadminAddComponent implements OnInit {
       this.userListService.addUser(
         this.form.value.name,
         this.form.value.email,
-        this.form.value.phone,
+        this.form.value.country_code,
+        phone,
         this.selectedGroupId,
         circleIds
       ).subscribe((response: any) => {
-        this.form.reset();
+        this.form.reset({ phone: '' });
+        this.selectedCountryISO = CountryISO.UnitedKingdom;
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
@@ -177,11 +191,13 @@ export class SubadminAddComponent implements OnInit {
         this.user.id,
         this.form.value.name,
         this.form.value.email,
-        this.form.value.phone,
+        this.form.value.country_code,
+        phone,
         this.selectedGroupId,
         circleIds
       ).subscribe((response: any) => {
-        this.form.reset();
+        this.form.reset({ phone: '' });
+        this.selectedCountryISO = CountryISO.UnitedKingdom;
         this.imagePreview = 'assets/img/default-user-icon.jpg';
         document.getElementById('closePopupUser').click();
         this.isLoading = false;
@@ -200,9 +216,54 @@ export class SubadminAddComponent implements OnInit {
 
 
   onClose(): void {
-    this.form.reset();
+    this.form.reset({ phone: '' });
+    this.selectedCountryISO = CountryISO.UnitedKingdom;
     this.imagePreview = 'assets/img/default-user-icon.jpg';
     this.closeModal.emit("none")
+  }
+
+  // onPhoneCountryChange(country: any): void {
+  //   if (country?.iso2) {
+  //     this.selectedCountryISO = country.iso2;
+  //   }
+  // }
+
+  onMobileCountryChange(country: any): void {
+    this.form.patchValue({ country_code: `+${country?.dialCode ?? ''}` });
+  }
+
+  private resolvePhoneValue(phoneField: any): string {
+    if (!phoneField) {
+      return '';
+    }
+
+    if (typeof phoneField === 'string') {
+      return phoneField;
+    }
+
+    return phoneField.number;
+  }
+
+  private resolveCountryISO(phone: string | undefined): CountryISO {
+    const normalized = (phone || '').replace(/\s+/g, '');
+
+    if (normalized.startsWith('+44')) {
+      return CountryISO.UnitedKingdom;
+    }
+    if (normalized.startsWith('+91')) {
+      return CountryISO.India;
+    }
+    if (normalized.startsWith('+1')) {
+      return CountryISO.UnitedStates;
+    }
+    if (normalized.startsWith('+233')) {
+      return CountryISO.Ghana;
+    }
+     if (normalized.startsWith('+33')) {
+      return CountryISO.France;
+    }
+
+    return CountryISO.UnitedKingdom;
   }
 
 

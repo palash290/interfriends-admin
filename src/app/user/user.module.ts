@@ -127,6 +127,7 @@ import { UserServiceRequestsComponent } from './services/user-service-requests/u
 import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.component';
 import { SubAdminLogsComponent } from './subadmin/sub-admin-logs/sub-admin-logs.component';
 import { SubAdminPermissionsComponent } from './subadmin/sub-admin-permissions/sub-admin-permissions.component';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 @NgModule({
   imports: [
@@ -143,6 +144,7 @@ import { SubAdminPermissionsComponent } from './subadmin/sub-admin-permissions/s
     InfiniteScrollModule,
     NgxSpinnerModule,
     NgbModule,
+    NgxIntlTelInputModule,
     NgMultiSelectDropDownModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC8X41J3doX7L5Xlb6MdlH5X50DrqdijY4',

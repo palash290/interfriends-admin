@@ -7,7 +7,7 @@
          <span aria-hidden="true">&times;</span>
       </button>
    </div>
-   <form role="form" [formGroup]="form" (submit)="onSave()">
+   <form role="form" class="subadmin-form-section" [formGroup]="form" (submit)="onSave()">
       <div class="box-body" *ngIf="isLoadingUpdate">
          <mat-spinner class="mx-auto"></mat-spinner>
       </div>
@@ -46,8 +46,13 @@
                   <div class="form-group"
                      [ngClass]="{'has-error': form.get('phone').invalid  && form.get('phone').touched}">
                      <label>Phone Number</label>
-                     <input type="text" class="form-control" placeholder="Enter mobile number"
-                        formControlName="phone" />
+                     <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="preferredCountries"
+                        [selectedCountryISO]="selectedCountryISO" [enableAutoCountrySelect]="false"
+                        [enablePlaceholder]="true" [searchCountryFlag]="true" [searchCountryField]="searchCountryField"
+                        [selectFirstCountry]="false" [phoneValidation]="true" [separateDialCode]="true"
+                        [numberFormat]="phoneNumberFormat" inputId="phone" formControlName="phone"
+                        (countryChange)="onMobileCountryChange($event)">
+                     </ngx-intl-tel-input>
                      <span class="help-block" *ngIf="form.get('phone').invalid  && form.get('phone').touched">
                         Please enter a phone number.
                      </span>

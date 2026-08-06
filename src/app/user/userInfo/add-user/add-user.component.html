@@ -6,7 +6,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form role="form" [formGroup]="form" (submit)="onSave()">
+  <form role="form" class="profile-form-section" [formGroup]="form" (submit)="onSave()">
     <div class="box-body" *ngIf="isLoadingUpdate">
       <mat-spinner class="mx-auto"></mat-spinner>
     </div>
@@ -81,8 +81,22 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('mobile_number').invalid  && form.get('mobile_number').touched}">
               <label>Mobile Number</label>
-              <input type="text" class="form-control" placeholder="Enter mobile number"
-                formControlName="mobile_number" />
+              <ngx-intl-tel-input
+                [cssClass]="'form-control'"
+                [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="mobileSelectedCountryISO"
+                [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="true"
+                [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false"
+                [phoneValidation]="true"
+                [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat"
+                inputId="mobile_number"
+                formControlName="mobile_number"
+                (countryChange)="onMobileCountryChange($event)">
+              </ngx-intl-tel-input>
               <span class="help-block" *ngIf="form.get('mobile_number').invalid  && form.get('mobile_number').touched">
                 Please enter a mobile number.
               </span>
@@ -133,7 +147,22 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('home_number').invalid  && form.get('home_number').touched}">
               <label>Home Number</label>
-              <input type="text" class="form-control" placeholder="Enter home number" formControlName="home_number" />
+              <ngx-intl-tel-input
+                [cssClass]="'form-control'"
+                [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="homeSelectedCountryISO"
+                [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="true"
+                [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false"
+                [phoneValidation]="true"
+                [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat"
+                inputId="home_number"
+                formControlName="home_number"
+                (countryChange)="onHomeCountryChange($event)">
+              </ngx-intl-tel-input>
               <span class="help-block" *ngIf="form.get('home_number').invalid  && form.get('home_number').touched">
                 Please enter a home number.
               </span>
@@ -167,8 +196,22 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('emergency_number').invalid  && form.get('emergency_number').touched}">
               <label>Emergency Number</label>
-              <input type="text" class="form-control" placeholder="Enter emergency number"
-                formControlName="emergency_number" />
+              <ngx-intl-tel-input
+                [cssClass]="'form-control'"
+                [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="emergencySelectedCountryISO"
+                [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="true"
+                [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false"
+                [phoneValidation]="true"
+                [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat"
+                inputId="emergency_number"
+                formControlName="emergency_number"
+                (countryChange)="onEmergencyCountryChange($event)">
+              </ngx-intl-tel-input>
               <span class="help-block"
                 *ngIf="form.get('emergency_number').invalid  && form.get('emergency_number').touched">
                 Please enter a emergency number.
@@ -179,8 +222,22 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('kin_number').invalid  && form.get('kin_number').touched}">
               <label>Next of kin Contact Number</label>
-              <input type="text" class="form-control" placeholder="Enter kin contact number"
-                formControlName="kin_number" />
+              <ngx-intl-tel-input
+                [cssClass]="'form-control'"
+                [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="kinSelectedCountryISO"
+                [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="true"
+                [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false"
+                [phoneValidation]="true"
+                [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat"
+                inputId="kin_number"
+                formControlName="kin_number"
+                (countryChange)="onKinCountryChange($event)">
+              </ngx-intl-tel-input>
               <span class="help-block" *ngIf="form.get('kin_number').invalid  && form.get('kin_number').touched">
                 Please enter a kin contact number.
               </span>
@@ -201,7 +258,7 @@
               [ngClass]="{'has-error': form.get('employement_type')?.invalid  && form.get('employement_type').touched}">
               <label>Employement Type</label>
               <select class="form-control" formControlName="employement_type">
-                <option value="">Select employement type</option>
+                <option value=''>Select employement type</option>
                 <option value='1'>Full Time</option>
                 <option value='2'>Part Time</option>
                 <option value='3'>Self employed</option>
