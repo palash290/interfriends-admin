@@ -9,6 +9,8 @@ import { GroupService } from 'src/app/service/group.service';
 import { Group } from 'src/app/model/group.model';
 import { Subscription } from 'rxjs';
 import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
+declare const require: any;
+const { PhoneNumberUtil } = require('google-libphonenumber');
 
 @Component({
   selector: 'app-subadmin-add',
@@ -33,6 +35,7 @@ export class SubadminAddComponent implements OnInit {
   searchCountryField = [SearchCountryField.Iso2, SearchCountryField.Name, SearchCountryField.DialCode];
   phoneNumberFormat = PhoneNumberFormat.International;
   selectedCountryISO = CountryISO.UnitedKingdom;
+  private readonly phoneUtil = PhoneNumberUtil.getInstance();
   lists: Group[] = [];
   listsPerPage = 10;
   currentPage = 0;
@@ -131,7 +134,6 @@ export class SubadminAddComponent implements OnInit {
         this.mode = 'create';
       }
     }
-
   }
 
 
@@ -247,20 +249,22 @@ export class SubadminAddComponent implements OnInit {
   private resolveCountryISO(phone: string | undefined): CountryISO {
     const normalized = (phone || '').replace(/\s+/g, '');
 
-    if (normalized.startsWith('+44')) {
+    if (!normalized) {
       return CountryISO.UnitedKingdom;
     }
-    if (normalized.startsWith('+91')) {
-      return CountryISO.India;
+
+    const digits = normalized.replace(/[^0-9]/g, '');
+    const regionCode = this.phoneUtil.getRegionCodeForCountryCode(Number(digits));
+    if (!regionCode || regionCode === 'ZZ') {
+      return CountryISO.UnitedKingdom;
     }
-    if (normalized.startsWith('+1')) {
-      return CountryISO.UnitedStates;
-    }
-    if (normalized.startsWith('+233')) {
-      return CountryISO.Ghana;
-    }
-     if (normalized.startsWith('+33')) {
-      return CountryISO.France;
+
+    const matchedISO = Object.values(CountryISO).find(
+      (iso) => iso.toLowerCase() === regionCode.toLowerCase()
+    );
+
+    if (matchedISO) {
+      return matchedISO as CountryISO;
     }
 
     return CountryISO.UnitedKingdom;

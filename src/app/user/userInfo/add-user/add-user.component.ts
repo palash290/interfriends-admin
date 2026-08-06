@@ -7,6 +7,8 @@ import { UserService } from '../../../service/user.service';
 import { UserListService } from '../../../service/userList.service';
 import { UserList } from 'src/app/model/userList.model';
 import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
+declare const require: any;
+const { PhoneNumberUtil } = require('google-libphonenumber');
 
 @Component({
   selector: 'app-add-user',
@@ -38,6 +40,7 @@ export class AddUserComponent implements OnInit, OnChanges {
   homeSelectedCountryISO = CountryISO.UnitedKingdom;
   emergencySelectedCountryISO = CountryISO.UnitedKingdom;
   kinSelectedCountryISO = CountryISO.UnitedKingdom;
+  private readonly phoneUtil = PhoneNumberUtil.getInstance();
 
   constructor(
     public authService: AuthService,
@@ -187,32 +190,20 @@ export class AddUserComponent implements OnInit, OnChanges {
   private resolveCountryISO(dialCode: string | undefined): CountryISO {
     const code = (dialCode || '').replace(/[^0-9]/g, '');
 
-    switch (code) {
-      case '1':
-        return CountryISO.UnitedStates;
-      case '44':
-        return CountryISO.UnitedKingdom;
-      case '61':
-        return CountryISO.Australia;
-      case '65':
-        return CountryISO.Singapore;
-      case '91':
-        return CountryISO.India;
-      case '92':
-        return CountryISO.Pakistan;
-      case '94':
-        return CountryISO.SriLanka;
-      case '880':
-        return CountryISO.Bangladesh;
-      case '971':
-        return CountryISO.UnitedArabEmirates;
-      case '233':
-        return CountryISO.Ghana;
-      case '33':
-        return CountryISO.France;
-      default:
-        return CountryISO.UnitedKingdom;
+    if (!code) {
+      return CountryISO.UnitedKingdom;
     }
+
+    const regionCode = this.phoneUtil.getRegionCodeForCountryCode(Number(code));
+    if (!regionCode || regionCode === 'ZZ') {
+      return CountryISO.UnitedKingdom;
+    }
+
+    const matchedISO = Object.values(CountryISO).find(
+      (iso) => iso.toLowerCase() === regionCode.toLowerCase()
+    );
+
+    return (matchedISO as CountryISO) || CountryISO.UnitedKingdom;
   }
 
   onIdImagePicked(event: Event): any {
