@@ -10,6 +10,10 @@
         </h1>
         <span class="breadcrumb">
           <div class="d-flex align-items-center gap-2" style="gap: 8px;">
+            <!-- <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#dividentModal"
+              (click)="onOpenDividend()" *ngIf="adminType === '2'">
+              Add Divident
+            </button> -->
             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#emailModal12"
               ngbTooltip="send email to user" (click)="onUpdateEmail('')" *ngIf="adminType === '2'">
               Mail All
@@ -50,7 +54,7 @@
                       <th>Unique Id</th>
                       <th>Profile Image</th>
                       <th>Action</th>
-                      <th>Last 5 Payments</th>
+                      <th>Last 6 Payments</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -314,3 +318,76 @@
     </div>
   </form>
 </div>
+
+
+
+
+<!-- assign mailModal popup start -->
+<div class="modal fade" id="dividentModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel"
+  aria-hidden="true" [ngStyle]="{'display':displayDividend}">
+  <form #dividendForm="ngForm" (ngSubmit)="submitDividend(dividendForm)">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="max-width: 800px !important; width: 100% !important;">
+        <div class="modal-header">
+          <h1 class="modal-title mb-0 pl-2">Divident</h1>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="displayDividend = 'none'">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group"
+                [ngClass]="{'has-error': dividendForm.controls['percentage']?.invalid && dividendForm.controls['percentage']?.touched}">
+                <label>Percentage</label>
+                <select class="form-control" name="percentage" ngModel required>
+                  <option value="" disabled selected>Select percentage</option>
+                  <option *ngFor="let percent of dividendPercentages" [value]="percent">{{ percent }}%</option>
+                </select>
+                <span class="help-block"
+                  *ngIf="dividendForm.controls['percentage']?.invalid && dividendForm.controls['percentage']?.touched">
+                  Please select a percentage.
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group"
+                [ngClass]="{'has-error': dividendForm.controls['amount']?.invalid && dividendForm.controls['amount']?.touched}">
+                <label>Amount</label>
+                <input type="text" class="form-control" placeholder="Enter amount" name="amount" ngModel required />
+                <span class="help-block"
+                  *ngIf="dividendForm.controls['amount']?.invalid && dividendForm.controls['amount']?.touched">
+                  Please enter an amount.
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group"
+                [ngClass]="{'has-error': dividendForm.controls['description']?.invalid && dividendForm.controls['description']?.touched}">
+                <label>Description</label>
+                <input type="text" class="form-control" placeholder="Enter description" name="description" ngModel required />
+                <span class="help-block"
+                  *ngIf="dividendForm.controls['description']?.invalid && dividendForm.controls['description']?.touched">
+                  Please enter a description.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">
+              <span>Submit</span>
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </span>
+          </button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDividendModal"
+            (click)="displayDividend = 'none'">Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+

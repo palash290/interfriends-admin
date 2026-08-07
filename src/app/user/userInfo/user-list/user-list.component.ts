@@ -16,6 +16,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit, OnDestroy {
+  
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   users: UserList[] = [];
   totalUsers = 0;
@@ -37,6 +38,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   add: string;
   display = "none";
   displayEmail = "none";
+  displayDividend = "none";
   display1 = 'none';
   display2 = 'none';
   display4 = 'none';
@@ -117,6 +119,10 @@ export class UserListComponent implements OnInit, OnDestroy {
   onUpdateEmail(id: string): void {
     this.updateId = id;
     this.displayEmail = 'block'
+  }
+
+  onOpenDividend(): void {
+    this.displayDividend = 'block';
   }
 
   onUpdateView(id: string): void {
@@ -200,6 +206,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.display2 = 'none'
     this.display4 = 'none'
     this.displayDefault = 'none'
+    this.displayDividend = 'none';
   }
 
   ngOnDestroy(): void {
@@ -298,6 +305,30 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.toastr.error('Failed to send email. Please try again.');
       }
     });
+  }
+
+  dividendPercentages = [1, 1.5, 2, 2.5, 3, 3.5, 4, 5];
+  dividendAmount = '';
+  dividendDescription = '';
+  dividendPercentage = '';
+
+  submitDividend(data: NgForm): void {
+    data.control.markAllAsTouched();
+
+    if (data.invalid) {
+      return;
+    }
+
+    const payload = {
+      percentage: data.value.percentage,
+      amount: data.value.amount,
+      description: data.value.description
+    };
+
+    console.log('Dividend payload:', payload);
+    this.toastr.success('Dividend details captured');
+    data.resetForm();
+    this.displayDividend = 'none';
   }
 
 

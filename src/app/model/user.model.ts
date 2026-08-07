@@ -9,4 +9,5 @@ export interface User {
   code: string;
   status: string;
   image: string;
+  permission_ids: string;
 }

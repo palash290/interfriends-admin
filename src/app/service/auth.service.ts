@@ -89,6 +89,7 @@ export class AuthService {
           //debugger
           localStorage.setItem('group_ids', response?.group_ids);
           localStorage.setItem('circle_ids', response?.circle_ids);
+          localStorage.setItem('parent_admin_id', response?.permission_ids);
           this.admin_type = response.admin_type;
           this.name = response.name;
           this.authUserStatusListner.next(true);

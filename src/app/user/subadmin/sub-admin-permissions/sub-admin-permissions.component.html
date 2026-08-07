@@ -33,15 +33,19 @@
                                             <small>{{ selectedCount }} of {{ sidebarItems.length }} selected</small>
                                         </span>
                                     </label>
+                                    <button class="btn btn-primary" (click)="savePermissions()">
+                                        Save Permissions
+                                    </button>
                                 </div>
 
                                 <div class="permissions-grid">
-                                    <label class="permission-card" *ngFor="let item of sidebarItems" [for]="'sidebar-' + item.id">
+                                    <label class="permission-card" [class.disabled]="item.id === 1 || item.id === 2" *ngFor="let item of sidebarItems" [for]="'sidebar-' + item.id">
                                         <input
                                             class="permission-checkbox"
                                             type="checkbox"
                                             [id]="'sidebar-' + item.id"
                                             [checked]="item.isChecked"
+                                            [disabled]="item.id === 1 || item.id === 2"
                                             (change)="toggleItem(item.id, $event)">
                                         <span class="permission-label">{{ item.name }}</span>
                                     </label>

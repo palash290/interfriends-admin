@@ -35,7 +35,7 @@ export class UpdateProfileComponent implements OnInit {
     this.userService.getUserDetail(this.userId).subscribe((response: any) => {
       this.user = response.userInfo;
       this.isLoading = false;
-
+      localStorage.setItem('parent_admin_id', this.user?.permission_ids);
       this.form.patchValue({
         name: this.user.name,
         email: this.user.email,

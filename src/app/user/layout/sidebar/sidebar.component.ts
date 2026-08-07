@@ -40,7 +40,6 @@ export class SidebarComponent implements OnInit {
         this.syncServiceManagementState(event.urlAfterRedirects);
       }
     });
-
   }
 
   toggleServiceManagement(event: Event): void {
@@ -54,9 +53,21 @@ export class SidebarComponent implements OnInit {
       url.includes('/user/categoryList');
   }
 
+  hasPermission(id: number): boolean {
+    if (this.adminType === '2') {
+      return true;
+    }
+    const permissionIdsStr = localStorage.getItem('parent_admin_id');
+    if (!permissionIdsStr) {
+      return id === 1 || id === 2;
+    }
+    const allowedIds = permissionIdsStr.split(',');
+    return allowedIds.includes(id.toString());
+  }
+
   ngOnDestroy() {
     this.toggleServ.toggleChange.unsubscribe();
-
   }
+
 
 }
