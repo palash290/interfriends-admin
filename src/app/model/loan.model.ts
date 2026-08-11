@@ -20,4 +20,5 @@ export interface Loan {
   created_at: string;
   paid_amount: string;
   sno: number;
+  reference_no: any;
 }

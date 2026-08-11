@@ -13,7 +13,7 @@
         </h1>
         <span class="breadcrumb">
           <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#emailLeadsModal">
-            Send mail to All leads
+            Send Mail to All Leads
           </button>
           <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
             Add
@@ -86,7 +86,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any group yet!
+                You haven't had any group yet!
               </div>
               <!-- /.box-body -->
             </div>
@@ -115,7 +115,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Block This Group</div>
+      <div class="modal-body">Do You Really Want To Block This Group</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock"
@@ -135,7 +135,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Unblock This Group</div>
+      <div class="modal-body">Do You Really Want To Unblock This Group</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock"
@@ -160,7 +160,7 @@
 <div class="modal fade" id="emailLeadsModal" tabindex="-1" role="dialog" aria-labelledby="moveModalLabel"
   aria-hidden="true" [ngStyle]="{'display':display4}">
   <form #mailForm="ngForm" (ngSubmit)="sendLeadsEmail(mailForm)">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title mb-0 pl-2">Send Mail to Circle`s Users</h1>
@@ -182,8 +182,9 @@
             <div class="form-group"
               [ngClass]="{'has-error': mailForm.controls['body']?.invalid && mailForm['body']?.touched}">
               <label>Message</label>
-              <textarea type="text" class="form-control" placeholder="Enter email body" name="body" ngModel
-                required></textarea>
+              <ckeditor #editor [(ngModel)]="mailBody" id="body" name="body" [config]="{ extraPlugins: 'divarea' }"
+                required>
+              </ckeditor>
               <span class="help-block" *ngIf="mailForm.controls['body']?.invalid && mailForm.controls['body']?.touched">
                 Please enter a Description.
               </span>

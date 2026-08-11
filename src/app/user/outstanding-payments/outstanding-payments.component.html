@@ -27,7 +27,7 @@
                                         style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedGroupType"
                                         name="loan_type" (ngModelChange)="getUsers(usersPerPage, currentPage, search)">
                                         <!-- <option value="">All</option> -->
-                                         <option value="" disabled>Select</option>
+                                        <option value="" disabled>Select</option>
                                         <option value="loan">Loan</option>
                                         <option value="savings">Savings</option>
                                         <option value="miscellaneous">Miscellaneous</option>
@@ -110,7 +110,7 @@
                                             </td>
                                             <td *ngIf="selectedGroupType != 'saving'">{{user.created_at | date:
                                                 'dd/MM/yyyy'}}</td> -->
-                                                <td >{{user.created_at | date:
+                                            <td>{{user.created_at | date:
                                                 'dd/MM/yyyy'}}</td>
                                             <td>
                                                 <!-- <button type="button" class="btn btn-dark margin" data-toggle="modal"
@@ -132,7 +132,7 @@
                                 (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
 
                             <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
-                                You have'nt had any user yet!
+                                You haven't had any user yet!
                             </div>
                         </div>
                     </div>
@@ -157,8 +157,7 @@
                 <div class="modal-body">Are you sure you want to send this user reminder?</div>
                 <div class="modal-footer">
                     <!-- <button class="btn btn-primary" >Yes</button> -->
-                    <button (click)="sendEmail()" type="submit" class="btn btn-primary "
-                        [disabled]="isLoadingBtn">
+                    <button (click)="sendEmail()" type="submit" class="btn btn-primary " [disabled]="isLoadingBtn">
                         <span *ngIf="!isLoadingBtn">Yes</span>
                         <span *ngIf="isLoadingBtn"><i class="fa fa-refresh fa-spin"></i></span>
                     </button>

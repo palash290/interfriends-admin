@@ -201,5 +201,32 @@ export class SafeKeepingService {
     );
   }
 
+  acceptRejectDividend(
+    dividend_user_id: string,
+    request_status: string,
+    group_id: any,
+    user_id: string,
+    reason: string = '',
+    adminId: any
+  ): any {
+
+    const instituteData = new FormData();
+    instituteData.append('dividend_user_id', dividend_user_id);
+    instituteData.append('request_status', request_status);
+    if (reason) {
+      instituteData.append('reason', reason);
+    }
+    instituteData.append('grour_id', group_id);
+    instituteData.append('admin_id', '1');
+    instituteData.append('user_id', user_id);
+    instituteData.append('admin_id', adminId);
+    return this.http.post<{
+      success: string;
+      message: string;
+    }>(
+      API_URL + '/updateDividendPayoutRequestStatus', instituteData
+    );
+  }
+
 
 }

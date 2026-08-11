@@ -52,6 +52,19 @@
         </a>
       </li>
 
+      <li routerLinkActive="active" *ngIf="hasPermission(26)">
+        <a routerLink="/user/dividend">
+          <i class="fa fa-money"></i> <span>Dividend</span>
+        </a>
+      </li>
+
+      <!-- Dividend Requests -->
+      <li routerLinkActive="active" *ngIf="hasPermission(27)">
+        <a routerLink="/user/dividend-requests">
+          <i class="fa fa-fw fa-money"></i> <span>Dividend Requests</span>
+        </a>
+      </li>
+
       <li routerLinkActive="active" *ngIf="hasPermission(5)">
         <a routerLink="/user/subadminList">
           <i class="fa fa-user-secret"></i> <span>Sub Admin</span>

@@ -57,7 +57,7 @@
                             <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
                                 (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
                             <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
-                                You have'nt had any activity logs yet!
+                                You don't have any activity logs
                             </div>
                         </div>
                     </div>

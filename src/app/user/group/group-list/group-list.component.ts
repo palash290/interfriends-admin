@@ -14,7 +14,10 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./group-list.component.css']
 })
 export class GroupListComponent implements OnInit {
+  
   @ViewChild('mailForm') mailForm: NgForm;
+  mailBody: string = '';
+  @ViewChild('editor', { static: false }) editor: any;
   lists: Group[] = [];
   totalLists = 0;
   listsPerPage = 10;
@@ -159,11 +162,13 @@ export class GroupListComponent implements OnInit {
         this.mailForm.reset();
         if (responseData.success == 0) {
           this.toastr.warning(responseData.message);
+          this.mailBody = '';
         } else {
           this.toastr.success(responseData.message);
           // this.totalUsers =  responseData.userCount;
           this.isLoading = false;
           this.isLoadingPage = false;
+          this.mailBody = '';
         }
         document.getElementById('closeBlock2').click();
 

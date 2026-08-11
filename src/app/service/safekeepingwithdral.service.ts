@@ -15,6 +15,9 @@ export class SafekeepingwithdralService {
   private lists: Safekeepingwithdral[] = [];
   private listsUpdated = new Subject<{ lists: Safekeepingwithdral[]; listCount: number; }>();
 
+  private divLists: Safekeepingwithdral[] = [];
+  private listsDivUpdated = new Subject<{ lists: Safekeepingwithdral[]; listCount: number; }>();
+
   constructor(private http: HttpClient, private router: Router) { }
 
 
@@ -169,8 +172,46 @@ export class SafekeepingwithdralService {
       });
   }
 
-    getListUpdateListenerWelfare() {
+  getListUpdateListenerWelfare() {
     return this.listsUpdated.asObservable();
+  }
+
+
+  getDividentLists(listsPerPage: number, currentPage: number, user_id: string, group_id: any, group_ids?: any, circle_ids?: any) {
+
+    const listData = new FormData();
+
+
+    if (currentPage) {
+      const totalPage = listsPerPage * currentPage;
+      listData.append('start', totalPage.toString());
+    }
+
+    if (group_ids) {
+      listData.append('group_ids', group_ids.toString());
+    }
+
+    if (circle_ids) {
+      listData.append('circle_ids', circle_ids.toString());
+    }
+
+
+    this.http
+      .post<{ success: string; message: string; lists: any; listCount: number; }>(
+        API_URL + '/dividendPayoutRequestList', listData
+      ).subscribe(responseData => {
+        this.divLists = responseData.lists;
+
+
+        this.listsDivUpdated.next({
+          lists: [...this.divLists],
+          listCount: responseData.listCount,
+        });
+      });
+  }
+
+  getListUpdateListenerDivident() {
+    return this.listsDivUpdated.asObservable();
   }
 
 

@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/service/auth.service';
 import { GroupService } from 'src/app/service/group.service';
 import { NgForm } from '@angular/forms';
+import { UserService } from 'src/app/service/user.service';
+import { SharedService } from 'src/app/service/shared.service';
 
 @Component({
   selector: 'app-user-list',
@@ -16,7 +18,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  
+
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   users: UserList[] = [];
   totalUsers = 0;
@@ -48,12 +50,16 @@ export class UserListComponent implements OnInit, OnDestroy {
   circle_ids: any;
   subAdminId: any;
 
+  propertyList: any[] = [];
+
   constructor(
     public userService: UserListService,
     public authService: AuthService,
     private toastr: ToastrService,
     public route: ActivatedRoute,
-    public groupService: GroupService
+    public groupService: GroupService,
+    public userService1: UserService,
+    public sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +75,11 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.isLoadingPage = false;
       });
+
+    this.userService1.allPropertyList().subscribe((response: any) => {
+      this.propertyList = response.propertyList;
+      // this.isLoadingProperty = false;
+    });
   }
 
   private getRequestedPageSize(): number {
@@ -319,16 +330,27 @@ export class UserListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const payload = {
-      percentage: data.value.percentage,
-      amount: data.value.amount,
-      description: data.value.description
-    };
+    this.isLoading = true;
+    const userData = new FormData();
+    userData.append('dividend_year', data.value.dividend_year);
+    userData.append('percentage', data.value.percentage);
+    userData.append('description', data.value.description);
+    userData.append('admin_id', '1');
 
-    console.log('Dividend payload:', payload);
-    this.toastr.success('Dividend details captured');
-    data.resetForm();
-    this.displayDividend = 'none';
+    this.sharedService.postAPI('/createDividendForAllUsers', userData).subscribe({
+      next: (resp: any) => {
+        this.isLoading = false;
+        this.toastr.success(resp.message || 'Dividend details captured');
+        data.resetForm();
+        this.displayDividend = 'none';
+        document.getElementById('closeDividendModal').click();
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        console.error('Error submitting dividend:', error);
+        this.toastr.error(error.message || 'Failed to submit dividend.');
+      }
+    });
   }
 
 

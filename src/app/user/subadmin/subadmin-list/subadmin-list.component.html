@@ -97,7 +97,7 @@
               <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" (page)="onChangedPage($event)"
                 *ngIf="users.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
-                You have'nt had any user yet!
+                You haven't had any user yet!
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Block This Sub Admin</div>
+      <div class="modal-body">Do You Really Want To Block This Sub Admin</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('2')">BLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
@@ -140,7 +140,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Unblock This Sub Admin</div>
+      <div class="modal-body">Do You Really Want To Unblock This Sub Admin</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock">Close</button>
@@ -160,7 +160,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Delete This Sub Admin</div>
+      <div class="modal-body">Do You Really Want To Delete This Sub Admin</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onDelete()">Delete</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDelete">Close</button>

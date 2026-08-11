@@ -89,7 +89,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="servicesPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any payout request yet!
+                You haven't had any payout request yet!
               </div>
               <!-- /.box-body -->
             </div>
@@ -118,7 +118,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Do You Realy Want To Reject This Request</p>
+        <p>Do You Really Want To Reject This Request</p>
         <form [formGroup]="rejectForm">
           <div class="form-group">
             <label for="rejectReason">Reason</label>
@@ -155,7 +155,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Accept This Request</div>
+      <div class="modal-body">Do You Really Want To Accept This Request</div>
       <div class="modal-footer">
         <!-- <button class="btn btn-primary" (click)="onAccept()">Accept</button> -->
         <button (click)="onAccept()" type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">

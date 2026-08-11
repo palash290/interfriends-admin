@@ -37,6 +37,7 @@
                       <th>Email</th>
                       <th>Payout Amount</th>
                       <th>Total Amount</th>
+                      <th>Notes</th>
                       <th>Status</th>
                       <th>Created on</th>
                       <th>Action</th>
@@ -51,6 +52,14 @@
                       </td>
                       <td>{{ list.amount | number : "1.0-0" }}</td>
                       <td>{{list.amount_total | number : "1.0-0"}}</td>
+                      <td>
+                        <!-- <span class="text-truncate d-block" style="max-width: 200px;">{{ list.note || '-' }}</span> -->
+                        <span class="text-truncate d-block tooltip-custom" style="max-width: 200px; cursor: pointer;"
+                          [title]="list.note || '-'">
+                          {{ list.note?.substring(0, 30) || '-' }}
+                        </span>
+
+                      </td>
                       <td *ngIf="list.request_status == 0">
                         <span class="m-1 btn btn-danger btn-sm et_cstm_badge text-white">Rejected</span>
                       </td>
@@ -61,7 +70,7 @@
                           class="m-1 btn btn-warning btn-sm et_cstm_badge  text-white">Pending</span></td>
                       <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
 
-                      <td *ngIf="list.request_status == 2">
+                      <!-- <td *ngIf="list.request_status == 2">
                         <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
                           data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">Reject
                         </button>
@@ -77,6 +86,27 @@
                         <button type="button" class="m-1 btn btn-success btn-sm" ngbTooltip="accepted"
                           (click)="showMsg()">Accept
                         </button>
+                      </td> -->
+
+                      <td *ngIf="list.request_status == 2">
+                        <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
+                          data-target="#ct_reject_modal" ngbTooltip="rejected" (click)="getRejectId(list)">
+                          Reject
+                        </button>
+
+                        <button type="button" class="m-1 btn btn-success btn-sm" data-toggle="modal"
+                          data-target="#ct_accept_modal" ngbTooltip="accepted" (click)="getAcceptId(list)">
+                          Accept
+                        </button>
+                      </td>
+
+                      <td *ngIf="list.request_status == 0 || list.request_status == 1">
+                        <button type="button" class="m-1 btn btn-sm" [ngClass]="{
+      'btn-warning': list.request_status == 0,
+      'btn-success': list.request_status == 1
+    }" disabled>
+                          {{ list.request_status == 0 ? 'Pending' : 'Accepted' }}
+                        </button>
                       </td>
 
                     </tr>
@@ -86,7 +116,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any safekeeping request yet!
+                You haven't had any safekeeping request yet!
               </div>
               <!-- /.box-body -->
             </div>
@@ -116,7 +146,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Do You Realy Want To Reject This Request</p>
+        <p>Do You Really Want To Reject This Request</p>
         <form [formGroup]="rejectForm">
           <div class="form-group">
             <label for="rejectReason">Reason</label>
@@ -149,7 +179,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Accept This Request</div>
+      <div class="modal-body">Do You Really Want To Accept This Request</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onAccept()">Accept</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>

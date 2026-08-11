@@ -23,7 +23,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="box">
-               <div class="box-header d-flex align-items-center flex-wrap">
+              <div class="box-header d-flex align-items-center flex-wrap">
                 <!-- <div class="form-group mb-0 mr-2" style="min-width: 220px;">
                   <select class="form-control" [(ngModel)]="filterCategoryId" (change)="onFilterChange()">
                     <option value="">All Categories</option>
@@ -113,8 +113,8 @@
 
 <div class="modal fade" id="exampleModal">
   <div class="modal-dialog">
-    <app-category-add [uniqueId]="updateId" [categoryName]="updateCategoryName" [categoryStatus]="updateCategoryStatus" [eachChange]="eachChange" [add]="add"
-      (valueChange)="hidePopup($event)"></app-category-add>
+    <app-category-add [uniqueId]="updateId" [categoryName]="updateCategoryName" [categoryStatus]="updateCategoryStatus"
+      [eachChange]="eachChange" [add]="add" (valueChange)="hidePopup($event)"></app-category-add>
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
@@ -131,7 +131,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Block This Category</div>
+      <div class="modal-body">Do You Really Want To Block This Category</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('0')">BLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeBlock">Close</button>
@@ -151,7 +151,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Unblock This Category</div>
+      <div class="modal-body">Do You Really Want To Unblock This Category</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onBlockUnblock('1')">UNBLOCK</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeUnblock">Close</button>

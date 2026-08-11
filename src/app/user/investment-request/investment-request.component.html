@@ -82,7 +82,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any investment request yet!
+                You haven't had any investment request yet!
               </div>
               <!-- /.box-body -->
             </div>
@@ -174,7 +174,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Reject This Request</div>
+      <div class="modal-body">Do You Really Want To Reject This Request</div>
       <div class="modal-footer">
         <!-- <button class="btn btn-primary" (click)="onReject()">Reject</button> -->
         <button (click)="onReject()" type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">
@@ -199,7 +199,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Accept This Request</div>
+      <div class="modal-body">Do You Really Want To Accept This Request</div>
 
       <div class="col-md-12 p-3">
         <div class="form-group">

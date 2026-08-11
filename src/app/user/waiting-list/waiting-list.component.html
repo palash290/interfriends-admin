@@ -67,7 +67,7 @@
                             <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
                                 (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
                             <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
-                                You have'nt had any group circle yet!
+                                You haven't had any group circle yet!
                             </div>
                             <!-- /.box-body -->
                         </div>

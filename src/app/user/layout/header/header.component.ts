@@ -39,11 +39,15 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onToggle()
-  {
-      this.menuToggle = !this.menuToggle;
-      this.sidebar.setToggle(this.menuToggle);
+  onToggle() {
+    this.menuToggle = !this.menuToggle;
+    this.sidebar.setToggle(this.menuToggle);
 
+    if (window.innerWidth < 768) {
+      document.body.classList.toggle('sidebar-open');
+    } else {
+      document.body.classList.toggle('sidebar-collapse');
+    }
   }
 
   openModal()

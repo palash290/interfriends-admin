@@ -1,0 +1,232 @@
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { SafeKeepingService } from 'src/app/service/safeKeeping.service';
+import { SafekeepingwithdralService } from 'src/app/service/safekeepingwithdral.service';
+
+@Component({
+  selector: 'app-dividend-requests',
+  templateUrl: './dividend-requests.component.html',
+  styleUrls: ['./dividend-requests.component.css']
+})
+export class DividendRequestsComponent implements OnInit {
+
+  lists: any[] = [];
+
+  listDetail: any;
+  totalLists = 0;
+  listsPerPage = 10;
+  currentPage = 0;
+  pageSizeOptions = [1, 2, 5, 10];
+  private listsSub: Subscription;
+  isLoading = true;
+  isLoadingPage = true;
+  selectListId: string;
+  userId: string;
+  groupId: string;
+  display: string;
+  form: FormGroup;
+  rejectForm: FormGroup = new FormGroup({
+    reason: new FormControl(null, { validators: [Validators.required] }),
+  });
+  isLoadingUpdate = false;
+  mode = 'update';
+  adminType: string;
+  authService: any;
+  closeModal: any;
+  mainId: string;
+  loan: any;
+  modalData: any;
+  request_status: string;
+  group_ids: any;
+  circle_ids: any;
+  subAdminId: any;
+  isLoadingBtn = false;
+
+  constructor(
+    public safekeepingwithdralService: SafekeepingwithdralService,
+    private toastr: ToastrService,
+    public route: ActivatedRoute,
+    public safeKeepingService: SafeKeepingService
+  ) { }
+
+  ngOnInit(): void {
+    this.subAdminId = localStorage.getItem('userId_interFriendAdmin');
+    this.group_ids = localStorage.getItem('group_ids');
+    this.circle_ids = localStorage.getItem('circle_ids');
+    this.getDividentList();
+
+    this.mode = 'update';
+    this.form = new FormGroup({
+      amount: new FormControl(null, { validators: [Validators.required] }),
+      note_title: new FormControl(null, { validators: [Validators.required] }),
+      note_description: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+    });
+  }
+
+  getDividentList() {
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.groupId = paramMap.get('groupId');
+      this.userId = paramMap.get('userId');
+      this.safekeepingwithdralService.getDividentLists(
+        this.listsPerPage,
+        this.currentPage,
+        this.userId,
+        this.groupId,
+        this.group_ids,
+        this.circle_ids
+      );
+      this.listsSub = this.safekeepingwithdralService
+        .getListUpdateListenerDivident()
+        .subscribe(
+          (listData: { lists: any[]; listCount: number }) => {
+            this.lists = listData.lists;
+            this.totalLists = listData.listCount;
+            this.isLoading = false;
+            this.isLoadingPage = false;
+            console.log(this.lists, 'listDetail');
+          }
+        );
+    });
+  }
+
+  checkAdminType() {
+    if (localStorage.getItem('admin_type_interFriendAdmin') === '2') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  addsafekeepingPayment(data: any) {
+    console.log(data);
+    this.display = 'block';
+    this.modalData = data;
+
+    this.form.patchValue({
+      amount: data.amount,
+    });
+    this.isLoadingUpdate = false;
+  }
+
+  onChangedPage(pageData: PageEvent): any {
+    this.isLoadingPage = true;
+    this.currentPage = pageData.pageIndex;
+    this.listsPerPage = pageData.pageSize;
+    this.safekeepingwithdralService.getDividentLists(
+      this.listsPerPage,
+      this.currentPage,
+      this.userId,
+      this.groupId,
+      this.circle_ids
+    );
+  }
+
+  onview(id: string, index: number) {
+    this.listDetail = this.lists[index];
+  }
+
+
+  @ViewChild('closeModal2') closeModal2!: ElementRef;
+  @ViewChild('closeModal1') closeModal1!: ElementRef;
+  acceptId: any;
+  acceptGroupId: any;
+  acceptUserId: any;
+  rejectId: any;
+  rejectGroupId: any;
+  rejectUserId: any;
+
+  getAcceptId(detail: any) {
+    this.acceptId = detail.id;
+    this.acceptGroupId = detail.group_id;
+    this.acceptUserId = detail.user_id;
+  }
+
+  getRejectId(detail: any) {
+    this.rejectId = detail.id;
+    this.rejectGroupId = detail.group_id;
+    this.rejectUserId = detail.user_id;
+  }
+
+  onAccept() {
+    this.isLoadingBtn = true;
+    this.safeKeepingService
+      .acceptRejectDividend(
+        this.acceptId,
+        '1',
+        this.acceptGroupId,
+        this.acceptUserId,
+        '',
+        this.subAdminId
+      )
+      .subscribe((response: any) => {
+        this.onClose();
+        if (response.success == '1') {
+          this.toastr.success(response.message);
+          this.closeModal2.nativeElement.click();
+          this.getDividentList();
+        } else {
+          this.toastr.error(response.message);
+          this.closeModal2.nativeElement.click();
+          this.getDividentList();
+        }
+        this.isLoadingBtn = false;
+        // setTimeout(function () {
+        //   window.location.reload();
+        // }, 2000);
+      });
+  }
+
+  onReject() {
+    this.rejectForm.markAllAsTouched();
+
+    if (this.rejectForm.invalid) {
+      return;
+    }
+
+    this.isLoadingBtn = true;
+    this.safeKeepingService
+      .acceptRejectDividend(
+        this.rejectId,
+        '0',
+        this.rejectGroupId,
+        this.rejectUserId,
+        this.rejectForm.value.reason,
+        this.subAdminId
+      )
+      .subscribe((response: any) => {
+        this.onClose();
+        // debugger
+        if (response.success == '1') {
+          this.toastr.success(response.message);
+          this.closeModal1.nativeElement.click();
+          this.getDividentList();
+        } else {
+          this.toastr.error(response.message);
+          this.closeModal1.nativeElement.click();
+          this.getDividentList();
+        }
+        this.isLoadingBtn = false;
+        // setTimeout(function () {
+        //   window.location.reload();
+        // }, 2000);
+      });
+  }
+
+  onClose(): void {
+    this.form.reset();
+    this.rejectForm.reset();
+    this.display = 'none';
+  }
+
+  showMsg() {
+    this.toastr.warning("You can't change the status again!")
+  }
+
+
+}

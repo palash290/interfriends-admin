@@ -14,6 +14,7 @@ import { UserListService } from 'src/app/service/userList.service';
   styleUrls: ['./admin-notifications.component.css']
 })
 export class AdminNotificationsComponent implements OnInit {
+  
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   lists: any[] = [];
   users: any[] = [];

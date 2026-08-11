@@ -38,6 +38,8 @@ export class SidebarComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.syncServiceManagementState(event.urlAfterRedirects);
+        // Automatically close the sidebar on mobile when a link is clicked and navigation happens
+        document.body.classList.remove('sidebar-open');
       }
     });
   }

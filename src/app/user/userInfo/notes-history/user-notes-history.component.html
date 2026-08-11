@@ -104,10 +104,14 @@
                                                     Payment Deadline</span>
                                                 <span class="badge badge-danger" *ngIf="user.status === '4'">Paid
                                                     Late</span> -->
-                                                     <span class="badge badge-primary" *ngIf="user.status === '1'">Pending</span>
-                        <span class="badge badge-success" *ngIf="user.status === '2'">Completed</span>
-                        <span class="badge badge-danger" *ngIf="user.status === '3'">Declined</span>
-                        <span class="badge badge-secondary" *ngIf="user.status === '4'">Accepted</span>
+                                                <span class="badge badge-primary"
+                                                    *ngIf="user.status === '1'">Pending</span>
+                                                <span class="badge badge-success"
+                                                    *ngIf="user.status === '2'">Completed</span>
+                                                <span class="badge badge-danger"
+                                                    *ngIf="user.status === '3'">Declined</span>
+                                                <span class="badge badge-secondary"
+                                                    *ngIf="user.status === '4'">Accepted</span>
                                             </td>
                                             <td>{{user.created_at | date: 'dd/MM/yyyy'}}</td>
                                         </tr>
@@ -118,7 +122,7 @@
                                 (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
 
                             <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
-                                You have'nt had any user yet!
+                                You haven't had any user yet!
                             </div>
                         </div>
                     </div>

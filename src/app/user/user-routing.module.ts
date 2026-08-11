@@ -77,6 +77,8 @@ import { UserServiceRequestsComponent } from './services/user-service-requests/u
 import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.component';
 import { SubAdminLogsComponent } from './subadmin/sub-admin-logs/sub-admin-logs.component';
 import { SubAdminPermissionsComponent } from './subadmin/sub-admin-permissions/sub-admin-permissions.component';
+import { DividendManagementComponent } from './dividend-management/dividend-management.component';
+import { DividendRequestsComponent } from './dividend-requests/dividend-requests.component';
 /*Aishwarya Holkar Changes Ends*/
 
 const routes: Routes = [
@@ -401,6 +403,16 @@ const routes: Routes = [
          {
             path: 'groupsOfuser',
             component: GroupsOfUserComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'dividend',
+            component: DividendManagementComponent,
+            canActivate: [AuthUserGuard]
+         },
+         {
+            path: 'dividend-requests',
+            component: DividendRequestsComponent,
             canActivate: [AuthUserGuard]
          },
          {

@@ -134,8 +134,8 @@
           </span>
         </div>
         <div class="form-group" [ngClass]="{'has-error': form.get('ref_no').invalid  && form.get('ref_no').touched}">
-          <label>Reference Number</label>
-          <input type="text" class="form-control" placeholder="Enter Refference Number" formControlName="ref_no" />
+        <label>Reference Number</label>
+          <input type="text" class="form-control" placeholder="Enter Reference Number" formControlName="ref_no" />
           <span class="help-block" *ngIf="form.get('ref_no').invalid  && form.get('ref_no').touched">
             Please enter a ref no.
           </span>

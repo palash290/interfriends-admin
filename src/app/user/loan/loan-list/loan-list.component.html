@@ -49,6 +49,7 @@
                       <th>Total Payment</th>
                       <th>Interest Payable</th>
                       <th>Guarantor</th>
+                      <th>Reference No</th>
                       <th>Loan Type</th>
                       <th>Status</th>
                       <th>Action</th>
@@ -64,6 +65,7 @@
                       <td>{{list.total_payment| number:'1.0-0'}}</td>
                       <td>{{list.interest_payable | number:'1.0-0'}}</td>
                       <td>{{list.gurarantor_email}}</td>
+                      <td>{{list.reference_no || '-'}}</td>
                       <td>
                         <span class="badge badge-primary" *ngIf="list.loan_type === '1'">Simple Loan</span>
                         <span class="badge badge-primary" *ngIf="list.loan_type === '2'">Car Insurance Loan</span>
@@ -146,7 +148,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any loan yet!
+                You haven't had any loan yet!
               </div>
               <!-- /.box-body -->
             </div>

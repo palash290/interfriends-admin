@@ -66,8 +66,9 @@
                           (click)="addsafekeepingPayment(list)">Pending
                         </button>
 
-                        <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal" (click)="getId(list.id)"
-                          data-target="#ct_reject_modal" ngbTooltip="rejected" *ngIf="list.request_status == '2'">Remove
+                        <button type="button" class="m-1 btn btn-danger btn-sm" data-toggle="modal"
+                          (click)="getId(list.id)" data-target="#ct_reject_modal" ngbTooltip="rejected"
+                          *ngIf="list.request_status == '2'">Remove
                         </button>
 
                       </td>
@@ -78,7 +79,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any group yet!
+                You haven't had any group yet!
               </div>
               <!-- /.box-body -->
             </div>
@@ -188,7 +189,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Do You Realy Want To Remove This Request</div>
+      <div class="modal-body">Do You Really Want To Remove This Request</div>
       <div class="modal-footer">
         <button class="btn btn-primary" (click)="onReject()">Yes</button>
         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeDefault">Close</button>

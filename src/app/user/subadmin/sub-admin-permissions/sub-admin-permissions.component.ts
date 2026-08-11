@@ -14,11 +14,11 @@ export class SubAdminPermissionsComponent implements OnInit {
   subAdminId: any;
 
   sidebarItems: any[] = [
-    { id: 1, name: 'Dashboard', isChecked: true },
+    { id: 1, name: 'Dashboard', isChecked: false },
     { id: 2, name: 'All members', isChecked: true },
     { id: 3, name: 'Blocked members', isChecked: false },
     { id: 4, name: 'Defaulted members', isChecked: false },
-    { id: 5, name: 'Sub Admin', isChecked: false },
+    // { id: 5, name: 'Sub Admin', isChecked: false },
     { id: 6, name: 'Groups', isChecked: false },
     { id: 7, name: 'Banners and Messages', isChecked: false },
     { id: 8, name: 'Member Trust Scores', isChecked: false },
@@ -38,7 +38,9 @@ export class SubAdminPermissionsComponent implements OnInit {
     { id: 22, name: 'PF Percent', isChecked: false },
     { id: 23, name: 'Loan Percent', isChecked: false },
     { id: 24, name: 'Contact Management', isChecked: false },
-    { id: 25, name: 'All Interested Members', isChecked: false }
+    { id: 25, name: 'All Interested Members', isChecked: false },
+    { id: 26, name: 'Dividend', isChecked: false },
+    { id: 27, name: 'Dividend Requests', isChecked: false }
   ];
 
   constructor(
@@ -67,7 +69,7 @@ export class SubAdminPermissionsComponent implements OnInit {
         if (resp.userinfo && resp.userinfo.permission_ids) {
           const activeIds = resp.userinfo.permission_ids.split(',').map((id: string) => parseInt(id, 10));
           this.sidebarItems.forEach(item => {
-            if (item.id === 1 || item.id === 2) {
+            if (item.id === 2) {
               item.isChecked = true;
             } else {
               item.isChecked = activeIds.includes(item.id);
@@ -106,14 +108,14 @@ export class SubAdminPermissionsComponent implements OnInit {
     const checked = (event.target as HTMLInputElement).checked;
 
     this.sidebarItems.forEach((item) => {
-      if (item.id !== 1 && item.id !== 2) {
+      if (item.id !== 2) {
         item.isChecked = checked;
       }
     });
   }
 
   toggleItem(id: number, event: Event): void {
-    if (id === 1 || id === 2) {
+    if (id === 2) {
       return;
     }
     const item = this.sidebarItems.find((sidebarItem) => sidebarItem.id === id);
@@ -132,12 +134,12 @@ export class SubAdminPermissionsComponent implements OnInit {
     this.isLoading = true;
     const userData = new FormData();
     userData.append('subadmin_id', this.subAdminId);
-    
+
     const checkedIds = this.sidebarItems
       .filter(item => item.isChecked)
       .map(item => item.id)
       .join(',');
-    
+
     userData.append('permission_ids', checkedIds);
 
     this.sharedService.postAPI('/updateSubadminPermission', userData).subscribe({

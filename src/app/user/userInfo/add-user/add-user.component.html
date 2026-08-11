@@ -31,6 +31,7 @@
               </span>
             </div>
           </div>
+
           <div class="col-md-6">
             <div class="form-group"
               [ngClass]="{'has-error': form.get('last_name').invalid  && form.get('last_name').touched}">
@@ -81,20 +82,11 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('mobile_number').invalid  && form.get('mobile_number').touched}">
               <label>Mobile Number</label>
-              <ngx-intl-tel-input
-                [cssClass]="'form-control'"
-                [preferredCountries]="preferredCountries"
-                [selectedCountryISO]="mobileSelectedCountryISO"
-                [enableAutoCountrySelect]="false"
-                [enablePlaceholder]="true"
-                [searchCountryFlag]="true"
-                [searchCountryField]="searchCountryField"
-                [selectFirstCountry]="false"
-                [phoneValidation]="true"
-                [separateDialCode]="true"
-                [numberFormat]="phoneNumberFormat"
-                inputId="mobile_number"
-                formControlName="mobile_number"
+              <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="mobileSelectedCountryISO" [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true" [searchCountryFlag]="true" [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false" [phoneValidation]="true" [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat" inputId="mobile_number" formControlName="mobile_number"
                 (countryChange)="onMobileCountryChange($event)">
               </ngx-intl-tel-input>
               <span class="help-block" *ngIf="form.get('mobile_number').invalid  && form.get('mobile_number').touched">
@@ -147,20 +139,11 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('home_number').invalid  && form.get('home_number').touched}">
               <label>Home Number</label>
-              <ngx-intl-tel-input
-                [cssClass]="'form-control'"
-                [preferredCountries]="preferredCountries"
-                [selectedCountryISO]="homeSelectedCountryISO"
-                [enableAutoCountrySelect]="false"
-                [enablePlaceholder]="true"
-                [searchCountryFlag]="true"
-                [searchCountryField]="searchCountryField"
-                [selectFirstCountry]="false"
-                [phoneValidation]="true"
-                [separateDialCode]="true"
-                [numberFormat]="phoneNumberFormat"
-                inputId="home_number"
-                formControlName="home_number"
+              <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="homeSelectedCountryISO" [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true" [searchCountryFlag]="true" [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false" [phoneValidation]="true" [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat" inputId="home_number" formControlName="home_number"
                 (countryChange)="onHomeCountryChange($event)">
               </ngx-intl-tel-input>
               <span class="help-block" *ngIf="form.get('home_number').invalid  && form.get('home_number').touched">
@@ -196,20 +179,11 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('emergency_number').invalid  && form.get('emergency_number').touched}">
               <label>Emergency Number</label>
-              <ngx-intl-tel-input
-                [cssClass]="'form-control'"
-                [preferredCountries]="preferredCountries"
-                [selectedCountryISO]="emergencySelectedCountryISO"
-                [enableAutoCountrySelect]="false"
-                [enablePlaceholder]="true"
-                [searchCountryFlag]="true"
-                [searchCountryField]="searchCountryField"
-                [selectFirstCountry]="false"
-                [phoneValidation]="true"
-                [separateDialCode]="true"
-                [numberFormat]="phoneNumberFormat"
-                inputId="emergency_number"
-                formControlName="emergency_number"
+              <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="emergencySelectedCountryISO" [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true" [searchCountryFlag]="true" [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false" [phoneValidation]="true" [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat" inputId="emergency_number" formControlName="emergency_number"
                 (countryChange)="onEmergencyCountryChange($event)">
               </ngx-intl-tel-input>
               <span class="help-block"
@@ -222,20 +196,11 @@
             <div class="form-group"
               [ngClass]="{'has-error': form.get('kin_number').invalid  && form.get('kin_number').touched}">
               <label>Next of kin Contact Number</label>
-              <ngx-intl-tel-input
-                [cssClass]="'form-control'"
-                [preferredCountries]="preferredCountries"
-                [selectedCountryISO]="kinSelectedCountryISO"
-                [enableAutoCountrySelect]="false"
-                [enablePlaceholder]="true"
-                [searchCountryFlag]="true"
-                [searchCountryField]="searchCountryField"
-                [selectFirstCountry]="false"
-                [phoneValidation]="true"
-                [separateDialCode]="true"
-                [numberFormat]="phoneNumberFormat"
-                inputId="kin_number"
-                formControlName="kin_number"
+              <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="preferredCountries"
+                [selectedCountryISO]="kinSelectedCountryISO" [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true" [searchCountryFlag]="true" [searchCountryField]="searchCountryField"
+                [selectFirstCountry]="false" [phoneValidation]="true" [separateDialCode]="true"
+                [numberFormat]="phoneNumberFormat" inputId="kin_number" formControlName="kin_number"
                 (countryChange)="onKinCountryChange($event)">
               </ngx-intl-tel-input>
               <span class="help-block" *ngIf="form.get('kin_number').invalid  && form.get('kin_number').touched">

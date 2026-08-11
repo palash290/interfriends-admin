@@ -128,6 +128,8 @@ import { WelfareRequestsComponent } from './welfare-requests/welfare-requests.co
 import { SubAdminLogsComponent } from './subadmin/sub-admin-logs/sub-admin-logs.component';
 import { SubAdminPermissionsComponent } from './subadmin/sub-admin-permissions/sub-admin-permissions.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { DividendManagementComponent } from './dividend-management/dividend-management.component';
+import { DividendRequestsComponent } from './dividend-requests/dividend-requests.component';
 
 @NgModule({
   imports: [
@@ -256,7 +258,9 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
     UserServiceRequestsComponent,
     WelfareRequestsComponent,
     SubAdminLogsComponent,
-    SubAdminPermissionsComponent
+    SubAdminPermissionsComponent,
+    DividendManagementComponent,
+    DividendRequestsComponent
   ],
   providers: [
     CurrencyPipe

@@ -97,7 +97,8 @@ export class AddLoanComponent implements OnInit {
               loan_type: this.loan.loan_type,
               status: this.loan.status,
               created_at: this.loan.created_at,
-              started_at: this.loan.start_date
+              started_at: this.loan.start_date,
+              ref_no: this.loan.reference_no
             });
 
             this.isLoadingUpdate = false;

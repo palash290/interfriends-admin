@@ -131,7 +131,6 @@ export class AddUserComponent implements OnInit, OnChanges {
             unique_id: this.user.unique_id,
             created_at: this.user.created_at
           });
-          debugger;
           this.mobileSelectedCountryISO = this.resolveCountryISO(this.user.country_code);
           this.homeSelectedCountryISO = this.resolveCountryISO(this.user.home_country_code);
           this.emergencySelectedCountryISO = this.resolveCountryISO(this.user.emergency_country_code);

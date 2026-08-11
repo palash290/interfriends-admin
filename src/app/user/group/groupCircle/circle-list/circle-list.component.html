@@ -107,7 +107,7 @@
               <mat-paginator [length]="totalLists" [pageSize]="listsPerPage" (page)="onChangedPage($event)"
                 *ngIf="lists.length > 0"></mat-paginator>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any group circle yet!
+                You haven't had any group circle yet!
               </div>
               <!-- /.box-body -->
             </div>
@@ -296,7 +296,7 @@
         </div>
         <div class="modal-footer">
           <!-- <button class="btn btn-primary" type="submit">Send email</button> -->
-           <button type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoadingBtn">
             <span *ngIf="!isLoadingBtn">
               <span>Send Mail</span>
             </span>

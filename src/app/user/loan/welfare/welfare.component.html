@@ -78,6 +78,7 @@
                       <th>Loan EMI</th>
                       <th>Provident</th>
                       <th>Admin Risk</th>
+                      <th>Reference No</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -90,6 +91,8 @@
                       <td>{{ list.loan_emi | number : "1.0-0" }}</td>
                       <td>{{ list.provident | number : "1.0-0" }}</td>
                       <td>{{ list.welfare_admin_fee | number : "1.0-0" }}</td>
+                      <td>{{ list.reference_no || '-' }}</td>
+
                       <!-- <td>
                         <span class="badge badge-secondary" *ngIf="list.status === '1'">Pending</span>
                         <span class="badge badge-success" *ngIf="list.status === '2'">Paid On Time</span>
@@ -149,7 +152,7 @@
                 </table>
               </div>
               <div class="box-body" *ngIf="lists.length <= 0 && !isLoading">
-                You have'nt had any group cycle yet!
+                You haven't had any group cycle yet!
               </div>
             </div>
           </div>
