@@ -6,7 +6,7 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Sub Admin Logs
+                    {{subAdminId == 1 ? 'My' : 'Sub Admin'}} Logs
                 </h1>
             </section>
             <section class="content">
@@ -14,7 +14,7 @@
                     <div class="col-md-12">
                         <div class="box">
                             <div class="box-header d-flex align-items-center">
-                                <h3 class="box-title mb-0">Sub Admin Activity Logs</h3>
+                                <h3 class="box-title mb-0">{{subAdminId == 1 ? 'My' : 'Sub Admin'}} Activity Logs</h3>
                                 <input type="text" class="form-control w-25 rounded float-right ml-auto"
                                     placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
                             </div>

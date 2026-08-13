@@ -100,6 +100,23 @@
                                 </span>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group"
+                                [ngClass]="{'has-error': dividendForm.controls['type']?.invalid && dividendForm.controls['type']?.touched}">
+                                <label>Type</label>
+                                <select class="form-control" name="type" ngModel required>
+                                    <option value="" disabled selected>Select type</option>
+                                    <option value="2">Provident</option>
+                                    <option value="1">Investment</option>
+                                </select>
+                                <span class="help-block"
+                                    *ngIf="dividendForm.controls['type']?.invalid && dividendForm.controls['type']?.touched">
+                                    Please select a type.
+                                </span>
+                            </div>
+                        </div>
+
                         <div class="col-md-4">
                             <div class="form-group"
                                 [ngClass]="{'has-error': dividendForm.controls['dividend_year']?.invalid && dividendForm.controls['dividend_year']?.touched}">

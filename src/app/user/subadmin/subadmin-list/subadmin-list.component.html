@@ -11,11 +11,17 @@
         <h1>
           Sub Admins
         </h1>
+
         <span class="breadcrumb">
-          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal" (click)="onAdd()">
+          <button type="button" class="btn bg-maroon mr-2" routerLink="/user/subadminlogs" [queryParams]="{id: '1'}">
+            My Logs
+          </button>
+          <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal"
+            (click)="onAdd()">
             Add
           </button>
         </span>
+
       </section>
 
       <!-- Main content -->

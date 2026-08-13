@@ -4,14 +4,24 @@
     <app-sidebar></app-sidebar>
     <div class="content-wrapper">
       <section class="content-header">
-        <h1>
-          <span>Welfare</span>
-        </h1>
-        <span class="breadcrumb"></span>
-        <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#welfareModel"
-          (click)="showModalAdd()">
-          Add
-        </button>
+        <div class="d-flex justify-content-between">
+
+          <h1>
+            <span>Welfare</span>
+          </h1>
+          <span class="breadcrumb"></span>
+
+          <div>
+            <button type="button" class="btn bg-maroon mr-2" data-toggle="modal" data-target="#welfareModel"
+              (click)="showModalAdd()">
+              Add
+            </button>
+            <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
+          </div>
+
+        </div>
 
         <!-- <div ngbDropdown class="d-inline-block mr-2"
           *ngIf="!isLoading && this.cycleList.length > 0 && lists.length > 0">
@@ -25,9 +35,7 @@
           </div>
         </div> -->
 
-        <a class="btn btn-primary" [routerLink]="['/user/singleUserDetail', userId, groupId]">
-          <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </a>
+
         <!-- <button type="button" class="btn bg-success float-right text-white ml-auto mr-3 px-5"
           *ngIf="showPayoutButton && lists.length > 0" data-toggle="modal" data-target="#payoutModal"
           (click)="showModal()">

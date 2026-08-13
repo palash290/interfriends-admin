@@ -22,20 +22,28 @@
                                 <!-- <h3 class="box-title">Outstanding Payment List</h3> -->
 
                                 <div class="ct_flex_1 d-flex align-items-center" style="gap:10px">
-                                    <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">Group Type</label>
+                                    <label for="" class="ct_fs_18 ct_fw_500 mb-0 ct_white_nowrap">
+                                        Group Type
+                                    </label>
+
                                     <select class="form-control py-2 h-auto ct_input"
-                                        style="border-radius: 5px;width: 100px;" [(ngModel)]="selectedGroupType"
+                                        style="border-radius: 5px;width: 180px;" [(ngModel)]="selectedGroupType"
                                         name="loan_type" (ngModelChange)="getUsers(usersPerPage, currentPage, search)">
-                                        <!-- <option value="">All</option> -->
                                         <option value="" disabled>Select</option>
-                                        <option value="loan">Loan</option>
-                                        <option value="savings">Savings</option>
-                                        <option value="miscellaneous">Miscellaneous</option>
+                                        <option value="1">Loan</option>
+                                        <option value="2">Help To Pay(Car Insurance)</option>
+                                        <option value="3">Help To Buy(Car)</option>
+                                        <option value="4">Help To Buy(Credit Card)</option>
+                                        <option value="5">Help Me Pay Something Else</option>
+                                        <option value="6">Help To Buy(House)</option>
+                                        <option value="7">Welfare</option>
+                                        <option value="8">Emergency Loan</option>
+                                        <!-- <option value="9">Miscellaneous</option> -->
                                     </select>
                                 </div>
 
                                 <!-- From Date -->
-                                <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
+                                <!-- <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
                                     style="gap:10px">
                                     <label class="ct_fs_18 ct_fw_500 mb-0">From<span
                                             class="ct_text_red">*</span></label>
@@ -43,18 +51,18 @@
                                         <input type="date" class="form-control ct_input ct_fs_18"
                                             [(ngModel)]="startDate">
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- To Date -->
-                                <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
+                                <!-- <div class="form-group ct_w_100_res_767 mb-0 ct_flex_1 d-flex align-items-center"
                                     style="gap:10px">
                                     <label class="ct_fs_18 ct_fw_500 mb-0">To<span class="ct_text_red">*</span></label>
                                     <div class="position-relative">
                                         <input type="date" class="form-control ct_input ct_fs_18" [(ngModel)]="endDate"
                                             [disabled]="!startDate">
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
+                                <!-- <div class="d-flex  align-items-center  ml-auto" style="gap: 10px;">
                                     <button *ngIf="!isLoading"
                                         (click)="getUsers(this.usersPerPage, this.currentPage, this.search)"
                                         type="submit" class="btn btn-primary" style="height:37px"
@@ -64,7 +72,7 @@
                                     </button>
                                     <button *ngIf="!isLoading" class="btn btn-primary" style="height:37px"
                                         (click)="reset()">Reset</button>
-                                </div>
+                                </div> -->
 
                                 <input type="text" class="form-control w-25 rounded float-right ml-auto"
                                     placeholder="Search.." [(ngModel)]="search" (keyup)="keyPress()">
@@ -84,40 +92,26 @@
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Amount</th>
-                                            <th>Group Name</th>
-                                            <th *ngIf="selectedGroupType == 'saving'">Payment Date</th>
-                                            <th *ngIf="selectedGroupType != 'saving'">Created At</th>
+                                            <th>Created On</th>
+                                            <th>EMI Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let user of users, let i = index">
                                             <td>{{user.sno}}</td>
-                                            <td>{{user.user_info.first_name}}</td>
-                                            <td>{{user.user_info.last_name}}</td>
-                                            <td>{{user.user_info.email}}</td>
+                                            <td>{{user.first_name}}</td>
+                                            <td>{{user.last_name}}</td>
+                                            <td>{{user.email}}</td>
                                             <td>
-                                                <div *ngIf="user.amount">
-                                                    {{user.amount}}
-                                                </div>
-
-                                                <div *ngIf="user.loan_amount">
-                                                    {{user.loan_amount}}
-                                                </div>
+                                                {{ getPaymentAmount(user) }}
                                             </td>
-                                            <td>{{user.type}}</td>
-                                            <!-- <td *ngIf="selectedGroupType == 'saving'">{{user.date | date: 'dd/MM/yyyy'}}
-                                            </td>
-                                            <td *ngIf="selectedGroupType != 'saving'">{{user.created_at | date:
-                                                'dd/MM/yyyy'}}</td> -->
-                                            <td>{{user.created_at | date:
+                                            <td>{{user.payment_created_at | date:
                                                 'dd/MM/yyyy'}}</td>
                                             <td>
-                                                <!-- <button type="button" class="btn btn-dark margin" data-toggle="modal"
-                                                    data-target="#viewModal" ngbTooltip="View"
-                                                    (click)="onUpdateView(user)">
-                                                    <i class="fa fa-eye"></i>
-                                                </button> -->
+                                                {{ getPaymentDate(user) | date:'dd/MM/yyyy' }}
+                                            </td>
+                                            <td>
                                                 <button type="button" class="btn btn-success margin" data-toggle="modal"
                                                     ngbTooltip="Send email to this circle users"
                                                     data-target="#emailModal" (click)="getDetails(user)">
@@ -132,7 +126,7 @@
                                 (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
 
                             <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
-                                You haven't had any user yet!
+                                You haven't had any data yet!
                             </div>
                         </div>
                     </div>

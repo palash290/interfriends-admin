@@ -73,21 +73,33 @@ export class DividendManagementComponent implements OnInit {
       return;
     }
 
+    const confirmSubmit = confirm('Are you sure you want to submit?');
+    if (!confirmSubmit) {
+      return;
+    }
+
     this.isLoading = true;
     const userData = new FormData();
     userData.append('dividend_year', data.value.dividend_year);
+    userData.append('type', data.value.type);
     userData.append('percentage', data.value.percentage);
     userData.append('description', data.value.description);
     userData.append('admin_id', this.subAdminId);
 
     this.sharedService.postAPI('/createDividendForAllUsers', userData).subscribe({
       next: (resp: any) => {
-        this.isLoading = false;
-        this.toastr.success(resp.message || 'Dividend details captured');
-        data.resetForm();
-        this.displayDividend = 'none';
-        document.getElementById('closeDividendModal').click();
-        this.getDividends(this.listsPerPage, this.currentPage, this.search);
+        if (resp.success == 1) {
+          this.isLoading = false;
+          this.toastr.success(resp.message || 'Dividend details captured');
+          data.resetForm();
+          this.displayDividend = 'none';
+          document.getElementById('closeDividendModal').click();
+          this.getDividends(this.listsPerPage, this.currentPage, this.search);
+        } else {
+          this.isLoading = false;
+          this.toastr.error(resp.message || 'Failed to submit dividend.');
+        }
+
       },
       error: (error: any) => {
         this.isLoading = false;

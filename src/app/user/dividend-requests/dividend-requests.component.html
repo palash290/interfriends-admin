@@ -36,7 +36,7 @@
                                             <th>Email</th>
                                             <th>Payout Amount</th>
                                             <th>Dividend Year</th>
-                                            <!-- <th>Status</th> -->
+                                            <th>Type</th>
                                             <th>Created on</th>
                                             <th>Action</th>
                                         </tr>
@@ -50,6 +50,9 @@
                                             </td>
                                             <td>{{ list.total_dividend | number : "1.0-0" }}</td>
                                             <td>{{list.dividend_year}}</td>
+                                            <td>
+                                                {{list.type_name}}
+                                            </td>
                                             <!-- <td *ngIf="list.status == 0">
                                                 <span
                                                     class="m-1 btn btn-danger btn-sm et_cstm_badge text-white">Rejected

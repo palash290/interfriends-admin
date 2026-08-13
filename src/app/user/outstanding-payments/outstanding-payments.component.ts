@@ -36,18 +36,14 @@ export class OutstandingPaymentsComponent implements OnInit {
   ngOnInit(): void {
     this.group_ids = localStorage.getItem('group_ids');
     this.circle_ids = localStorage.getItem('circle_ids');
-    this.getUsers(this.usersPerPage, this.currentPage, this.search);
+    // this.getUsers(this.usersPerPage, this.currentPage, this.search);
   }
 
   getUsers(usersPerPage: any, currentPage: any, search: any) {
-    const searchkey: any = ''
-
     const userData = new FormData();
 
-    if (currentPage) {
-      const totalPage = usersPerPage * currentPage;
-      userData.append('start', totalPage.toString());
-    }
+    const totalPage = usersPerPage * currentPage;
+    userData.append('start', totalPage.toString());
 
     if (this.group_ids) {
       userData.append('group_ids', this.group_ids.toString());
@@ -57,27 +53,134 @@ export class OutstandingPaymentsComponent implements OnInit {
       userData.append('circle_ids', this.circle_ids.toString());
     }
 
-    this.isLoading = true;
-    userData.append('search_keyword', this.search);
-    userData.append('type', this.selectedGroupType);
+    userData.append('search', this.search || '');
+    // userData.append('type', this.selectedGroupType);
 
     if (this.startDate && this.endDate) {
       userData.append('date_range', `${this.startDate}, ${this.endDate}`);
     }
 
-    this.sharedService.postAPI('/getAllMissedPayments', userData).subscribe({
+    // Select API based on Group Type
+    let apiUrl = '';
+
+    switch (this.selectedGroupType) {
+      case '1':
+        apiUrl = '/getOutstandingLoanPayments';
+        break;
+
+      case '2':
+        apiUrl = '/getOutstandingHelpToPayCarInsurancePayments';
+        break;
+
+      case '3':
+        apiUrl = '/getOutstandingHelpToBuyCarPayments';
+        break;
+
+      case '4':
+        apiUrl = '/getOutstandingHelpToBuyCreditCardPayments';
+        break;
+
+      case '5':
+        apiUrl = '/getOutstandingHelpMePaySomethingElsePayments';
+        break;
+
+      case '6':
+        apiUrl = '/getOutstandingHelpToBuyHousePayments';
+        break;
+
+      case '7':
+        apiUrl = '/getOutstandingWelfarePayments';
+        break;
+
+      case '8':
+        apiUrl = '/getOutstandingEmergencyLoanPayments';
+        break;
+
+      default:
+        console.error('Invalid group type:', this.selectedGroupType);
+        return;
+    }
+
+    this.isLoading = true;
+
+    this.sharedService.postAPI(apiUrl, userData).subscribe({
       next: (resp) => {
-        this.users = resp.lists;
-        this.totalUsers = resp.listCount;
+        this.users = resp.lists || [];
+        this.totalUsers = resp.listCount || 0;
+
         this.isLoading = false;
         this.isLoadingPage = false;
       },
+
       error: (error) => {
         this.isLoading = false;
         this.isLoadingPage = false;
-        console.error('Login error:', error.message);
+
+        console.error('API Error:', error?.message || error);
       }
     });
+  }
+
+  getPaymentAmount(user: any): any {
+    switch (+this.selectedGroupType) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        return user.loan_emi;
+
+      case 8:
+        return user.payment_amount;
+
+      case 9:
+        return user.some_amount_field;
+
+      case 10:
+        return user.another_amount_field;
+
+      case 11:
+        return user.another_payment_field;
+
+      case 12:
+        return user.final_payment_field;
+
+      default:
+        return '';
+    }
+  }
+
+  getPaymentDate(user: any): any {
+    switch (+this.selectedGroupType) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        return user.payment_emi_date;
+
+      case 8:
+        return user.payment_date;
+
+      case 9:
+        return user.some_date_field;
+
+      case 10:
+        return user.another_date_field;
+
+      case 11:
+        return user.another_payment_date;
+
+      case 12:
+        return user.final_payment_date;
+
+      default:
+        return '';
+    }
   }
 
   // search start
@@ -125,14 +228,60 @@ export class OutstandingPaymentsComponent implements OnInit {
 
     const userData = new FormData();
 
-    userData.append('amount', this.details?.amount ?? this.details?.loan_amount);
     userData.append('user_id', this.details?.user_id);
-    userData.append('type', this.details?.type);
 
-    if (this.details?.type == 'saving') {
-      userData.append('date', this.details?.date);
-    } else {
-      userData.append('date', this.details?.created_at);
+    switch (+this.selectedGroupType) {
+      // Group Types 1-7
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        userData.append('amount', this.details?.loan_emi);
+        userData.append('type', 'loan');
+        userData.append('date', this.details?.payment_emi_date);
+        break;
+
+      // Group Type 8
+      case 8:
+        userData.append('amount', this.details?.payment_amount);
+        userData.append('type', 'payment');
+        userData.append('date', this.details?.payment_date);
+        break;
+
+      // Group Type 9
+      case 9:
+        userData.append('amount', this.details?.category9_amount);
+        userData.append('type', 'category9');
+        userData.append('date', this.details?.category9_date);
+        break;
+
+      // Group Type 10
+      case 10:
+        userData.append('amount', this.details?.category10_amount);
+        userData.append('type', 'category10');
+        userData.append('date', this.details?.category10_date);
+        break;
+
+      // Group Type 11
+      case 11:
+        userData.append('amount', this.details?.category11_amount);
+        userData.append('type', 'category11');
+        userData.append('date', this.details?.category11_date);
+        break;
+
+      // Group Type 12
+      case 12:
+        userData.append('amount', this.details?.category12_amount);
+        userData.append('type', 'category12');
+        userData.append('date', this.details?.category12_date);
+        break;
+
+      default:
+        console.error('Invalid group type');
+        return;
     }
 
     this.userService
