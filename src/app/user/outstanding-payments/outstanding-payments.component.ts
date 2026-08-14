@@ -20,8 +20,8 @@ export class OutstandingPaymentsComponent implements OnInit {
 
   totalUsers = 0;
   usersPerPage = 10;
+  selectedUsersPerPage: number | 'all' = 10;
   currentPage = 0;
-  pageSizeOptions = [1, 2, 5, 10];
   selectedGroupType: any = '';
 
   startDate: any = '';
@@ -44,6 +44,7 @@ export class OutstandingPaymentsComponent implements OnInit {
 
     const totalPage = usersPerPage * currentPage;
     userData.append('start', totalPage.toString());
+    userData.append('limit', usersPerPage.toString());
 
     if (this.group_ids) {
       userData.append('group_ids', this.group_ids.toString());
@@ -77,7 +78,7 @@ export class OutstandingPaymentsComponent implements OnInit {
         break;
 
       case '4':
-        apiUrl = '/getOutstandingHelpToBuyCreditCardPayments';
+        apiUrl = '/getOutstandingHelpToPayCreditCardPayments';
         break;
 
       case '5':
@@ -94,6 +95,14 @@ export class OutstandingPaymentsComponent implements OnInit {
 
       case '8':
         apiUrl = '/getOutstandingEmergencyLoanPayments';
+        break;
+
+      case '9':
+        apiUrl = '/getOutstandingSavingPayments';
+        break;
+
+      case '10':
+        apiUrl = '/getOutstandingSavingJnrPayments';
         break;
 
       default:
@@ -121,6 +130,26 @@ export class OutstandingPaymentsComponent implements OnInit {
     });
   }
 
+  private getRequestedPageSize(): number {
+    if (this.selectedUsersPerPage === 'all') {
+      return Math.max(this.totalUsers, this.users.length, 10);
+    }
+
+    return this.selectedUsersPerPage;
+  }
+
+  onPageSizeChange(): void {
+    this.isLoadingPage = true;
+    this.currentPage = 0;
+    this.usersPerPage = this.getRequestedPageSize();
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+
+    this.getUsers(this.usersPerPage, this.currentPage, this.search);
+  }
+
   getPaymentAmount(user: any): any {
     switch (+this.selectedGroupType) {
       case 1:
@@ -136,16 +165,10 @@ export class OutstandingPaymentsComponent implements OnInit {
         return user.payment_amount;
 
       case 9:
-        return user.some_amount_field;
+        return user.payment_amount;
 
       case 10:
-        return user.another_amount_field;
-
-      case 11:
-        return user.another_payment_field;
-
-      case 12:
-        return user.final_payment_field;
+        return user.payment_amount;
 
       default:
         return '';
@@ -167,16 +190,10 @@ export class OutstandingPaymentsComponent implements OnInit {
         return user.payment_date;
 
       case 9:
-        return user.some_date_field;
+        return user.monthly_payment_date;
 
       case 10:
-        return user.another_date_field;
-
-      case 11:
-        return user.another_payment_date;
-
-      case 12:
-        return user.final_payment_date;
+        return user.monthly_payment_date;
 
       default:
         return '';
@@ -204,6 +221,7 @@ export class OutstandingPaymentsComponent implements OnInit {
     this.isLoadingPage = true;
     this.currentPage = pageData.pageIndex;
     this.usersPerPage = pageData.pageSize;
+    this.selectedUsersPerPage = pageData.pageSize;
     this.getUsers(this.usersPerPage, this.currentPage, this.search);
   }
 
@@ -254,29 +272,15 @@ export class OutstandingPaymentsComponent implements OnInit {
       // Group Type 9
       case 9:
         userData.append('amount', this.details?.category9_amount);
-        userData.append('type', 'category9');
+        userData.append('type', 'Savings');
         userData.append('date', this.details?.category9_date);
         break;
 
       // Group Type 10
       case 10:
         userData.append('amount', this.details?.category10_amount);
-        userData.append('type', 'category10');
+        userData.append('type', 'SavingsJnr');
         userData.append('date', this.details?.category10_date);
-        break;
-
-      // Group Type 11
-      case 11:
-        userData.append('amount', this.details?.category11_amount);
-        userData.append('type', 'category11');
-        userData.append('date', this.details?.category11_date);
-        break;
-
-      // Group Type 12
-      case 12:
-        userData.append('amount', this.details?.category12_amount);
-        userData.append('type', 'category12');
-        userData.append('date', this.details?.category12_date);
         break;
 
       default:

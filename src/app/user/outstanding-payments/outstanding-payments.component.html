@@ -38,6 +38,8 @@
                                         <option value="6">Help To Buy(House)</option>
                                         <option value="7">Welfare</option>
                                         <option value="8">Emergency Loan</option>
+                                        <option value="9">Savings</option>
+                                        <option value="10">Saving JNR</option>
                                         <!-- <option value="9">Miscellaneous</option> -->
                                     </select>
                                 </div>
@@ -122,8 +124,22 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
-                                (page)="onChangedPage($event)" *ngIf="users.length > 0"></mat-paginator>
+                            <div class="user-list-pagination" *ngIf="users.length > 0">
+                                <div class="user-list-page-size">
+                                    <label for="userListPageSize">Show</label>
+                                    <select id="userListPageSize" class="form-control"
+                                        [(ngModel)]="selectedUsersPerPage" (change)="onPageSizeChange()">
+                                        <option [ngValue]="10">10</option>
+                                        <option [ngValue]="50">50</option>
+                                        <option [ngValue]="100">100</option>
+                                        <option [ngValue]="200">200</option>
+                                        <option [ngValue]="'all'">All</option>
+                                    </select>
+                                </div>
+                                <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
+                                    [hidePageSize]="true" (page)="onChangedPage($event)">
+                                </mat-paginator>
+                            </div>
 
                             <div class="box-body" *ngIf="users.length <= 0 && !isLoading">
                                 You haven't had any data yet!
