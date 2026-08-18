@@ -33,7 +33,7 @@
                                         <option value="1">Loan</option>
                                         <option value="2">Help To Pay(Car Insurance)</option>
                                         <option value="3">Help To Buy(Car)</option>
-                                        <option value="4">Help To Buy(Credit Card)</option>
+                                        <option value="4">Help To Pay(Credit Card)</option>
                                         <option value="5">Help Me Pay Something Else</option>
                                         <option value="6">Help To Buy(House)</option>
                                         <option value="7">Welfare</option>
@@ -95,7 +95,10 @@
                                             <th>Email</th>
                                             <th>Amount</th>
                                             <th>Created On</th>
-                                            <th>EMI Date</th>
+                                            <!-- Dynamic Header -->
+                                            <th>
+                                                {{ +selectedGroupType >= 1 && +selectedGroupType <= 7 ? 'EMI Date'
+                                                    : 'Payment Date' }} </th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -136,8 +139,8 @@
                                         <option [ngValue]="'all'">All</option>
                                     </select>
                                 </div>
-                                <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage"
-                                    [hidePageSize]="true" (page)="onChangedPage($event)">
+                                <mat-paginator [length]="totalUsers" [pageSize]="usersPerPage" [hidePageSize]="true"
+                                    (page)="onChangedPage($event)">
                                 </mat-paginator>
                             </div>
 

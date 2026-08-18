@@ -14,7 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./safe-keeping-withdral-request.component.css'],
 })
 export class SafeKeepingWithdralRequestComponent implements OnInit {
-  
+
   lists: Safekeepingwithdral[] = [];
 
   listDetail: Safekeepingwithdral;
@@ -102,6 +102,7 @@ export class SafeKeepingWithdralRequestComponent implements OnInit {
   }
 
   addsafekeepingPayment(data: any) {
+    debugger
     console.log(data);
     this.display = 'block';
     this.modalData = data;

@@ -55,9 +55,11 @@
                       <td>{{ list.reason }}</td>
                       <td>{{ list.created_at | date : "dd MMM yyyy" }}</td>
                       <td>
-                        <button type="button" class="m-1 btn btn-danger btn-sm" disabled *ngIf="list.request_status == '0'">Rejected
+                        <button type="button" class="m-1 btn btn-danger btn-sm" disabled
+                          *ngIf="list.request_status == '0'">Rejected
                         </button>
-                        <button type="button" class="m-1 btn btn-success btn-sm" disabled *ngIf="list.request_status == '1'">Accepted
+                        <button type="button" class="m-1 btn btn-success btn-sm" disabled
+                          *ngIf="list.request_status == '1'">Accepted
                         </button>
                         <button type="button" class="m-1 btn btn-primary btn-sm" data-toggle="modal"
                           data-target="#blockModal" ngbTooltip="pending" *ngIf="list.request_status == '2'"

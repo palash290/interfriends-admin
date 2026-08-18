@@ -54,9 +54,10 @@
                       <th>Created on</th>
                       <!-- <th>PF Amount</th>
                         <th>PF Percent</th> -->
-                      <th>Status</th>
+                      <th>Payment Method</th>
                       <th>Note Title</th>
                       <th>Note Description</th>
+                      <th>Status</th>
                       <th>Payment Type</th>
                     </tr>
                   </thead>
@@ -79,18 +80,37 @@
                       </td>
                       <td>{{list.note_title ? list.note_title : list.note}}</td>
                       <td>{{list.note_description}}</td>
+
+                      <!-- For user -->
+                      <!-- <td>
+                        <span class="badge badge-success" *ngIf="list.request_status === '1'">Accepted</span>
+                        <span class="badge badge-secondary" *ngIf="list.request_status === '2'">Pending</span>
+                        <span class="badge badge-danger" *ngIf="list.request_status === '0'">Rejected</span>
+                      </td> -->
+                      <td>
+                        <span class="badge badge-success"
+                          *ngIf="list.requested_by === 'admin' || list.request_status === '1'">
+                          Accepted
+                        </span>
+
+                        <span class="badge badge-secondary"
+                          *ngIf="list.requested_by !== 'admin' && list.request_status === '2'">
+                          Pending
+                        </span>
+
+                        <span class="badge badge-danger"
+                          *ngIf="list.requested_by !== 'admin' && list.request_status === '0'">
+                          Rejected
+                        </span>
+                      </td>
+
                       <!-- For admin -->
-                      <td *ngIf="list.requested_by === 'admin'">
+                      <td>
                         <span class="badge badge-danger" *ngIf="list.pyment_type === '1'">Debit</span>
                         <span class="badge badge-success" *ngIf="list.pyment_type === '2'">Credit</span>
                       </td>
 
-                      <!-- For user -->
-                      <td *ngIf="list.requested_by === 'user'">
-                        <span class="badge badge-success" *ngIf="list.request_status === '1'">Accepted</span>
-                        <span class="badge badge-secondary" *ngIf="list.request_status === '2'">Pending</span>
-                        <span class="badge badge-danger" *ngIf="list.request_status === '0'">Rejected</span>
-                      </td>
+
 
                     </tr>
                   </tbody>

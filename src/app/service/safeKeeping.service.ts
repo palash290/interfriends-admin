@@ -75,6 +75,7 @@ export class SafeKeepingService {
     instituteData.append('safe_keeping_id', safe_keeping_id);
     instituteData.append('request_type', request_type.toString());
     instituteData.append('admin_id', adminId);
+    instituteData.append('request_status', '1');
     return this.http.post<{
       success: string;
       message: string;

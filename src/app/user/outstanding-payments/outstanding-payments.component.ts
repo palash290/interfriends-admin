@@ -271,16 +271,16 @@ export class OutstandingPaymentsComponent implements OnInit {
 
       // Group Type 9
       case 9:
-        userData.append('amount', this.details?.category9_amount);
+        userData.append('amount', this.details?.payment_amount);
         userData.append('type', 'Savings');
-        userData.append('date', this.details?.category9_date);
+        userData.append('date', this.details?.monthly_payment_date);
         break;
 
       // Group Type 10
       case 10:
-        userData.append('amount', this.details?.category10_amount);
+        userData.append('amount', this.details?.payment_amount);
         userData.append('type', 'SavingsJnr');
-        userData.append('date', this.details?.category10_date);
+        userData.append('date', this.details?.monthly_payment_date);
         break;
 
       default:
@@ -309,7 +309,6 @@ export class OutstandingPaymentsComponent implements OnInit {
           this.toastr.error(
             error?.error?.message || 'Something went wrong. Please try again.'
           );
-          // console.error('Send reminder error:', error);
         }
       });
   }
