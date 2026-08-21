@@ -21,7 +21,7 @@
         </div>
         <div class="form-group"
           [ngClass]="{'has-error': form.get('created_at').invalid  && form.get('created_at').touched}">
-          <label>Created On</label>
+          <label>Payment Date</label>
           <input type="date" data-date-format="Y-m-d" class="form-control" formControlName="created_at" />
           <span class="help-block" *ngIf="form.get('created_at').invalid  && form.get('created_at').touched">
             Please enter a Created On.

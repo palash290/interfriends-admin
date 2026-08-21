@@ -97,7 +97,7 @@ export class MiscellaneousService {
     amount: string,
     status: string,
     note_title: string,
-    note_description: string,
+    // note_description: string,
     payment_method: string,
     paid_status: string,
     adminId: any
@@ -109,8 +109,8 @@ export class MiscellaneousService {
     userData.append('group_id', groupId);
     userData.append('amount', amount);
     userData.append('status', status);
-    userData.append('note_title', note_title);
-    userData.append('note_description', note_description);
+    userData.append('title', note_title);
+    // userData.append('note_description', note_description);
     userData.append('payment_method', payment_method);
     userData.append('paid_status', paid_status);
     userData.append('admin_id', adminId);

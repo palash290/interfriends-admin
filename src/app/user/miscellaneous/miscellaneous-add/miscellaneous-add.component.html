@@ -14,11 +14,20 @@
       <div class="col-md-12">
         <div class="form-group" [ngClass]="{'has-error': form.get('amount').invalid  && form.get('amount').touched}">
           <label>Amount</label>
-          <input type="text" class="form-control" placeholder="Enter Amount" formControlName="amount" />
+          <input type="text" class="form-control" placeholder="Enter Amount" formControlName="amount" readonly/>
           <span class="help-block" *ngIf="form.get('amount').invalid  && form.get('amount').touched">
             Please enter a Amount.
           </span>
         </div>
+
+         <div class="form-group" [ngClass]="{'has-error': form.get('tenure').invalid  && form.get('tenure').touched}">
+          <label>Tenure</label>
+          <input type="text" class="form-control" placeholder="Enter tenure" formControlName="tenure" readonly/>
+          <span class="help-block" *ngIf="form.get('tenure').invalid  && form.get('tenure').touched">
+            Please enter a tenure.
+          </span>
+        </div>
+
         <div class="form-group" [ngClass]="{'has-error': form.get('status').invalid  && form.get('status').touched}"
           *ngIf="adminType === '2'">
           <div *ngIf="miscellaneous!==undefined">
@@ -48,7 +57,7 @@
             Please enter a Title.
           </span>
         </div>
-        <div class="form-group"
+        <!-- <div class="form-group"
           [ngClass]="{'has-error': form.get('note_description').invalid  && form.get('note_description').touched}">
           <label> Note Description</label>
           <input type="text" class="form-control" placeholder="Enter Description" formControlName="note_description" />
@@ -56,7 +65,7 @@
             *ngIf="form.get('note_description').invalid  && form.get('note_description').touched">
             Please enter a Description.
           </span>
-        </div>
+        </div> -->
         <div *ngIf="miscellaneous!==undefined">
           <div class="form-group"
             [ngClass]="{'has-error': form.get('payment_method').invalid  && form.get('payment_method').touched}"

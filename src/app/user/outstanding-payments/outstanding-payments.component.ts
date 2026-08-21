@@ -105,6 +105,10 @@ export class OutstandingPaymentsComponent implements OnInit {
         apiUrl = '/getOutstandingSavingJnrPayments';
         break;
 
+      case '11':
+        apiUrl = '/getOutstandingMiscellaneousPayments';
+        break;
+
       default:
         console.error('Invalid group type:', this.selectedGroupType);
         return;
@@ -170,6 +174,9 @@ export class OutstandingPaymentsComponent implements OnInit {
       case 10:
         return user.payment_amount;
 
+      case 11:
+        return user.payment_amount;
+
       default:
         return '';
     }
@@ -194,6 +201,9 @@ export class OutstandingPaymentsComponent implements OnInit {
 
       case 10:
         return user.monthly_payment_date;
+
+      case 11:
+        return user.payment_created_at;
 
       default:
         return '';

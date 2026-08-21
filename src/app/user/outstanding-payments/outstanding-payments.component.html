@@ -30,6 +30,8 @@
                                         style="border-radius: 5px;width: 180px;" [(ngModel)]="selectedGroupType"
                                         name="loan_type" (ngModelChange)="getUsers(usersPerPage, currentPage, search)">
                                         <option value="" disabled>Select</option>
+                                        <option value="9">Savings</option>
+                                        <option value="10">Saving JNR</option>
                                         <option value="1">Loan</option>
                                         <option value="2">Help To Pay(Car Insurance)</option>
                                         <option value="3">Help To Buy(Car)</option>
@@ -38,9 +40,7 @@
                                         <option value="6">Help To Buy(House)</option>
                                         <option value="7">Welfare</option>
                                         <option value="8">Emergency Loan</option>
-                                        <option value="9">Savings</option>
-                                        <option value="10">Saving JNR</option>
-                                        <!-- <option value="9">Miscellaneous</option> -->
+                                        <option value="11">Miscellaneous</option>
                                     </select>
                                 </div>
 

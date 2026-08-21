@@ -47,8 +47,8 @@
                       <th>EMI</th>
                       <th>Created on</th>
                       <th>Status</th>
-                      <th>Payment Method</th>
-                      <th>Paid Status</th>
+                      <!-- <th>Payment Method</th>
+                      <th>Paid Status</th> -->
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -66,7 +66,7 @@
                         <span class="badge badge-danger" *ngIf="list.status === '3'">Declined</span>
                         <span class="badge badge-secondary" *ngIf="list.status === '4'">Accepted</span>
                       </td>
-                      <td>
+                      <!-- <td>
                         <span class="badge badge-secondary" *ngIf="list.payment_method === '1'">Direct Transfer</span>
                         <span class="badge badge-success" *ngIf="list.payment_method === '2'">From Provident</span>
                         <span class="badge badge-warning" *ngIf="list.payment_method === '3'">From Safe Keeping</span>
@@ -75,7 +75,7 @@
                         <span class="badge badge-success" *ngIf="list.paid_status === '1'">Paid On Time</span>
                         <span class="badge badge-warning" *ngIf="list.paid_status === '2'">Paid Late</span>
                         <span class="badge badge-danger" *ngIf="list.paid_status === '3'">Missed Payment</span>
-                      </td>
+                      </td> -->
                       <td>
                         <button *ngIf="
                             !(
@@ -126,21 +126,19 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- Edit -->
 <div class="modal fade show" id="exampleModal" [ngStyle]="{ display: display1 }">
   <div class="modal-dialog">
     <app-miscellaneous-add [uniqueId]="updateId" [eachChange]="eachChange" [add]="add" [groupId]="groupId"
       [userId]="userId" (valueChange)="hidePopup($event)" (closeModal1)="closeModalF1($event)"></app-miscellaneous-add>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
 
+<!-- Add -->
 <div class="modal fade show" id="exampleModalAdd" [ngStyle]="{ display: display }">
   <div class="modal-dialog">
     <app-miscellaneous-default [uniqueId]="updateId" [eachChange]="eachChange" [add]="add" [groupId]="groupId"
       [userId]="userId" (valueChange)="hidePopup($event)"
       (closeModal)="closeModalF($event)"></app-miscellaneous-default>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>

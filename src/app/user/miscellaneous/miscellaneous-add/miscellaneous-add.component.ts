@@ -57,9 +57,10 @@ export class MiscellaneousAddComponent implements OnInit {
     this.adminType = this.authService.getAdminType();
     this.form = new FormGroup({
       amount: new FormControl(null, { validators: [Validators.required] }),
+      tenure: new FormControl(null, { validators: [Validators.required] }),
       status: new FormControl(null, { validators: [Validators.required] }),
       note_title: new FormControl(null, { validators: [Validators.required] }),
-      note_description: new FormControl(null, { validators: [Validators.required] }),
+      // note_description: new FormControl(null, { validators: [Validators.required] }),
       payment_method: new FormControl(null, {}),
       paid_status: new FormControl(null, {})
     });
@@ -85,6 +86,9 @@ export class MiscellaneousAddComponent implements OnInit {
             this.form.patchValue({
               amount: this.miscellaneous.amount,
               status: this.miscellaneous.status,
+              tenure: this.miscellaneous.tenure,
+              note_title: this.miscellaneous.title,
+              // note_description: this.miscellaneous.note_description
               payment_method: this.miscellaneous.payment_method,
               paid_status: this.miscellaneous.paid_status
             });
@@ -92,8 +96,6 @@ export class MiscellaneousAddComponent implements OnInit {
           });
       }
     }
-
-
 
     if (changes['add'] !== undefined) {
       if (changes['add'].currentValue !== undefined) {
@@ -106,7 +108,7 @@ export class MiscellaneousAddComponent implements OnInit {
   onSave(): void {
     this.form.markAllAsTouched();
     // console.log(this.form.invalid);
-    console.log(this.form.value.payment_method, 'payment_method');
+    // console.log(this.form.value.payment_method, 'payment_method');
 
     if (this.mode === 'create') {
 
@@ -149,7 +151,7 @@ export class MiscellaneousAddComponent implements OnInit {
         this.form.value.amount,
         this.form.value.status,
         this.form.value.note_title,
-        this.form.value.note_description,
+        // this.form.value.note_description,
         this.form.value.payment_method,
         this.form.value.paid_status,
         this.subAdminId
